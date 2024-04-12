@@ -8,4 +8,4 @@ srs.pdf: srs.tex
 	$(TEX) $(TEXFLAGS) $<
 
 clean:
-	rm -f *.aux *.log *.out *.toc
+	rm -f *.aux *.log *.out *.toc *.pdf
