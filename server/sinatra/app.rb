@@ -2,15 +2,13 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'bcrypt'
 
-enable :sessions
+require './models/user.rb'
 
-USERS = {
-  'test@test.com' => BCrypt::Password.create('password01'),
-  'user2' => BCrypt::Password.create('password2')
-}
+enable :sessions
+set :database_file, './config/database.yml'
 
 get '/' do
-  'Welcome to the login system!'
+  erb :index
 end
 
 get '/login' do
@@ -18,14 +16,18 @@ get '/login' do
 end
 
 post '/login' do
-  username = params['email']
+  email = params['email']
   password = params['password']
 
-  if USERS.key?(username) && BCrypt::Password.new(USERS[username]) == password
-    session[:username] = username
+  user = User.find_by(email: email)
+
+  if user && user.authenticate(password)
+    session[:username] = email
     redirect '/dashboard'
   else
-    'Invalid username or password'
+    erb :login, locals: {
+      error: 'Invalid username or password.'
+    }
   end
 end
 
@@ -39,10 +41,42 @@ post '/signup' do
   password = params['password']
   password_confirmation = params['password-confirmation']
 
-  if password == password_confirmation
-    redirect '/login'
+  if username.empty? ||
+     email.empty? ||
+     password.empty? ||
+     password_confirmation.empty?
+    return erb :signup, locals: {
+      error: 'All fields are required.'
+    }
+  end
+
+  if User.find_by(username: username)
+    return erb :signup, locals: {
+      error: 'Username already exists.'
+    }
+  end
+
+  if User.find_by(email: email)
+    return erb :signup, locals: { 
+      error: 'Another account with this email already exists'
+    }
+  end
+
+  if password != password_confirmation
+    return erb :signup, locals: {
+      error: 'Passwords do not match.'
+    }
+  end
+
+  user = User.create(username: username, email: email, password: password)
+
+  if user.valid?
+    session[:user_id] = user.id
+    redirect '/dashboard'
   else
-    redirect '/signup'
+    erb :signup, locals: {
+      error: 'Failed to create user.'
+    }
   end
 end
 
@@ -59,3 +93,4 @@ get '/logout' do
   session.clear
   redirect '/login'
 end
+
