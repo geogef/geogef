@@ -10,91 +10,131 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_09_205306) do
-  create_table "answers", force: :cascade do |t|
-    t.string "response"
-    t.integer "user_id"
-    t.integer "question_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_answers_on_question_id"
-    t.index ["user_id"], name: "index_answers_on_user_id"
-  end
-
+ActiveRecord::Schema[7.1].define(version: 2024_05_16_214002) do
   create_table "exams", force: :cascade do |t|
     t.integer "duration"
-    t.integer "correct_answers"
+    t.integer "lesson_id"
+    t.integer "level_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_exams_on_lesson_id"
+    t.index ["level_id"], name: "index_exams_on_level_id"
   end
 
   create_table "learnings", force: :cascade do |t|
-    t.integer "section"
-    t.integer "user_id"
+    t.integer "level_id"
+    t.integer "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_learnings_on_user_id"
+    t.index ["level_id"], name: "index_learnings_on_level_id"
+    t.index ["topic_id"], name: "index_learnings_on_topic_id"
   end
 
   create_table "lessons", force: :cascade do |t|
     t.string "title"
-    t.integer "topic"
-    t.integer "exam_id"
+    t.integer "topics_id"
+    t.integer "lessons_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_lessons_on_exam_id"
+    t.index ["lessons_id"], name: "index_lessons_on_lessons_id"
+    t.index ["topics_id"], name: "index_lessons_on_topics_id"
   end
 
   create_table "levels", force: :cascade do |t|
     t.integer "number"
     t.integer "exam_id"
+    t.integer "lessons_id"
+    t.integer "learnings_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_levels_on_exam_id"
+    t.index ["learnings_id"], name: "index_levels_on_learnings_id"
+    t.index ["lessons_id"], name: "index_levels_on_lessons_id"
   end
 
   create_table "materials", force: :cascade do |t|
+    t.string "content"
+    t.integer "learning_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "content"
+    t.index ["learning_id"], name: "index_materials_on_learning_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "response"
+    t.integer "topics_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topics_id"], name: "index_options_on_topics_id"
+  end
+
+  create_table "progress_lessons", force: :cascade do |t|
+    t.integer "users_id"
+    t.integer "lessons_id"
+    t.integer "levels_id"
+    t.index ["lessons_id"], name: "index_progress_lessons_on_lessons_id"
+    t.index ["levels_id"], name: "index_progress_lessons_on_levels_id"
+    t.index ["users_id"], name: "index_progress_lessons_on_users_id"
+  end
+
+  create_table "qas", force: :cascade do |t|
+    t.integer "questions_id"
+    t.integer "options_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["options_id"], name: "index_qas_on_options_id"
+    t.index ["questions_id"], name: "index_qas_on_questions_id"
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string "title"
+    t.string "question"
+    t.integer "topics_id"
+    t.integer "exams_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["exams_id"], name: "index_questions_on_exams_id"
+    t.index ["topics_id"], name: "index_questions_on_topics_id"
   end
 
   create_table "rewards", force: :cascade do |t|
     t.string "name"
-    t.integer "points_cost"
+    t.integer "cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_statistics", force: :cascade do |t|
-    t.integer "user_id"
-    t.date "registration_date"
-    t.float "app_progress"
-    t.integer "highest_streak"
-    t.integer "completed_lessons"
-    t.integer "total_score"
+  create_table "topics", force: :cascade do |t|
+    t.string "topic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "names"
     t.string "username"
     t.string "email"
     t.string "password"
+    t.float "app_progress"
+    t.integer "highest_streak"
+    t.integer "completed_lessons"
+    t.integer "geogems"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
   end
 
-  add_foreign_key "answers", "questions"
-  add_foreign_key "answers", "users"
-  add_foreign_key "learnings", "users"
-  add_foreign_key "lessons", "exams"
+  add_foreign_key "exams", "lessons"
+  add_foreign_key "exams", "levels"
+  add_foreign_key "learnings", "levels"
+  add_foreign_key "learnings", "topics"
+  add_foreign_key "lessons", "lessons", column: "lessons_id"
+  add_foreign_key "lessons", "topics", column: "topics_id"
   add_foreign_key "levels", "exams"
+  add_foreign_key "levels", "learnings", column: "learnings_id"
+  add_foreign_key "levels", "lessons", column: "lessons_id"
+  add_foreign_key "materials", "learnings"
+  add_foreign_key "options", "topics", column: "topics_id"
+  add_foreign_key "progress_lessons", "lessons", column: "lessons_id"
+  add_foreign_key "progress_lessons", "levels", column: "levels_id"
+  add_foreign_key "progress_lessons", "users", column: "users_id"
+  add_foreign_key "questions", "exams", column: "exams_id"
+  add_foreign_key "questions", "topics", column: "topics_id"
 end

@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, presence: true, uniqueness: true
   validates :password, presence: true
+  after_initialize :init
 
   def password
       @password ||= Password.new(self[:password])
@@ -19,6 +20,13 @@ class User < ActiveRecord::Base
 
   def authenticate(input_password)
     self.password == input_password
+  end
+
+  def init
+    self.app_progress ||= 0.0
+    self.highest_streak ||= 0
+    self.completed_lessons ||= 0
+    self.geogems ||= 0
   end
 
 end
