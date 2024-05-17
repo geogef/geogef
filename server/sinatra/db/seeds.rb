@@ -3,6 +3,8 @@ require './models/topic'
 require './models/question'
 require './models/option'
 require './models/qa'
+require './models/exam'
+require './models/level'
 
 Qa.destroy_all
 Question.destroy_all
@@ -429,3 +431,8 @@ end
   Exam.create(name: "Geografía Política #{i}")
 end
 
+niveles = ["Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Nivel 5", "Nivel 6"]
+
+niveles.each do |nivel_name|
+  Level.create(name: nivel_name)
+end
