@@ -1,11 +1,19 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'bcrypt'
+require 'json'
 
+require './auth_middleware'
 require './models/user.rb'
+require './models/question.rb'
+require './models/option.rb'
+require './models/topic.rb'
+require './models/qa.rb'
 
 enable :sessions
 set :database_file, './config/database.yml'
+
+use AuthMiddleware
 
 get '/' do
   erb :index
@@ -22,7 +30,7 @@ post '/login' do
   user = User.find_by(email: email)
 
   if user && user.authenticate(password)
-    session[:username] = email
+    session[:user_id] = user.id
     redirect '/dashboard'
   else
     erb :login, locals: {
@@ -82,15 +90,76 @@ end
 
 
 get '/dashboard' do
-  if session[:username]
+  if session[:user_id]
     erb :dashboard
   else
     redirect '/login'
   end
 end
 
+get '/quiz' do
+  erb :quiz
+end
+
+
 get '/logout' do
   session.clear
   redirect '/login'
 end
 
+get '/api/qa/:qa_id' do |qa_id|
+  qa = Qa.find_by(id: qa_id)
+
+  return { error: 'QA not found' }.to_json unless qa
+
+  question = Question.find_by(id: qa.questions_id)
+  correct_option = Option.find_by(id: qa.options_id)
+  topic = question.topics_id
+
+  incorrect_options = Option.where.not(id: correct_option.id).
+                     where(topics_id: topic).order('RANDOM()').limit(3)
+
+  question_data = {
+    question: question.question,
+    options: (incorrect_options.map(&:response) << correct_option.response)
+              .shuffle
+  }
+
+  content_type :json
+  question_data.to_json
+end
+
+get '/api/qa/:id/correct_answer' do
+  content_type :json
+
+  qa_id = params[:id]
+  qa = Qa.find_by(id: qa_id)
+
+  if qa.nil?
+    status 404
+    return { error: "QA record with ID #{qa_id} not found" }.to_json
+  end
+
+  question = Question.find_by(id: qa.questions_id)
+
+  if question.nil?
+    status 404
+    return { 
+      error: "Question not found for QA record with ID #{qa_id}"
+    }.to_json
+  end
+
+  correct_answer = Option.find_by(id: qa.options_id)
+
+  if correct_answer.nil?
+    status 404
+    return {
+      error: "Correct answer not found for QA record with ID #{qa_id}"
+    }.to_json
+  end
+
+  {
+    question: question.question,
+    correct_answer: correct_answer.response
+  }.to_json
+end
