@@ -122,7 +122,8 @@ get '/api/qa/:qa_id' do |qa_id|
   question_data = {
     question: question.question,
     options: (incorrect_options.map(&:response) << correct_option.response)
-              .shuffle
+              .shuffle,
+    img: qa.imagepath
   }
 
   content_type :json
