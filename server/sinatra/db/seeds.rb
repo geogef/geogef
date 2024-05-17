@@ -404,3 +404,28 @@ questions_data.each do |q_data|
   correct_option = Option.find_or_create_by(response: q_data[:correct_option], topics_id: topic.id)
   Qa.create!(questions_id: question.id, options_id: correct_option.id)
 end
+
+(1..6).each do |i|
+  Exam.create(name: "Banderas #{i}")
+end
+
+(1..6).each do |i|
+  Exam.create(name: "Geografía Física #{i}")
+end
+
+(1..6).each do |i|
+  Exam.create(name: "Geografía Humana #{i}")
+end
+
+(1..6).each do |i|
+  Exam.create(name: "Continentes, Océanos y Mares #{i}")
+end
+
+(1..6).each do |i|
+  Exam.create(name: "Capitales #{i}")
+end
+
+(1..6).each do |i|
+  Exam.create(name: "Geografía Política #{i}")
+end
+
