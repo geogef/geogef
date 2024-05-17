@@ -14,9 +14,10 @@ topics_data = [
   { topic: 'Physical Geography' },
   { topic: 'Human Geography' },
   { topic: 'Continents and Oceans' },
-    { topic: 'Capitals' },
-  { topic, 'Political Geography'}
+  { topic: 'Capitals' },
+  { topic: 'Political Geography' }
 ]
+
 
 topics_data.each { |data| Topic.find_or_create_by(topic: data[:topic]) }
 
@@ -96,7 +97,7 @@ questions_data = [
   { question: '¿Cuál es la capital de Bélgica?', correct_option: 'Bruselas', topic: 'Capitals' },
   { question: '¿Cuál es la capital de Austria?', correct_option: 'Viena', topic: 'Capitals' },
   { question: '¿Cuál es la capital de Noruega?', correct_option: 'Oslo', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Israel?', correct_option: 'Jerusalén', topic 'Capitals' },
+  { question: '¿Cuál es la capital de Israel?', correct_option: 'Jerusalén', topic: 'Capitals' },
   { question: '¿Qué es un país?', correct_option: 'Una entidad política soberana con un territorio definido y un gobierno', topic: 'Political Geography' },
   { question: '¿Qué es una frontera?', correct_option: 'Una línea imaginaria que separa dos países', topic: 'Political Geography' },
   { question: '¿Qué es la diplomacia?', correct_option: 'El proceso de manejar las relaciones internacionales entre países mediante la negociación y el diálogo', topic: 'Political Geography' },
