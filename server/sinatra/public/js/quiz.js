@@ -5,7 +5,7 @@ function fetchQuestionAndOptions(qaId) {
     xhr.onload = function() {
         if (xhr.status === 200) {
             var data = JSON.parse(xhr.responseText);
-            displayQuestionAndOptions(qaId, data.question, data.options);
+            displayQuestionAndOptions(qaId, data.question, data.options , data.img);
         } else {
             console.error('Request failed. Status:', xhr.status);
         }
@@ -13,8 +13,27 @@ function fetchQuestionAndOptions(qaId) {
     xhr.send();
 }
 
-function displayQuestionAndOptions(qaId, question, options) {
+function loadSVG(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+    xhr.overrideMimeType("image/svg+xml");
+    xhr.send(null);
+
+    if (xhr.status === 200) {
+        return xhr.responseXML.documentElement;
+    }
+
+
+    return null;
+}
+
+
+function displayQuestionAndOptions(qaId, question, options, img) {
     document.getElementById('question').textContent = question;
+
+    image = loadSVG(img);
+
+    document.getElementById('img').appendChild(image);
 
     var optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = '';
