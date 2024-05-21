@@ -23,7 +23,6 @@ function loadSVG(url) {
         return xhr.responseXML.documentElement;
     }
 
-
     return null;
 }
 
@@ -31,9 +30,13 @@ function loadSVG(url) {
 function displayQuestionAndOptions(qaId, question, options, img) {
     document.getElementById('question').textContent = question;
 
-    image = loadSVG(img);
+    var svgContainer = document.getElementById('svg-container');
+    svgContainer.innerHTML = '';
 
-    document.getElementById('img').appendChild(image);
+    if (img) {
+        var image = loadSVG(img);
+        svgContainer.appendChild(image);
+    }
 
     var optionsContainer = document.getElementById('options');
     optionsContainer.innerHTML = '';
@@ -47,6 +50,7 @@ function displayQuestionAndOptions(qaId, question, options, img) {
         optionsContainer.appendChild(button);
     });
 }
+
 
 function checkAnswer(qaId, userAnswer) {
     var xhr = new XMLHttpRequest();
