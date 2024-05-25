@@ -5,6 +5,7 @@ require 'json'
 require 'dotenv/load'
 
 require './auth_middleware'
+require './helpers'
 require './models/user.rb'
 require './models/question.rb'
 require './models/option.rb'
@@ -23,6 +24,7 @@ get '/' do
 end
 
 get '/login' do
+  redirect_if_logged_in
   erb :login
 end
 
@@ -43,6 +45,7 @@ post '/login' do
 end
 
 get '/signup' do
+  redirect_if_logged_in
   erb :signup
 end
 
@@ -93,14 +96,12 @@ end
 
 
 get '/dashboard' do
-  if session[:user_id]
-    erb :dashboard
-  else
-    redirect '/login'
-  end
+  authenticate_user
+  erb :dashboard
 end
 
 get '/quiz' do
+  authenticate_user
   erb :quiz
 end
 
