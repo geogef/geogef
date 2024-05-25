@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'bcrypt'
 require 'json'
+require 'dotenv/load'
 
 require './auth_middleware'
 require './models/user.rb'
@@ -9,6 +10,8 @@ require './models/question.rb'
 require './models/option.rb'
 require './models/topic.rb'
 require './models/qa.rb'
+
+session_secret = ENV['SESSION_SECRET'] || 'default_secret'
 
 enable :sessions
 set :database_file, './config/database.yml'
