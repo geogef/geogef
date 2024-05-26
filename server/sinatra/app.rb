@@ -10,7 +10,12 @@ require './models/user.rb'
 require './models/question.rb'
 require './models/option.rb'
 require './models/topic.rb'
+require './models/lesson.rb'
 require './models/qa.rb'
+require './models/exam.rb'
+require './models/progresslesson'
+require './models/level'
+
 
 session_secret = ENV['SESSION_SECRET'] || 'default_secret'
 
@@ -18,6 +23,17 @@ enable :sessions
 set :database_file, './config/database.yml'
 
 use AuthMiddleware
+
+helpers do
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+
+  def level_unlocked?(lesson, level)
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+    progress && progress.level.number >= level
+  end
+end
 
 get '/' do
   erb :index
@@ -100,9 +116,37 @@ get '/dashboard' do
   erb :dashboard
 end
 
-get '/quiz' do
+get '/lessons' do
+  if session[:user_id]
+      @lessons = Lesson.all
+      level = Level.find_by(number: 1)
+      unless current_user.progress_lessons.exists?
+        Lesson.all.each do |lesson|
+          ProgressLesson.create(user: current_user, lesson: lesson, level: level)
+        end
+      end
+      erb :lessons
+  else
+    redirect '/login'
+  end
+end
+
+get '/quiz/:exam_id' do
+  @exam_id = params[:exam_id]
   authenticate_user
   erb :quiz
+end
+
+get '/lesson/:lesson_id/:level' do
+  @lesson = Lesson.find(params[:lesson_id])
+  @level = Level.find_by(number: params[:level])
+  @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
+
+  if !level_unlocked?(@lesson, @level.number)
+    redirect '/lessons', error: "You have not unlocked this level yet."
+  else
+    erb :lesson
+  end
 end
 
 
@@ -167,4 +211,41 @@ get '/api/qa/:id/correct_answer' do
     question: question.question,
     correct_answer: correct_answer.response
   }.to_json
+end
+
+get '/api/exam/:exam_id' do |exam_id|
+  exam = Exam.find_by(id: exam_id)
+  return { error: 'Exam not found' }.to_json unless exam
+
+  qas = Qa.where(exam_id: exam_id).pluck(:id)
+  { qas: qas }.to_json
+end
+
+get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
+  exam = Exam.find_by(id: exam_id)
+  return { error: 'Exam not found' }.to_json unless exam
+
+  qas = Qa.where(exam_id: exam_id).pluck(:id)
+  total_questions = qas.length
+
+  if correct_answers.to_i == total_questions
+    lesson = exam.lesson
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+
+      if progress
+      current_level_number = progress.level.number
+      next_level = Level.find_by(number: current_level_number + 1)
+
+      if next_level
+        progress.update(level: next_level)
+        return { message: 'Level up!', new_level: next_level.name, qas: qas }.to_json
+      else
+        return { message: 'No higher level found.', qas: qas }.to_json
+      end
+    else
+      return { error: 'Progress not found for the current user and lesson.' }.to_json
+    end
+  else
+    return { message: 'Not all answers are correct.', qas: qas }.to_json
+  end
 end

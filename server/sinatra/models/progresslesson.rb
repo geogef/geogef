@@ -1,5 +1,5 @@
 class ProgressLesson < ActiveRecord::Base
-    has_one :user
-    has_one :lesson
-    has_one :level
+    belongs_to :user
+    belongs_to :lesson
+    belongs_to :level
 end
