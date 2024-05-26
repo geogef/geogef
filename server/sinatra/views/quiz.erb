@@ -3,24 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
-    <link href="css/output.css" rel="stylesheet">
+    <title>Interactive Quiz</title>
+    <link href="/css/output.css" rel="stylesheet">
 </head>
-
-<body class="bg-gray-100">
-  <div class="max-w-4xl mx-auto px-4 py-8">
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6 justify-center items-center">
-      <h2 class="text-xl font-semibold mb-4 text-center" id="question"></h2>
-      <div id="center-svg-container" class="items-center justify-center flex">
-        <div id="svg-container" class="flex justify-center c items-center w-36 h-36" >
+<body class="bg-[url('/images/bg2.jpg')] bg-cover bg-center flex items-center justify-center min-h-screen">
+  <div class="quiz-container max-w-full w-full sm:w-4/5 lg:w-2/5 bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="p-6">
+      <div class="question p-4 rounded mb-4 bg-gradient-to-r from-fun-blue-500 to-fun-blue-600 text-white" id="question">
+      </div>
+      <div id="center-svg-container" class="flex justify-center mb-4">
+        <div id="svg-container" class="w-36 h-36 flex items-center justify-center">
         </div>
       </div>
-      <div class="mb-4 text-center items-center justify-center flex" id="options"></div>
+      <div id="options" class="space-y-2 flex flex-col">
+      </div>
+          <div class="text-center mt-4">
+        <button id="next-question" class="bg-fun-blue-500 hover:bg-fun-blue-700 text-white font-bold py-2 px-4 rounded">Next Question</button>
+    </div>
+    <div id="completion-message" class="p-6 hidden">
+      <p class="text-center text-gray-600">Congratulations! You have completed the quiz.</p>
+        <p class="text-center text-gray-600">You answered <span id="correct-answers"></span> questions correctly.</p>
+      <p class="text-center text-gray-600">Thank you for participating.</p>
+    </div>
+  </div>
     </div>
   </div>
 
-    </div>
-    <script src="js/quiz.js"></script>
+  <script>
+    window.onload = function() {
+        const examId = <%= @exam_id %>;
+        fetchQaIds(examId);
+    };
+  </script>
+  <script src="/js/quiz.js"></script>
 </body>
-
 </html>
+
