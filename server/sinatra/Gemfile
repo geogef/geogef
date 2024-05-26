@@ -6,3 +6,4 @@ gem 'sqlite3', '~> 1.4'
 gem "rake"
 gem "bcrypt"
 gem "rackup"
+gem "dotenv"
