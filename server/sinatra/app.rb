@@ -8,12 +8,28 @@ require './models/user.rb'
 require './models/question.rb'
 require './models/option.rb'
 require './models/topic.rb'
+require './models/lesson.rb'
 require './models/qa.rb'
+require './models/exam.rb'
+require './models/progresslesson'
+require './models/level'
+
 
 enable :sessions
 set :database_file, './config/database.yml'
 
 use AuthMiddleware
+
+helpers do
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+
+  def level_unlocked?(lesson, level)
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+    progress && progress.level.number >= level
+  end
+end
 
 get '/' do
   erb :index
@@ -97,8 +113,36 @@ get '/dashboard' do
   end
 end
 
-get '/quiz' do
+get '/lessons' do
+  if session[:user_id]
+      @lessons = Lesson.all
+      level = Level.find_by(number: 1)
+      unless current_user.progress_lessons.exists?
+        Lesson.all.each do |lesson|
+          ProgressLesson.create(user: current_user, lesson: lesson, level: level)
+        end
+      end
+      erb :lessons
+  else
+    redirect '/login'
+  end
+end
+
+get '/quiz/:exam_id' do
+  @exam_id = params[:exam_id]
   erb :quiz
+end
+
+get '/lesson/:lesson_id/:level' do
+  @lesson = Lesson.find(params[:lesson_id])
+  @level = Level.find_by(number: params[:level])
+  @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
+
+  if !level_unlocked?(@lesson, @level.number)
+    redirect '/lessons', error: "You have not unlocked this level yet."
+  else
+    erb :lesson
+  end
 end
 
 
