@@ -208,3 +208,40 @@ get '/api/qa/:id/correct_answer' do
     correct_answer: correct_answer.response
   }.to_json
 end
+
+get '/api/exam/:exam_id' do |exam_id|
+  exam = Exam.find_by(id: exam_id)
+  return { error: 'Exam not found' }.to_json unless exam
+
+  qas = Qa.where(exam_id: exam_id).pluck(:id)
+  { qas: qas }.to_json
+end
+
+get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
+  exam = Exam.find_by(id: exam_id)
+  return { error: 'Exam not found' }.to_json unless exam
+
+  qas = Qa.where(exam_id: exam_id).pluck(:id)
+  total_questions = qas.length
+
+  if correct_answers.to_i == total_questions
+    lesson = exam.lesson
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+
+      if progress
+      current_level_number = progress.level.number
+      next_level = Level.find_by(number: current_level_number + 1)
+
+      if next_level
+        progress.update(level: next_level)
+        return { message: 'Level up!', new_level: next_level.name, qas: qas }.to_json
+      else
+        return { message: 'No higher level found.', qas: qas }.to_json
+      end
+    else
+      return { error: 'Progress not found for the current user and lesson.' }.to_json
+    end
+  else
+    return { message: 'Not all answers are correct.', qas: qas }.to_json
+  end
+end
