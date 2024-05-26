@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_16_214002) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_26_163927) do
   create_table "exams", force: :cascade do |t|
     t.integer "duration"
     t.integer "lesson_id"
     t.integer "level_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["lesson_id"], name: "index_exams_on_lesson_id"
     t.index ["level_id"], name: "index_exams_on_level_id"
   end
@@ -32,24 +33,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_214002) do
 
   create_table "lessons", force: :cascade do |t|
     t.string "title"
-    t.integer "topics_id"
-    t.integer "lessons_id"
+    t.integer "topic_id"
+    t.integer "lesson_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["lessons_id"], name: "index_lessons_on_lessons_id"
-    t.index ["topics_id"], name: "index_lessons_on_topics_id"
+    t.index ["lesson_id"], name: "index_lessons_on_lesson_id"
+    t.index ["topic_id"], name: "index_lessons_on_topic_id"
   end
 
   create_table "levels", force: :cascade do |t|
     t.integer "number"
-    t.integer "exam_id"
-    t.integer "lessons_id"
-    t.integer "learnings_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_levels_on_exam_id"
-    t.index ["learnings_id"], name: "index_levels_on_learnings_id"
-    t.index ["lessons_id"], name: "index_levels_on_lessons_id"
+    t.string "name"
   end
 
   create_table "materials", force: :cascade do |t|
@@ -69,12 +65,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_214002) do
   end
 
   create_table "progress_lessons", force: :cascade do |t|
-    t.integer "users_id"
-    t.integer "lessons_id"
-    t.integer "levels_id"
-    t.index ["lessons_id"], name: "index_progress_lessons_on_lessons_id"
-    t.index ["levels_id"], name: "index_progress_lessons_on_levels_id"
-    t.index ["users_id"], name: "index_progress_lessons_on_users_id"
+    t.integer "user_id"
+    t.integer "lesson_id"
+    t.integer "level_id"
+    t.index ["lesson_id"], name: "index_progress_lessons_on_lesson_id"
+    t.index ["level_id"], name: "index_progress_lessons_on_level_id"
+    t.index ["user_id"], name: "index_progress_lessons_on_user_id"
   end
 
   create_table "qas", force: :cascade do |t|
@@ -82,6 +78,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_214002) do
     t.integer "options_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "imagepath"
+    t.integer "exam_id"
+    t.index ["exam_id"], name: "index_qas_on_exam_id"
     t.index ["options_id"], name: "index_qas_on_options_id"
     t.index ["questions_id"], name: "index_qas_on_questions_id"
   end
@@ -125,16 +124,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_16_214002) do
   add_foreign_key "exams", "levels"
   add_foreign_key "learnings", "levels"
   add_foreign_key "learnings", "topics"
-  add_foreign_key "lessons", "lessons", column: "lessons_id"
-  add_foreign_key "lessons", "topics", column: "topics_id"
-  add_foreign_key "levels", "exams"
-  add_foreign_key "levels", "learnings", column: "learnings_id"
-  add_foreign_key "levels", "lessons", column: "lessons_id"
+  add_foreign_key "lessons", "lessons"
+  add_foreign_key "lessons", "topics"
   add_foreign_key "materials", "learnings"
   add_foreign_key "options", "topics", column: "topics_id"
-  add_foreign_key "progress_lessons", "lessons", column: "lessons_id"
-  add_foreign_key "progress_lessons", "levels", column: "levels_id"
-  add_foreign_key "progress_lessons", "users", column: "users_id"
+  add_foreign_key "progress_lessons", "lessons"
+  add_foreign_key "progress_lessons", "levels"
+  add_foreign_key "progress_lessons", "users"
+  add_foreign_key "qas", "exams"
   add_foreign_key "questions", "exams", column: "exams_id"
   add_foreign_key "questions", "topics", column: "topics_id"
 end
