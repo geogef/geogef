@@ -116,7 +116,6 @@ get '/dashboard' do
   erb :dashboard
 end
 
-<<<<<<< HEAD
 get '/lessons' do
   if session[:user_id]
       @lessons = Lesson.all
