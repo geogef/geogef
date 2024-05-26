@@ -3,25 +3,20 @@ require './models/topic'
 require './models/question'
 require './models/option'
 require './models/qa'
+require './models/lesson'
 require './models/exam'
 require './models/level'
 
 Qa.destroy_all
 Question.destroy_all
 Option.destroy_all
+Exam.destroy_all
+Level.destroy_all
+Lesson.destroy_all
 Topic.destroy_all   
 
 topics_data = [
-  { topic: 'Flags-1' },
-  { topic: 'Flags-2' },
-  { topic: 'Flags-3' },
-  { topic: 'Flags-4' },
-  { topic: 'Flags-5' },
-  { topic: 'Flags-6' },
-  { topic: 'Flags-7' },
-  { topic: 'Flags-8' },
-  { topic: 'Flags-9' },
-  { topic: 'Flags-10' },
+  { topic: 'Flags' },
   { topic: 'Physical Geography' },
   { topic: 'Human Geography' },
   { topic: 'Continents' },
@@ -31,7 +26,10 @@ topics_data = [
 ]
 
 
-topics_data.each { |data| Topic.find_or_create_by(topic: data[:topic]) }
+topics_data.each do |data| 
+  topic = Topic.find_or_create_by(topic: data[:topic])
+  Lesson.create(title: topic.topic, topic: topic)
+end
 
 questions_data = [
   { question: '¿Qué es un país?', correct_option: 'Una entidad territorial y política', topic: 'Physical Geography' },
@@ -186,55 +184,55 @@ questions_data = [
   { question: '¿Dónde se sitúa principalmente el Mar de Ross?', correct_option: 'Se ubica en la Antártida, al sur del océano Pacífico y al este del mar de Weddell.', topic: 'Oceans' },
   { question: '¿Cuál es la ubicación geográfica del Océano Pacífico?', correct_option: 'Es el océano más grande, extendiéndose desde el Ártico en el norte hasta el Antártico en el sur, y desde Asia y Australia en el este hasta América en el oeste.', topic: 'Oceans' },
   { question: '¿Dónde se encuentra el Océano Atlántico?', correct_option: 'Entre las Américas al oeste y Europa y África al este.', topic: 'Oceans' },
-  { question: '¿Cuál es la capital de Estados Unidos?', correct_option: 'Washington D.C.', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de China?', correct_option: 'Pekín', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de India?', correct_option: 'Nueva Delhi', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Rusia?', correct_option: 'Moscú', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Brasil?', correct_option: 'Brasilia', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Japón?', correct_option: 'Tokio', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Alemania?', correct_option: 'Berlín', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Reino Unido?', correct_option: 'Londres', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Francia?', correct_option: 'París', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de México?', correct_option: 'Ciudad de México', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Italia?', correct_option: 'Roma', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Canadá?', correct_option: 'Ottawa', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Corea del Sur?', correct_option: 'Seúl', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de España?', correct_option: 'Madrid', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Australia?', correct_option: 'Camberra', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Indonesia?', correct_option: 'Yakarta', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Países Bajos?', correct_option: 'Ámsterdam', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Arabia Saudita?', correct_option: 'Riad', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Turquía?', correct_option: 'Ankara', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Argentina?', correct_option: 'Buenos Aires', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Sudáfrica?', correct_option: 'Pretoria', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Nigeria?', correct_option: 'Abuja', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Egipto?', correct_option: 'El Cairo', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Pakistán?', correct_option: 'Islamabad', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Irán?', correct_option: 'Teherán', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Vietnam?', correct_option: 'Hanói', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Tailandia?', correct_option: 'Bangkok', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Polonia?', correct_option: 'Varsovia', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Colombia?', correct_option: 'Bogotá', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Venezuela?', correct_option: 'Caracas', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Malasia?', correct_option: 'Kuala Lumpur', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Filipinas?', correct_option: 'Manila', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Bangladesh?', correct_option: 'Daca', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Ucrania?', correct_option: 'Kiev', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Sudán?', correct_option: 'Jartum', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Marruecos?', correct_option: 'Rabat', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Kenia?', correct_option: 'Nairobi', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Perú?', correct_option: 'Lima', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Chile?', correct_option: 'Santiago', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Suecia?', correct_option: 'Estocolmo', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Suiza?', correct_option: 'Berna', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Bélgica?', correct_option: 'Bruselas', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Austria?', correct_option: 'Viena', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Noruega?', correct_option: 'Oslo', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Israel?', correct_option: 'Jerusalén', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Ghana?', correct_option: 'Acra', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Irlanda?', correct_option: 'Dublín', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Finlandia?', correct_option: 'Helsinki', topic: 'Capitals' },
-  { question: '¿Cuál es la capital de Portugal?', correct_option: 'Lisboa', topic: 'Capitals' },
+    { question: '¿Cuál es la capital de Estados Unidos?', correct_option: 'Washington D.C.', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de China?', correct_option: 'Pekín', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de India?', correct_option: 'Nueva Delhi', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Rusia?', correct_option: 'Moscú', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Brasil?', correct_option: 'Brasilia', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Japón?', correct_option: 'Tokio', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de Alemania?', correct_option: 'Berlín', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Reino Unido?', correct_option: 'Londres', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de Francia?', correct_option: 'París', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de México?', correct_option: 'Ciudad de México', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Italia?', correct_option: 'Roma', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Canadá?', correct_option: 'Ottawa', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Corea del Sur?', correct_option: 'Seúl', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de España?', correct_option: 'Madrid', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Australia?', correct_option: 'Camberra', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de Indonesia?', correct_option: 'Yakarta', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Países Bajos?', correct_option: 'Ámsterdam', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Arabia Saudita?', correct_option: 'Riad', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Turquía?', correct_option: 'Ankara', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de Argentina?', correct_option: 'Buenos Aires', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Sudáfrica?', correct_option: 'Pretoria', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de Nigeria?', correct_option: 'Abuja', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Egipto?', correct_option: 'El Cairo', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Pakistán?', correct_option: 'Islamabad', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Irán?', correct_option: 'Teherán', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de Vietnam?', correct_option: 'Hanói', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Tailandia?', correct_option: 'Bangkok', topic: 'Capitals', exam: 'Capitales 2' },
+    { question: '¿Cuál es la capital de Polonia?', correct_option: 'Varsovia', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Colombia?', correct_option: 'Bogotá', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Venezuela?', correct_option: 'Caracas', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Malasia?', correct_option: 'Kuala Lumpur', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de Filipinas?', correct_option: 'Manila', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Bangladesh?', correct_option: 'Daca', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de Ucrania?', correct_option: 'Kiev', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Sudán?', correct_option: 'Jartum', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Marruecos?', correct_option: 'Rabat', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Kenia?', correct_option: 'Nairobi', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de Perú?', correct_option: 'Lima', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Chile?', correct_option: 'Santiago', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de Suecia?', correct_option: 'Estocolmo', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Suiza?', correct_option: 'Berna', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Bélgica?', correct_option: 'Bruselas', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Austria?', correct_option: 'Viena', topic: 'Capitals', exam: 'Capitales 6' },
+  { question: '¿Cuál es la capital de Noruega?', correct_option: 'Oslo', topic: 'Capitals', exam: 'Capitales 1' },
+  { question: '¿Cuál es la capital de Israel?', correct_option: 'Jerusalén', topic: 'Capitals', exam: 'Capitales 2' },
+  { question: '¿Cuál es la capital de Ghana?', correct_option: 'Acra', topic: 'Capitals', exam: 'Capitales 3' },
+  { question: '¿Cuál es la capital de Irlanda?', correct_option: 'Dublín', topic: 'Capitals', exam: 'Capitales 4' },
+  { question: '¿Cuál es la capital de Finlandia?', correct_option: 'Helsinki', topic: 'Capitals', exam: 'Capitales 5' },
+  { question: '¿Cuál es la capital de Portugal?', correct_option: 'Lisboa', topic: 'Capitals', exam: 'Capitales 6' },
   { question: '¿Qué es un país?', correct_option: 'Una entidad política soberana con un territorio definido y un gobierno', topic: 'Political Geography' },
   { question: '¿Qué es una frontera?', correct_option: 'Una línea imaginaria que separa dos países', topic: 'Political Geography' },
   { question: '¿Qué es la diplomacia?', correct_option: 'El proceso de manejar las relaciones internacionales entre países mediante la negociación y el diálogo', topic: 'Political Geography' },
@@ -285,281 +283,281 @@ questions_data = [
   { question: '¿Qué es un referéndum?', correct_option: 'Una votación en la que los ciudadanos expresan su opinión sobre una cuestión específica, generalmente de importancia nacional', topic: 'Political Geography' },  
   { question: '¿Qué es un tratado internacional?', correct_option: 'Un acuerdo formal entre dos o más países que establece derechos y obligaciones mutuos bajo el derecho internacional', topic: 'Political Geography' },
     #So Easy Mode
-  { correct_option: 'Argentina', topic: 'Flags-1', imagepath: 'images/flags/ar.svg' },
-  { correct_option: 'Bolivia', topic: 'Flags-1', imagepath: 'images/flags/bo.svg' },
-  { correct_option: 'Brasil', topic: 'Flags-1', imagepath: 'images/flags/br.svg' },
-  { correct_option: 'Canadá', topic: 'Flags-1', imagepath: 'images/flags/ca.svg' },
-  { correct_option: 'Chile', topic: 'Flags-1', imagepath: 'images/flags/cl.svg' },
-  { correct_option: 'China', topic: 'Flags-1', imagepath: 'images/flags/cn.svg' },
-  { correct_option: 'Colombia', topic: 'Flags-1', imagepath: 'images/flags/co.svg' },
-  { correct_option: 'Costa Rica', topic: 'Flags-1', imagepath: 'images/flags/cr.svg' },
-  { correct_option: 'Croacia', topic: 'Flags-1', imagepath: 'images/flags/hr.svg' },
-  { correct_option: 'Cuba', topic: 'Flags-1', imagepath: 'images/flags/cu.svg' },
-  { correct_option: 'Ecuador', topic: 'Flags-1', imagepath: 'images/flags/ec.svg' },
-  { correct_option: 'Francia', topic: 'Flags-1', imagepath: 'images/flags/fr.svg' },
-  { correct_option: 'Alemania', topic: 'Flags-1', imagepath: 'images/flags/de.svg' },
-  { correct_option: 'Italia', topic: 'Flags-1', imagepath: 'images/flags/it.svg' },
-  { correct_option: 'Japón', topic: 'Flags-1', imagepath: 'images/flags/jp.svg' },
-  { correct_option: 'México', topic: 'Flags-1', imagepath: 'images/flags/mx.svg' },
-  { correct_option: 'Portugal', topic: 'Flags-1', imagepath: 'images/flags/pt.svg' },
-  { correct_option: 'Perú', topic: 'Flags-1', imagepath: 'images/flags/pe.svg' },
-  { correct_option: 'España', topic: 'Flags-1', imagepath: 'images/flags/es.svg' },
-  { correct_option: 'Uruguay', topic: 'Flags-1', imagepath: 'images/flags/uy.svg' },
-  { correct_option: 'Reino Unido', topic: 'Flags-1', imagepath: 'images/flags/gb.svg' },
-  { correct_option: 'Estados Unidos de América', topic: 'Flags-1', imagepath: 'images/flags/us.svg' },
-  { correct_option: 'Venezuela', topic: 'Flags-1', imagepath: 'images/flags/ve.svg' },
-  { correct_option: 'Paraguay', topic: 'Flags-1', imagepath: 'images/flags/py.svg' },
-  { correct_option: 'Puerto Rico', topic: 'Flags-1', imagepath: 'images/flags/pr.svg' },
-  { correct_option: 'Honduras', topic: 'Flags-1', imagepath: 'images/flags/hn.svg' },
+  #{ correct_option: 'Argentina', topic: 'Flags-1', imagepath: 'images/flags/ar.svg' },
+  #{ correct_option: 'Bolivia', topic: 'Flags-1', imagepath: 'images/flags/bo.svg' },
+  #{ correct_option: 'Brasil', topic: 'Flags-1', imagepath: 'images/flags/br.svg' },
+  #{ correct_option: 'Canadá', topic: 'Flags-1', imagepath: 'images/flags/ca.svg' },
+  #{ correct_option: 'Chile', topic: 'Flags-1', imagepath: 'images/flags/cl.svg' },
+  #{ correct_option: 'China', topic: 'Flags-1', imagepath: 'images/flags/cn.svg' },
+  #{ correct_option: 'Colombia', topic: 'Flags-1', imagepath: 'images/flags/co.svg' },
+  #{ correct_option: 'Costa Rica', topic: 'Flags-1', imagepath: 'images/flags/cr.svg' },
+  #{ correct_option: 'Croacia', topic: 'Flags-1', imagepath: 'images/flags/hr.svg' },
+  #{ correct_option: 'Cuba', topic: 'Flags-1', imagepath: 'images/flags/cu.svg' },
+  #{ correct_option: 'Ecuador', topic: 'Flags-1', imagepath: 'images/flags/ec.svg' },
+  #{ correct_option: 'Francia', topic: 'Flags-1', imagepath: 'images/flags/fr.svg' },
+  #{ correct_option: 'Alemania', topic: 'Flags-1', imagepath: 'images/flags/de.svg' },
+  #{ correct_option: 'Italia', topic: 'Flags-1', imagepath: 'images/flags/it.svg' },
+  #{ correct_option: 'Japón', topic: 'Flags-1', imagepath: 'images/flags/jp.svg' },
+  #{ correct_option: 'México', topic: 'Flags-1', imagepath: 'images/flags/mx.svg' },
+  #{ correct_option: 'Portugal', topic: 'Flags-1', imagepath: 'images/flags/pt.svg' },
+  #{ correct_option: 'Perú', topic: 'Flags-1', imagepath: 'images/flags/pe.svg' },
+  #{ correct_option: 'España', topic: 'Flags-1', imagepath: 'images/flags/es.svg' },
+  #{ correct_option: 'Uruguay', topic: 'Flags-1', imagepath: 'images/flags/uy.svg' },
+  #{ correct_option: 'Reino Unido', topic: 'Flags-1', imagepath: 'images/flags/gb.svg' },
+  #{ correct_option: 'Estados Unidos de América', topic: 'Flags-1', imagepath: 'images/flags/us.svg' },
+  #{ correct_option: 'Venezuela', topic: 'Flags-1', imagepath: 'images/flags/ve.svg' },
+  #{ correct_option: 'Paraguay', topic: 'Flags-1', imagepath: 'images/flags/py.svg' },
+  #{ correct_option: 'Puerto Rico', topic: 'Flags-1', imagepath: 'images/flags/pr.svg' },
+  #{ correct_option: 'Honduras', topic: 'Flags-1', imagepath: 'images/flags/hn.svg' },
 
-  #Easy mode
+  ##Easy mode
 
-  { correct_option: 'Argelia', topic: 'Flags-2', imagepath: 'images/flags/dz.svg' },
-  { correct_option: 'Bélgica', topic: 'Flags-2', imagepath: 'images/flags/be.svg' },
-  { correct_option: 'Bosnia y Herzegovina', topic: 'Flags-2', imagepath: 'images/flags/ba.svg' },
-  { correct_option: 'Camerún', topic: 'Flags-2', imagepath: 'images/flags/cm.svg' },
-  { correct_option: 'Dominica', topic: 'Flags-2', imagepath: 'images/flags/dm.svg' },
-  { correct_option: 'República Dominicana', topic: 'Flags-2', imagepath: 'images/flags/do.svg' },
-  { correct_option: 'El Salvador', topic: 'Flags-2', imagepath: 'images/flags/sv.svg' },
-  { correct_option: 'Finlandia', topic: 'Flags-2', imagepath: 'images/flags/fi.svg' },
-  { correct_option: 'Ghana', topic: 'Flags-2', imagepath: 'images/flags/gh.svg' },
-  { correct_option: 'Grecia', topic: 'Flags-2', imagepath: 'images/flags/gr.svg' },
-  { correct_option: 'Guatemala', topic: 'Flags-2', imagepath: 'images/flags/gt.svg' },
-  { correct_option: 'India', topic: 'Flags-2', imagepath: 'images/flags/in.svg' },
-  { correct_option: 'Irán', topic: 'Flags-2', imagepath: 'images/flags/ir.svg' },
-  { correct_option: 'Israel', topic: 'Flags-2', imagepath: 'images/flags/il.svg' },
-  { correct_option: 'Jamaica', topic: 'Flags-2', imagepath: 'images/flags/jm.svg' },
-  { correct_option: 'Países Bajos', topic: 'Flags-2', imagepath: 'images/flags/nl.svg' },
-  { correct_option: 'Nueva Zelanda', topic: 'Flags-2', imagepath: 'images/flags/nz.svg' },
-  { correct_option: 'Nicaragua', topic: 'Flags-2', imagepath: 'images/flags/ni.svg' },
-  { correct_option: 'Nigeria', topic: 'Flags-2', imagepath: 'images/flags/ng.svg' },
-  { correct_option: 'Polonia', topic: 'Flags-2', imagepath: 'images/flags/pl.svg' },
-  { correct_option: 'Rusia', topic: 'Flags-2', imagepath: 'images/flags/ru.svg' },
-  { correct_option: 'Arabia Saudita', topic: 'Flags-2', imagepath: 'images/flags/sa.svg' },
-  { correct_option: 'Senegal', topic: 'Flags-2', imagepath: 'images/flags/sn.svg' },
-  { correct_option: 'Serbia', topic: 'Flags-2', imagepath: 'images/flags/rs.svg' },
-  { correct_option: 'Corea del Sur', topic: 'Flags-2', imagepath: 'images/flags/kr.svg' },
-  { correct_option: 'Panamá', topic: 'Flags-2', imagepath: 'images/flags/pa.svg' },
+  #{ correct_option: 'Argelia', topic: 'Flags-2', imagepath: 'images/flags/dz.svg' },
+  #{ correct_option: 'Bélgica', topic: 'Flags-2', imagepath: 'images/flags/be.svg' },
+  #{ correct_option: 'Bosnia y Herzegovina', topic: 'Flags-2', imagepath: 'images/flags/ba.svg' },
+  #{ correct_option: 'Camerún', topic: 'Flags-2', imagepath: 'images/flags/cm.svg' },
+  #{ correct_option: 'Dominica', topic: 'Flags-2', imagepath: 'images/flags/dm.svg' },
+  #{ correct_option: 'República Dominicana', topic: 'Flags-2', imagepath: 'images/flags/do.svg' },
+  #{ correct_option: 'El Salvador', topic: 'Flags-2', imagepath: 'images/flags/sv.svg' },
+  #{ correct_option: 'Finlandia', topic: 'Flags-2', imagepath: 'images/flags/fi.svg' },
+  #{ correct_option: 'Ghana', topic: 'Flags-2', imagepath: 'images/flags/gh.svg' },
+  #{ correct_option: 'Grecia', topic: 'Flags-2', imagepath: 'images/flags/gr.svg' },
+  #{ correct_option: 'Guatemala', topic: 'Flags-2', imagepath: 'images/flags/gt.svg' },
+  #{ correct_option: 'India', topic: 'Flags-2', imagepath: 'images/flags/in.svg' },
+  #{ correct_option: 'Irán', topic: 'Flags-2', imagepath: 'images/flags/ir.svg' },
+  #{ correct_option: 'Israel', topic: 'Flags-2', imagepath: 'images/flags/il.svg' },
+  #{ correct_option: 'Jamaica', topic: 'Flags-2', imagepath: 'images/flags/jm.svg' },
+  #{ correct_option: 'Países Bajos', topic: 'Flags-2', imagepath: 'images/flags/nl.svg' },
+  #{ correct_option: 'Nueva Zelanda', topic: 'Flags-2', imagepath: 'images/flags/nz.svg' },
+  #{ correct_option: 'Nicaragua', topic: 'Flags-2', imagepath: 'images/flags/ni.svg' },
+  #{ correct_option: 'Nigeria', topic: 'Flags-2', imagepath: 'images/flags/ng.svg' },
+  #{ correct_option: 'Polonia', topic: 'Flags-2', imagepath: 'images/flags/pl.svg' },
+  #{ correct_option: 'Rusia', topic: 'Flags-2', imagepath: 'images/flags/ru.svg' },
+  #{ correct_option: 'Arabia Saudita', topic: 'Flags-2', imagepath: 'images/flags/sa.svg' },
+  #{ correct_option: 'Senegal', topic: 'Flags-2', imagepath: 'images/flags/sn.svg' },
+  #{ correct_option: 'Serbia', topic: 'Flags-2', imagepath: 'images/flags/rs.svg' },
+  #{ correct_option: 'Corea del Sur', topic: 'Flags-2', imagepath: 'images/flags/kr.svg' },
+  #{ correct_option: 'Panamá', topic: 'Flags-2', imagepath: 'images/flags/pa.svg' },
 
-  #Medium Mode
+  ##Medium Mode
 
-  { correct_option: 'Andorra', topic: 'Flags-3', imagepath: 'images/flags/ad.svg' },
-  { correct_option: 'Australia', topic: 'Flags-3', imagepath: 'images/flags/au.svg' },
-  { correct_option: 'Bulgaria', topic: 'Flags-3', imagepath: 'images/flags/bg.svg' },
-  { correct_option: 'Egipto', topic: 'Flags-3', imagepath: 'images/flags/eg.svg' },
-  { correct_option: 'Estonia', topic: 'Flags-3', imagepath: 'images/flags/ee.svg' },
-  { correct_option: 'Dinamarca', topic: 'Flags-3', imagepath: 'images/flags/dk.svg' },
-  { correct_option: 'Georgia', topic: 'Flags-3', imagepath: 'images/flags/ge.svg' },
-  { correct_option: 'Haití', topic: 'Flags-3', imagepath: 'images/flags/ht.svg' },
-  { correct_option: 'Hungría', topic: 'Flags-3', imagepath: 'images/flags/hu.svg' },
-  { correct_option: 'Islandia', topic: 'Flags-3', imagepath: 'images/flags/is.svg' },
-  { correct_option: 'Indonesia', topic: 'Flags-3', imagepath: 'images/flags/id.svg' },
-  { correct_option: 'Irak', topic: 'Flags-3', imagepath: 'images/flags/iq.svg' },
-  { correct_option: 'Irlanda', topic: 'Flags-3', imagepath: 'images/flags/ie.svg' },
-  { correct_option: 'Kenia', topic: 'Flags-3', imagepath: 'images/flags/ke.svg' },
-  { correct_option: 'Luxemburgo', topic: 'Flags-3', imagepath: 'images/flags/lu.svg' },
-  { correct_option: 'Madagascar', topic: 'Flags-3', imagepath: 'images/flags/mg.svg' },
-  { correct_option: 'Mónaco', topic: 'Flags-3', imagepath: 'images/flags/mc.svg' },
-  { correct_option: 'Ucrania', topic: 'Flags-3', imagepath: 'images/flags/ua.svg' },
-  { correct_option: 'Corea del Norte', topic: 'Flags-3', imagepath: 'images/flags/kp.svg' },
-  { correct_option: 'Pakistán', topic: 'Flags-3', imagepath: 'images/flags/pk.svg' },
-  { correct_option: 'Hong Kong', topic: 'Flags-3', imagepath: 'images/flags/hk.svg' },
-  { correct_option: 'Filipinas', topic: 'Flags-3', imagepath: 'images/flags/ph.svg' },
-  { correct_option: 'Catar', topic: 'Flags-3', imagepath: 'images/flags/qa.svg' },
-  { correct_option: 'Sudáfrica', topic: 'Flags-3', imagepath: 'images/flags/za.svg' },
-  { correct_option: 'Suecia', topic: 'Flags-3', imagepath: 'images/flags/se.svg' },
-  { correct_option: 'Suiza', topic: 'Flags-3', imagepath: 'images/flags/ch.svg' },
+  #{ correct_option: 'Andorra', topic: 'Flags-3', imagepath: 'images/flags/ad.svg' },
+  #{ correct_option: 'Australia', topic: 'Flags-3', imagepath: 'images/flags/au.svg' },
+  #{ correct_option: 'Bulgaria', topic: 'Flags-3', imagepath: 'images/flags/bg.svg' },
+  #{ correct_option: 'Egipto', topic: 'Flags-3', imagepath: 'images/flags/eg.svg' },
+  #{ correct_option: 'Estonia', topic: 'Flags-3', imagepath: 'images/flags/ee.svg' },
+  #{ correct_option: 'Dinamarca', topic: 'Flags-3', imagepath: 'images/flags/dk.svg' },
+  #{ correct_option: 'Georgia', topic: 'Flags-3', imagepath: 'images/flags/ge.svg' },
+  #{ correct_option: 'Haití', topic: 'Flags-3', imagepath: 'images/flags/ht.svg' },
+  #{ correct_option: 'Hungría', topic: 'Flags-3', imagepath: 'images/flags/hu.svg' },
+  #{ correct_option: 'Islandia', topic: 'Flags-3', imagepath: 'images/flags/is.svg' },
+  #{ correct_option: 'Indonesia', topic: 'Flags-3', imagepath: 'images/flags/id.svg' },
+  #{ correct_option: 'Irak', topic: 'Flags-3', imagepath: 'images/flags/iq.svg' },
+  #{ correct_option: 'Irlanda', topic: 'Flags-3', imagepath: 'images/flags/ie.svg' },
+  #{ correct_option: 'Kenia', topic: 'Flags-3', imagepath: 'images/flags/ke.svg' },
+  #{ correct_option: 'Luxemburgo', topic: 'Flags-3', imagepath: 'images/flags/lu.svg' },
+  #{ correct_option: 'Madagascar', topic: 'Flags-3', imagepath: 'images/flags/mg.svg' },
+  #{ correct_option: 'Mónaco', topic: 'Flags-3', imagepath: 'images/flags/mc.svg' },
+  #{ correct_option: 'Ucrania', topic: 'Flags-3', imagepath: 'images/flags/ua.svg' },
+  #{ correct_option: 'Corea del Norte', topic: 'Flags-3', imagepath: 'images/flags/kp.svg' },
+  #{ correct_option: 'Pakistán', topic: 'Flags-3', imagepath: 'images/flags/pk.svg' },
+  #{ correct_option: 'Hong Kong', topic: 'Flags-3', imagepath: 'images/flags/hk.svg' },
+  #{ correct_option: 'Filipinas', topic: 'Flags-3', imagepath: 'images/flags/ph.svg' },
+  #{ correct_option: 'Catar', topic: 'Flags-3', imagepath: 'images/flags/qa.svg' },
+  #{ correct_option: 'Sudáfrica', topic: 'Flags-3', imagepath: 'images/flags/za.svg' },
+  #{ correct_option: 'Suecia', topic: 'Flags-3', imagepath: 'images/flags/se.svg' },
+  #{ correct_option: 'Suiza', topic: 'Flags-3', imagepath: 'images/flags/ch.svg' },
 
-  #Semi-hard mode
+  ##Semi-hard mode
 
-  { correct_option: 'San Marino', topic: 'Flags-4', imagepath: 'images/flags/sm.svg' },
-  { correct_option: 'Montenegro', topic: 'Flags-4', imagepath: 'images/flags/me.svg' },
-  { correct_option: 'Nepal', topic: 'Flags-4', imagepath: 'images/flags/np.svg' },
-  { correct_option: 'Zambia', topic: 'Flags-4', imagepath: 'images/flags/zm.svg' },
-  { correct_option: 'Turquía', topic: 'Flags-4', imagepath: 'images/flags/tr.svg' },
-  { correct_option: 'Yemen', topic: 'Flags-4', imagepath: 'images/flags/ye.svg' },
-  { correct_option: 'Afganistán', topic: 'Flags-4', imagepath: 'images/flags/af.svg' },
-  { correct_option: 'Albania', topic: 'Flags-4', imagepath: 'images/flags/al.svg' },
-  { correct_option: 'Angola', topic: 'Flags-4', imagepath: 'images/flags/ao.svg' },
-  { correct_option: 'República Checa', topic: 'Flags-4', imagepath: 'images/flags/cz.svg' },
-  { correct_option: 'Guinea', topic: 'Flags-4', imagepath: 'images/flags/gn.svg' },
-  { correct_option: 'Malí', topic: 'Flags-4', imagepath: 'images/flags/ml.svg' },
-  { correct_option: 'Moldavia', topic: 'Flags-4', imagepath: 'images/flags/md.svg' },
-  { correct_option: 'Mongolia', topic: 'Flags-4', imagepath: 'images/flags/mn.svg' },
-  { correct_option: 'Marruecos', topic: 'Flags-4', imagepath: 'images/flags/ma.svg' },
-  { correct_option: 'Namibia', topic: 'Flags-4', imagepath: 'images/flags/na.svg' },
-  { correct_option: 'Níger', topic: 'Flags-4', imagepath: 'images/flags/ne.svg' },
-  { correct_option: 'República del Congo', topic: 'Flags-4', imagepath: 'images/flags/cg.svg' },
-  { correct_option: 'Rumania', topic: 'Flags-4', imagepath: 'images/flags/ro.svg' },
-  { correct_option: 'Eslovaquia', topic: 'Flags-4', imagepath: 'images/flags/sk.svg' },
-  { correct_option: 'Eslovenia', topic: 'Flags-4', imagepath: 'images/flags/si.svg' },
-  { correct_option: 'Taiwán', topic: 'Flags-4', imagepath: 'images/flags/tw.svg' },
-  { correct_option: 'Tailandia', topic: 'Flags-4', imagepath: 'images/flags/th.svg' },
-  { correct_option: 'Vietnam', topic: 'Flags-4', imagepath: 'images/flags/vn.svg' },
-  { correct_option: 'Omán', topic: 'Flags-4', imagepath: 'images/flags/om.svg' },
-  { correct_option: 'Emiratos Árabes Unidos', topic: 'Flags-4', imagepath: 'images/flags/ae.svg' },
+  #{ correct_option: 'San Marino', topic: 'Flags-4', imagepath: 'images/flags/sm.svg' },
+  #{ correct_option: 'Montenegro', topic: 'Flags-4', imagepath: 'images/flags/me.svg' },
+  #{ correct_option: 'Nepal', topic: 'Flags-4', imagepath: 'images/flags/np.svg' },
+  #{ correct_option: 'Zambia', topic: 'Flags-4', imagepath: 'images/flags/zm.svg' },
+  #{ correct_option: 'Turquía', topic: 'Flags-4', imagepath: 'images/flags/tr.svg' },
+  #{ correct_option: 'Yemen', topic: 'Flags-4', imagepath: 'images/flags/ye.svg' },
+  #{ correct_option: 'Afganistán', topic: 'Flags-4', imagepath: 'images/flags/af.svg' },
+  #{ correct_option: 'Albania', topic: 'Flags-4', imagepath: 'images/flags/al.svg' },
+  #{ correct_option: 'Angola', topic: 'Flags-4', imagepath: 'images/flags/ao.svg' },
+  #{ correct_option: 'República Checa', topic: 'Flags-4', imagepath: 'images/flags/cz.svg' },
+  #{ correct_option: 'Guinea', topic: 'Flags-4', imagepath: 'images/flags/gn.svg' },
+  #{ correct_option: 'Malí', topic: 'Flags-4', imagepath: 'images/flags/ml.svg' },
+  #{ correct_option: 'Moldavia', topic: 'Flags-4', imagepath: 'images/flags/md.svg' },
+  #{ correct_option: 'Mongolia', topic: 'Flags-4', imagepath: 'images/flags/mn.svg' },
+  #{ correct_option: 'Marruecos', topic: 'Flags-4', imagepath: 'images/flags/ma.svg' },
+  #{ correct_option: 'Namibia', topic: 'Flags-4', imagepath: 'images/flags/na.svg' },
+  #{ correct_option: 'Níger', topic: 'Flags-4', imagepath: 'images/flags/ne.svg' },
+  #{ correct_option: 'República del Congo', topic: 'Flags-4', imagepath: 'images/flags/cg.svg' },
+  #{ correct_option: 'Rumania', topic: 'Flags-4', imagepath: 'images/flags/ro.svg' },
+  #{ correct_option: 'Eslovaquia', topic: 'Flags-4', imagepath: 'images/flags/sk.svg' },
+  #{ correct_option: 'Eslovenia', topic: 'Flags-4', imagepath: 'images/flags/si.svg' },
+  #{ correct_option: 'Taiwán', topic: 'Flags-4', imagepath: 'images/flags/tw.svg' },
+  #{ correct_option: 'Tailandia', topic: 'Flags-4', imagepath: 'images/flags/th.svg' },
+  #{ correct_option: 'Vietnam', topic: 'Flags-4', imagepath: 'images/flags/vn.svg' },
+  #{ correct_option: 'Omán', topic: 'Flags-4', imagepath: 'images/flags/om.svg' },
+  #{ correct_option: 'Emiratos Árabes Unidos', topic: 'Flags-4', imagepath: 'images/flags/ae.svg' },
 
-  #Hard mode
+  ##Hard mode
 
-  { correct_option: 'Belice', topic: 'Flags-5', imagepath: 'images/flags/bz.svg' },
-  { correct_option: 'Cabo Verde', topic: 'Flags-5', imagepath: 'images/flags/cv.svg' },
-  { correct_option: 'Etiopía', topic: 'Flags-5', imagepath: 'images/flags/et.svg' },
-  { correct_option: 'Fiyi', topic: 'Flags-5', imagepath: 'images/flags/fj.svg' },
-  { correct_option: 'Gibraltar', topic: 'Flags-5', imagepath: 'images/flags/gi.svg' },
-  { correct_option: 'Groenlandia', topic: 'Flags-5', imagepath: 'images/flags/gl.svg' },
-  { correct_option: 'Kazajistán', topic: 'Flags-5', imagepath: 'images/flags/kz.svg' },
-  { correct_option: 'Kuwait', topic: 'Flags-5', imagepath: 'images/flags/kw.svg' },
-  { correct_option: 'Liberia', topic: 'Flags-5', imagepath: 'images/flags/lr.svg' },
-  { correct_option: 'Libia', topic: 'Flags-5', imagepath: 'images/flags/ly.svg' },
-  { correct_option: 'Macedonia del Norte', topic: 'Flags-5', imagepath: 'images/flags/mk.svg' },
-  { correct_option: 'Singapur', topic: 'Flags-5', imagepath: 'images/flags/sg.svg' },
-  { correct_option: 'Somalia', topic: 'Flags-5', imagepath: 'images/flags/so.svg' },
-  { correct_option: 'Sudán del Sur', topic: 'Flags-5', imagepath: 'images/flags/ss.svg' },
-  { correct_option: 'Sudán', topic: 'Flags-5', imagepath: 'images/flags/sd.svg' },
-  { correct_option: 'Siria', topic: 'Flags-5', imagepath: 'images/flags/sy.svg' },
-  { correct_option: 'Uganda', topic: 'Flags-5', imagepath: 'images/flags/ug.svg' },
-  { correct_option: 'Bangladesh', topic: 'Flags-5', imagepath: 'images/flags/bd.svg' },
-  { correct_option: 'Trinidad y Tobago', topic: 'Flags-5', imagepath: 'images/flags/tt.svg' },
-  { correct_option: 'Túnez', topic: 'Flags-5', imagepath: 'images/flags/tn.svg' },
-  { correct_option: 'Estado de Palestina', topic: 'Flags-5', imagepath: 'images/flags/ps.svg' },
-  { correct_option: 'Armenia', topic: 'Flags-5', imagepath: 'images/flags/am.svg' },
-  { correct_option: 'Austria', topic: 'Flags-5', imagepath: 'images/flags/at.svg' },
+  #{ correct_option: 'Belice', topic: 'Flags-5', imagepath: 'images/flags/bz.svg' },
+  #{ correct_option: 'Cabo Verde', topic: 'Flags-5', imagepath: 'images/flags/cv.svg' },
+  #{ correct_option: 'Etiopía', topic: 'Flags-5', imagepath: 'images/flags/et.svg' },
+  #{ correct_option: 'Fiyi', topic: 'Flags-5', imagepath: 'images/flags/fj.svg' },
+  #{ correct_option: 'Gibraltar', topic: 'Flags-5', imagepath: 'images/flags/gi.svg' },
+  #{ correct_option: 'Groenlandia', topic: 'Flags-5', imagepath: 'images/flags/gl.svg' },
+  #{ correct_option: 'Kazajistán', topic: 'Flags-5', imagepath: 'images/flags/kz.svg' },
+  #{ correct_option: 'Kuwait', topic: 'Flags-5', imagepath: 'images/flags/kw.svg' },
+  #{ correct_option: 'Liberia', topic: 'Flags-5', imagepath: 'images/flags/lr.svg' },
+  #{ correct_option: 'Libia', topic: 'Flags-5', imagepath: 'images/flags/ly.svg' },
+  #{ correct_option: 'Macedonia del Norte', topic: 'Flags-5', imagepath: 'images/flags/mk.svg' },
+  #{ correct_option: 'Singapur', topic: 'Flags-5', imagepath: 'images/flags/sg.svg' },
+  #{ correct_option: 'Somalia', topic: 'Flags-5', imagepath: 'images/flags/so.svg' },
+  #{ correct_option: 'Sudán del Sur', topic: 'Flags-5', imagepath: 'images/flags/ss.svg' },
+  #{ correct_option: 'Sudán', topic: 'Flags-5', imagepath: 'images/flags/sd.svg' },
+  #{ correct_option: 'Siria', topic: 'Flags-5', imagepath: 'images/flags/sy.svg' },
+  #{ correct_option: 'Uganda', topic: 'Flags-5', imagepath: 'images/flags/ug.svg' },
+  #{ correct_option: 'Bangladesh', topic: 'Flags-5', imagepath: 'images/flags/bd.svg' },
+  #{ correct_option: 'Trinidad y Tobago', topic: 'Flags-5', imagepath: 'images/flags/tt.svg' },
+  #{ correct_option: 'Túnez', topic: 'Flags-5', imagepath: 'images/flags/tn.svg' },
+  #{ correct_option: 'Estado de Palestina', topic: 'Flags-5', imagepath: 'images/flags/ps.svg' },
+  #{ correct_option: 'Armenia', topic: 'Flags-5', imagepath: 'images/flags/am.svg' },
+  #{ correct_option: 'Austria', topic: 'Flags-5', imagepath: 'images/flags/at.svg' },
 
-  #Demential 1
+  ##Demential 1
 
-  { correct_option: 'Islas Malvinas', topic: 'Flags-6', imagepath: 'images/flags/fk.svg' },
-  { correct_option: 'Kirguistán', topic: 'Flags-6', imagepath: 'images/flags/kg.svg' },
-  { correct_option: 'Burkina Faso', topic: 'Flags-6', imagepath: 'images/flags/bf.svg' },
-  { correct_option: 'República Democrática del Congo', topic: 'Flags-6', imagepath: 'images/flags/cd.svg' },
-  { correct_option: 'Anguila', topic: 'Flags-6', imagepath: 'images/flags/ai.svg' },
-  { correct_option: 'Polinesia Francesa', topic: 'Flags-6', imagepath: 'images/flags/pf.svg' },
-  { correct_option: 'Jordania', topic: 'Flags-6', imagepath: 'images/flags/jo.svg' },
-  { correct_option: 'Territorios Franceses del Sur', topic: 'Flags-6', imagepath: 'images/flags/tf.svg' },
-  { correct_option: 'San Vicente y las Granadinas', topic: 'Flags-6', imagepath: 'images/flags/vc.svg' },
-  { correct_option: 'Aruba', topic: 'Flags-6', imagepath: 'images/flags/aw.svg' },
-  { correct_option: 'Eritrea', topic: 'Flags-6', imagepath: 'images/flags/er.svg' },
-  { correct_option: 'Turkmenistán', topic: 'Flags-6', imagepath: 'images/flags/tm.svg' },
-  { correct_option: 'Nauru', topic: 'Flags-6', imagepath: 'images/flags/nr.svg' },
-  { correct_option: 'Isla Bouvet', topic: 'Flags-6', imagepath: 'images/flags/bv.svg' },
-  { correct_option: 'Letonia', topic: 'Flags-6', imagepath: 'images/flags/lv.svg' },
-  { correct_option: 'Baréin', topic: 'Flags-6', imagepath: 'images/flags/bh.svg' },
-  { correct_option: 'Svalbard y Jan Mayen', topic: 'Flags-6', imagepath: 'images/flags/sj.svg' },
-  { correct_option: 'Chad', topic: 'Flags-6', imagepath: 'images/flags/td.svg' },
-  { correct_option: 'Antártida', topic: 'Flags-6', imagepath: 'images/flags/aq.svg' },
-  { correct_option: 'Islas Vírgenes de los Estados Unidos', topic: 'Flags-6', imagepath: 'images/flags/vi.svg' },
-  { correct_option: 'Guinea-Bisáu', topic: 'Flags-6', imagepath: 'images/flags/gw.svg' },
-  { correct_option: 'Pitcairn', topic: 'Flags-6', imagepath: 'images/flags/pn.svg' },
-  { correct_option: 'Benín', topic: 'Flags-6', imagepath: 'images/flags/bj.svg' },
-  { correct_option: 'Santa Sede', topic: 'Flags-6', imagepath: 'images/flags/va.svg' },
-  { correct_option: 'Guam', topic: 'Flags-6', imagepath: 'images/flags/gu.svg' },
+  #{ correct_option: 'Islas Malvinas', topic: 'Flags-6', imagepath: 'images/flags/fk.svg' },
+  #{ correct_option: 'Kirguistán', topic: 'Flags-6', imagepath: 'images/flags/kg.svg' },
+  #{ correct_option: 'Burkina Faso', topic: 'Flags-6', imagepath: 'images/flags/bf.svg' },
+  #{ correct_option: 'República Democrática del Congo', topic: 'Flags-6', imagepath: 'images/flags/cd.svg' },
+  #{ correct_option: 'Anguila', topic: 'Flags-6', imagepath: 'images/flags/ai.svg' },
+  #{ correct_option: 'Polinesia Francesa', topic: 'Flags-6', imagepath: 'images/flags/pf.svg' },
+  #{ correct_option: 'Jordania', topic: 'Flags-6', imagepath: 'images/flags/jo.svg' },
+  #{ correct_option: 'Territorios Franceses del Sur', topic: 'Flags-6', imagepath: 'images/flags/tf.svg' },
+  #{ correct_option: 'San Vicente y las Granadinas', topic: 'Flags-6', imagepath: 'images/flags/vc.svg' },
+  #{ correct_option: 'Aruba', topic: 'Flags-6', imagepath: 'images/flags/aw.svg' },
+  #{ correct_option: 'Eritrea', topic: 'Flags-6', imagepath: 'images/flags/er.svg' },
+  #{ correct_option: 'Turkmenistán', topic: 'Flags-6', imagepath: 'images/flags/tm.svg' },
+  #{ correct_option: 'Nauru', topic: 'Flags-6', imagepath: 'images/flags/nr.svg' },
+  #{ correct_option: 'Isla Bouvet', topic: 'Flags-6', imagepath: 'images/flags/bv.svg' },
+  #{ correct_option: 'Letonia', topic: 'Flags-6', imagepath: 'images/flags/lv.svg' },
+  #{ correct_option: 'Baréin', topic: 'Flags-6', imagepath: 'images/flags/bh.svg' },
+  #{ correct_option: 'Svalbard y Jan Mayen', topic: 'Flags-6', imagepath: 'images/flags/sj.svg' },
+  #{ correct_option: 'Chad', topic: 'Flags-6', imagepath: 'images/flags/td.svg' },
+  #{ correct_option: 'Antártida', topic: 'Flags-6', imagepath: 'images/flags/aq.svg' },
+  #{ correct_option: 'Islas Vírgenes de los Estados Unidos', topic: 'Flags-6', imagepath: 'images/flags/vi.svg' },
+  #{ correct_option: 'Guinea-Bisáu', topic: 'Flags-6', imagepath: 'images/flags/gw.svg' },
+  #{ correct_option: 'Pitcairn', topic: 'Flags-6', imagepath: 'images/flags/pn.svg' },
+  #{ correct_option: 'Benín', topic: 'Flags-6', imagepath: 'images/flags/bj.svg' },
+  #{ correct_option: 'Santa Sede', topic: 'Flags-6', imagepath: 'images/flags/va.svg' },
+  #{ correct_option: 'Guam', topic: 'Flags-6', imagepath: 'images/flags/gu.svg' },
 
-  #Demential 2
+  ##Demential 2
 
-  { correct_option: 'Mauritania', topic: 'Flags-7', imagepath: 'images/flags/mr.svg' },
-  { correct_option: 'Territorio Británico del Océano Índico', topic: 'Flags-7', imagepath: 'images/flags/io.svg' },
-  { correct_option: 'Liechtenstein', topic: 'Flags-7', imagepath: 'images/flags/li.svg' },
-  { correct_option: 'Bermudas', topic: 'Flags-7', imagepath: 'images/flags/bm.svg' },
-  { correct_option: 'Estados Federados de Micronesia', topic: 'Flags-7', imagepath: 'images/flags/fm.svg' },
-  { correct_option: 'Surinam', topic: 'Flags-7', imagepath: 'images/flags/sr.svg' },
-  { correct_option: 'Brunéi', topic: 'Flags-7', imagepath: 'images/flags/bn.svg' },
-  { correct_option: 'Reunión', topic: 'Flags-7', imagepath: 'images/flags/re.svg' },
-  { correct_option: 'Samoa', topic: 'Flags-7', imagepath: 'images/flags/ws.svg' },
-  { correct_option: 'Islas Heard y McDonald', topic: 'Flags-7', imagepath: 'images/flags/hm.svg' },
-  { correct_option: 'Camboya', topic: 'Flags-7', imagepath: 'images/flags/kh.svg' },
-  { correct_option: 'Isla Norfolk', topic: 'Flags-7', imagepath: 'images/flags/nf.svg' },
-  { correct_option: 'San Cristóbal y Nieves', topic: 'Flags-7', imagepath: 'images/flags/kn.svg' },
-  { correct_option: 'Montserrat', topic: 'Flags-7', imagepath: 'images/flags/ms.svg' },
-  { correct_option: 'Malasia', topic: 'Flags-7', imagepath: 'images/flags/my.svg' },
-  { correct_option: 'Malta', topic: 'Flags-7', imagepath: 'images/flags/mt.svg' },
-  { correct_option: 'San Pedro y Miquelón', topic: 'Flags-7', imagepath: 'images/flags/pm.svg' },
-  { correct_option: 'Niue', topic: 'Flags-7', imagepath: 'images/flags/nu.svg' },
-  { correct_option: 'Isla de Man', topic: 'Flags-7', imagepath: 'images/flags/im.svg' },
-  { correct_option: 'eSwatini', topic: 'Flags-7', imagepath: 'images/flags/sz.svg' },
-  { correct_option: 'Suecia', topic: 'Flags-7', imagepath: 'images/flags/se.svg' },
-  { correct_option: 'Maldivas', topic: 'Flags-7', imagepath: 'images/flags/mv.svg' },
-  { correct_option: 'Tayikistán', topic: 'Flags-7', imagepath: 'images/flags/tj.svg' },
-  { correct_option: 'Guernsey', topic: 'Flags-7', imagepath: 'images/flags/gg.svg' },
+  #{ correct_option: 'Mauritania', topic: 'Flags-7', imagepath: 'images/flags/mr.svg' },
+  #{ correct_option: 'Territorio Británico del Océano Índico', topic: 'Flags-7', imagepath: 'images/flags/io.svg' },
+  #{ correct_option: 'Liechtenstein', topic: 'Flags-7', imagepath: 'images/flags/li.svg' },
+  #{ correct_option: 'Bermudas', topic: 'Flags-7', imagepath: 'images/flags/bm.svg' },
+  #{ correct_option: 'Estados Federados de Micronesia', topic: 'Flags-7', imagepath: 'images/flags/fm.svg' },
+  #{ correct_option: 'Surinam', topic: 'Flags-7', imagepath: 'images/flags/sr.svg' },
+  #{ correct_option: 'Brunéi', topic: 'Flags-7', imagepath: 'images/flags/bn.svg' },
+  #{ correct_option: 'Reunión', topic: 'Flags-7', imagepath: 'images/flags/re.svg' },
+  #{ correct_option: 'Samoa', topic: 'Flags-7', imagepath: 'images/flags/ws.svg' },
+  #{ correct_option: 'Islas Heard y McDonald', topic: 'Flags-7', imagepath: 'images/flags/hm.svg' },
+  #{ correct_option: 'Camboya', topic: 'Flags-7', imagepath: 'images/flags/kh.svg' },
+  #{ correct_option: 'Isla Norfolk', topic: 'Flags-7', imagepath: 'images/flags/nf.svg' },
+  #{ correct_option: 'San Cristóbal y Nieves', topic: 'Flags-7', imagepath: 'images/flags/kn.svg' },
+  #{ correct_option: 'Montserrat', topic: 'Flags-7', imagepath: 'images/flags/ms.svg' },
+  #{ correct_option: 'Malasia', topic: 'Flags-7', imagepath: 'images/flags/my.svg' },
+  #{ correct_option: 'Malta', topic: 'Flags-7', imagepath: 'images/flags/mt.svg' },
+  #{ correct_option: 'San Pedro y Miquelón', topic: 'Flags-7', imagepath: 'images/flags/pm.svg' },
+  #{ correct_option: 'Niue', topic: 'Flags-7', imagepath: 'images/flags/nu.svg' },
+  #{ correct_option: 'Isla de Man', topic: 'Flags-7', imagepath: 'images/flags/im.svg' },
+  #{ correct_option: 'eSwatini', topic: 'Flags-7', imagepath: 'images/flags/sz.svg' },
+  #{ correct_option: 'Suecia', topic: 'Flags-7', imagepath: 'images/flags/se.svg' },
+  #{ correct_option: 'Maldivas', topic: 'Flags-7', imagepath: 'images/flags/mv.svg' },
+  #{ correct_option: 'Tayikistán', topic: 'Flags-7', imagepath: 'images/flags/tj.svg' },
+  #{ correct_option: 'Guernsey', topic: 'Flags-7', imagepath: 'images/flags/gg.svg' },
 
-  #Demential 3
+  ##Demential 3
 
-  { correct_option: 'Islas Turcas y Caicos', topic: 'Flags-8', imagepath: 'images/flags/tc.svg' },
-  { correct_option: 'Islas Menores Alejadas de los Estados Unidos', topic: 'Flags-8', imagepath: 'images/flags/um.svg' },
-  { correct_option: 'Yibuti', topic: 'Flags-8', imagepath: 'images/flags/dj.svg' },
-  { correct_option: 'San Bartolomé', topic: 'Flags-8', imagepath: 'images/flags/bl.svg' },
-  { correct_option: 'Martinica', topic: 'Flags-8', imagepath: 'images/flags/mq.svg' },
-  { correct_option: 'Islas Vírgenes Británicas', topic: 'Flags-8', imagepath: 'images/flags/vg.svg' },
-  { correct_option: 'Mozambique', topic: 'Flags-8', imagepath: 'images/flags/mz.svg' },
-  { correct_option: 'Sahara Occidental', topic: 'Flags-8', imagepath: 'images/flags/eh.svg' },
-  { correct_option: 'Antigua y Barbuda', topic: 'Flags-8', imagepath: 'images/flags/ag.svg' },
-  { correct_option: 'Sri Lanka', topic: 'Flags-8', imagepath: 'images/flags/lk.svg' },
-  { correct_option: 'Botsuana', topic: 'Flags-8', imagepath: 'images/flags/bw.svg' },
-  { correct_option: 'Tonga', topic: 'Flags-8', imagepath: 'images/flags/to.svg' },
-  { correct_option: 'Uzbekistán', topic: 'Flags-8', imagepath: 'images/flags/uz.svg' },
-  { correct_option: 'Granada', topic: 'Flags-8', imagepath: 'images/flags/gd.svg' },
-  { correct_option: 'República Árabe Siria', topic: 'Flags-8', imagepath: 'images/flags/sy.svg' },
-  { correct_option: 'Curazao', topic: 'Flags-8', imagepath: 'images/flags/cw.svg' },
-  { correct_option: 'Mauricio', topic: 'Flags-8', imagepath: 'images/flags/mu.svg' },
-  { correct_option: 'Tanzania', topic: 'Flags-8', imagepath: 'images/flags/tz.svg' },
-  { correct_option: 'Jersey', topic: 'Flags-8', imagepath: 'images/flags/je.svg' },
-  { correct_option: 'Gambia', topic: 'Flags-8', imagepath: 'images/flags/gm.svg' },
-  { correct_option: 'Islas Feroe', topic: 'Flags-8', imagepath: 'images/flags/fo.svg' },
-  { correct_option: 'Nueva Caledonia', topic: 'Flags-8', imagepath: 'images/flags/nc.svg' },
-  { correct_option: 'Myanmar', topic: 'Flags-8', imagepath: 'images/flags/mm.svg' },
-  { correct_option: 'Islas Salomón', topic: 'Flags-8', imagepath: 'images/flags/sb.svg' },
-  { correct_option: 'Laos', topic: 'Flags-8', imagepath: 'images/flags/la.svg' },
+  #{ correct_option: 'Islas Turcas y Caicos', topic: 'Flags-8', imagepath: 'images/flags/tc.svg' },
+  #{ correct_option: 'Islas Menores Alejadas de los Estados Unidos', topic: 'Flags-8', imagepath: 'images/flags/um.svg' },
+  #{ correct_option: 'Yibuti', topic: 'Flags-8', imagepath: 'images/flags/dj.svg' },
+  #{ correct_option: 'San Bartolomé', topic: 'Flags-8', imagepath: 'images/flags/bl.svg' },
+  #{ correct_option: 'Martinica', topic: 'Flags-8', imagepath: 'images/flags/mq.svg' },
+  #{ correct_option: 'Islas Vírgenes Británicas', topic: 'Flags-8', imagepath: 'images/flags/vg.svg' },
+  #{ correct_option: 'Mozambique', topic: 'Flags-8', imagepath: 'images/flags/mz.svg' },
+  #{ correct_option: 'Sahara Occidental', topic: 'Flags-8', imagepath: 'images/flags/eh.svg' },
+  #{ correct_option: 'Antigua y Barbuda', topic: 'Flags-8', imagepath: 'images/flags/ag.svg' },
+  #{ correct_option: 'Sri Lanka', topic: 'Flags-8', imagepath: 'images/flags/lk.svg' },
+  #{ correct_option: 'Botsuana', topic: 'Flags-8', imagepath: 'images/flags/bw.svg' },
+  #{ correct_option: 'Tonga', topic: 'Flags-8', imagepath: 'images/flags/to.svg' },
+  #{ correct_option: 'Uzbekistán', topic: 'Flags-8', imagepath: 'images/flags/uz.svg' },
+  #{ correct_option: 'Granada', topic: 'Flags-8', imagepath: 'images/flags/gd.svg' },
+  #{ correct_option: 'República Árabe Siria', topic: 'Flags-8', imagepath: 'images/flags/sy.svg' },
+  #{ correct_option: 'Curazao', topic: 'Flags-8', imagepath: 'images/flags/cw.svg' },
+  #{ correct_option: 'Mauricio', topic: 'Flags-8', imagepath: 'images/flags/mu.svg' },
+  #{ correct_option: 'Tanzania', topic: 'Flags-8', imagepath: 'images/flags/tz.svg' },
+  #{ correct_option: 'Jersey', topic: 'Flags-8', imagepath: 'images/flags/je.svg' },
+  #{ correct_option: 'Gambia', topic: 'Flags-8', imagepath: 'images/flags/gm.svg' },
+  #{ correct_option: 'Islas Feroe', topic: 'Flags-8', imagepath: 'images/flags/fo.svg' },
+  #{ correct_option: 'Nueva Caledonia', topic: 'Flags-8', imagepath: 'images/flags/nc.svg' },
+  #{ correct_option: 'Myanmar', topic: 'Flags-8', imagepath: 'images/flags/mm.svg' },
+  #{ correct_option: 'Islas Salomón', topic: 'Flags-8', imagepath: 'images/flags/sb.svg' },
+  #{ correct_option: 'Laos', topic: 'Flags-8', imagepath: 'images/flags/la.svg' },
 
-  #Demential 4
+  ##Demential 4
 
-  { correct_option: 'Samoa Americana', topic: 'Flags-9', imagepath: 'images/flags/as.svg' },
-  { correct_option: 'Chipre', topic: 'Flags-9', imagepath: 'images/flags/cy.svg' },
-  { correct_option: 'Guayana Francesa', topic: 'Flags-9', imagepath: 'images/flags/gf.svg' },
-  { correct_option: 'Vanuatu', topic: 'Flags-9', imagepath: 'images/flags/vu.svg' },
-  { correct_option: 'Georgia del Sur y las Islas Sandwich del Sur', topic: 'Flags-9', imagepath: 'images/flags/gs.svg' },
-  { correct_option: 'Sierra Leona', topic: 'Flags-9', imagepath: 'images/flags/sl.svg' },
-  { correct_option: 'Líbano', topic: 'Flags-9', imagepath: 'images/flags/lb.svg' },
-  { correct_option: 'Comoras', topic: 'Flags-9', imagepath: 'images/flags/km.svg' },
-  { correct_option: 'Timor Oriental', topic: 'Flags-9', imagepath: 'images/flags/tl.svg' },
-  { correct_option: 'Mayotte', topic: 'Flags-9', imagepath: 'images/flags/yt.svg' },
-  { correct_option: 'Guadalupe', topic: 'Flags-9', imagepath: 'images/flags/gp.svg' },
-  { correct_option: 'Islas Cocos (Keeling)', topic: 'Flags-9', imagepath: 'images/flags/cc.svg' },
-  { correct_option: 'Wallis y Futuna', topic: 'Flags-9', imagepath: 'images/flags/wf.svg' },
-  { correct_option: 'Caribe Neerlandés', topic: 'Flags-9', imagepath: 'images/flags/bq.svg' },
-  { correct_option: 'Lesoto', topic: 'Flags-9', imagepath: 'images/flags/ls.svg' },
-  { correct_option: 'Palaos', topic: 'Flags-9', imagepath: 'images/flags/pw.svg' },
-  { correct_option: 'Tokelau', topic: 'Flags-9', imagepath: 'images/flags/tk.svg' },
-  { correct_option: 'Santa Elena, Ascensión y Tristán de Acuña', topic: 'Flags-9', imagepath: 'images/flags/sh.svg' },
-  { correct_option: 'Papúa Nueva Guinea', topic: 'Flags-9', imagepath: 'images/flags/pg.svg' },
-  { correct_option: 'Bielorrusia', topic: 'Flags-9', imagepath: 'images/flags/by.svg' },
-  { correct_option: 'Santa Lucía', topic: 'Flags-9', imagepath: 'images/flags/lc.svg' },
-  { correct_option: 'Islas Marshall', topic: 'Flags-9', imagepath: 'images/flags/mh.svg' },
-  { correct_option: 'Malaui', topic: 'Flags-9', imagepath: 'images/flags/mw.svg' },
-  { correct_option: 'Barbados', topic: 'Flags-9', imagepath: 'images/flags/bb.svg' },
+  #{ correct_option: 'Samoa Americana', topic: 'Flags-9', imagepath: 'images/flags/as.svg' },
+  #{ correct_option: 'Chipre', topic: 'Flags-9', imagepath: 'images/flags/cy.svg' },
+  #{ correct_option: 'Guayana Francesa', topic: 'Flags-9', imagepath: 'images/flags/gf.svg' },
+  #{ correct_option: 'Vanuatu', topic: 'Flags-9', imagepath: 'images/flags/vu.svg' },
+  #{ correct_option: 'Georgia del Sur y las Islas Sandwich del Sur', topic: 'Flags-9', imagepath: 'images/flags/gs.svg' },
+  #{ correct_option: 'Sierra Leona', topic: 'Flags-9', imagepath: 'images/flags/sl.svg' },
+  #{ correct_option: 'Líbano', topic: 'Flags-9', imagepath: 'images/flags/lb.svg' },
+  #{ correct_option: 'Comoras', topic: 'Flags-9', imagepath: 'images/flags/km.svg' },
+  #{ correct_option: 'Timor Oriental', topic: 'Flags-9', imagepath: 'images/flags/tl.svg' },
+  #{ correct_option: 'Mayotte', topic: 'Flags-9', imagepath: 'images/flags/yt.svg' },
+  #{ correct_option: 'Guadalupe', topic: 'Flags-9', imagepath: 'images/flags/gp.svg' },
+  #{ correct_option: 'Islas Cocos (Keeling)', topic: 'Flags-9', imagepath: 'images/flags/cc.svg' },
+  #{ correct_option: 'Wallis y Futuna', topic: 'Flags-9', imagepath: 'images/flags/wf.svg' },
+  #{ correct_option: 'Caribe Neerlandés', topic: 'Flags-9', imagepath: 'images/flags/bq.svg' },
+  #{ correct_option: 'Lesoto', topic: 'Flags-9', imagepath: 'images/flags/ls.svg' },
+  #{ correct_option: 'Palaos', topic: 'Flags-9', imagepath: 'images/flags/pw.svg' },
+  #{ correct_option: 'Tokelau', topic: 'Flags-9', imagepath: 'images/flags/tk.svg' },
+  #{ correct_option: 'Santa Elena, Ascensión y Tristán de Acuña', topic: 'Flags-9', imagepath: 'images/flags/sh.svg' },
+  #{ correct_option: 'Papúa Nueva Guinea', topic: 'Flags-9', imagepath: 'images/flags/pg.svg' },
+  #{ correct_option: 'Bielorrusia', topic: 'Flags-9', imagepath: 'images/flags/by.svg' },
+  #{ correct_option: 'Santa Lucía', topic: 'Flags-9', imagepath: 'images/flags/lc.svg' },
+  #{ correct_option: 'Islas Marshall', topic: 'Flags-9', imagepath: 'images/flags/mh.svg' },
+  #{ correct_option: 'Malaui', topic: 'Flags-9', imagepath: 'images/flags/mw.svg' },
+  #{ correct_option: 'Barbados', topic: 'Flags-9', imagepath: 'images/flags/bb.svg' },
 
-  #Demential 5
+  ##Demential 5
 
-  { correct_option: 'Seychelles', topic: 'Flags-10', imagepath: 'images/flags/sc.svg' },
-  { correct_option: 'Noruega', topic: 'Flags-10', imagepath: 'images/flags/no.svg' },
-  { correct_option: 'San Martín', topic: 'Flags-10', imagepath: 'images/flags/mf.svg' },
-  { correct_option: 'Sint Maarten', topic: 'Flags-10', imagepath: 'images/flags/sx.svg' },
-  { correct_option: 'Guyana', topic: 'Flags-10', imagepath: 'images/flags/gy.svg' },
-  { correct_option: 'Costa de Marfil', topic: 'Flags-10', imagepath: 'images/flags/ci.svg' },
-  { correct_option: 'Ruanda', topic: 'Flags-10', imagepath: 'images/flags/rw.svg' },
-  { correct_option: 'Kiribati', topic: 'Flags-10', imagepath: 'images/flags/ki.svg' },
-  { correct_option: 'República Centroafricana', topic: 'Flags-10', imagepath: 'images/flags/cf.svg' },
-  { correct_option: 'Burundi', topic: 'Flags-10', imagepath: 'images/flags/bi.svg' },
-  { correct_option: 'Santo Tomé y Príncipe', topic: 'Flags-10', imagepath: 'images/flags/st.svg' },
-  { correct_option: 'Gabón', topic: 'Flags-10', imagepath: 'images/flags/ga.svg' },
-  { correct_option: 'Islas Åland', topic: 'Flags-10', imagepath: 'images/flags/ax.svg' },
-  { correct_option: 'Togo', topic: 'Flags-10', imagepath: 'images/flags/tg.svg' },
-  { correct_option: 'Zimbabue', topic: 'Flags-10', imagepath: 'images/flags/zw.svg' },
-  { correct_option: 'Isla de Navidad', topic: 'Flags-10', imagepath: 'images/flags/cx.svg' },
-  { correct_option: 'Bután', topic: 'Flags-10', imagepath: 'images/flags/bt.svg' },
-  { correct_option: 'Islas Marianas del Norte', topic: 'Flags-10', imagepath: 'images/flags/mp.svg' },
-  { correct_option: 'Islas Caimán', topic: 'Flags-10', imagepath: 'images/flags/ky.svg' },
-  { correct_option: 'Guinea Ecuatorial', topic: 'Flags-10', imagepath: 'images/flags/gq.svg' },
-  { correct_option: 'Islas Cook', topic: 'Flags-10', imagepath: 'images/flags/ck.svg' },
-  { correct_option: 'Tuvalu', topic: 'Flags-10', imagepath: 'images/flags/tv.svg' },
-  { correct_option: 'Macao', topic: 'Flags-10', imagepath: 'images/flags/mo.svg' }
+  #{ correct_option: 'Seychelles', topic: 'Flags-10', imagepath: 'images/flags/sc.svg' },
+  #{ correct_option: 'Noruega', topic: 'Flags-10', imagepath: 'images/flags/no.svg' },
+  #{ correct_option: 'San Martín', topic: 'Flags-10', imagepath: 'images/flags/mf.svg' },
+  #{ correct_option: 'Sint Maarten', topic: 'Flags-10', imagepath: 'images/flags/sx.svg' },
+  #{ correct_option: 'Guyana', topic: 'Flags-10', imagepath: 'images/flags/gy.svg' },
+  #{ correct_option: 'Costa de Marfil', topic: 'Flags-10', imagepath: 'images/flags/ci.svg' },
+  #{ correct_option: 'Ruanda', topic: 'Flags-10', imagepath: 'images/flags/rw.svg' },
+  #{ correct_option: 'Kiribati', topic: 'Flags-10', imagepath: 'images/flags/ki.svg' },
+  #{ correct_option: 'República Centroafricana', topic: 'Flags-10', imagepath: 'images/flags/cf.svg' },
+  #{ correct_option: 'Burundi', topic: 'Flags-10', imagepath: 'images/flags/bi.svg' },
+  #{ correct_option: 'Santo Tomé y Príncipe', topic: 'Flags-10', imagepath: 'images/flags/st.svg' },
+  #{ correct_option: 'Gabón', topic: 'Flags-10', imagepath: 'images/flags/ga.svg' },
+  #{ correct_option: 'Islas Åland', topic: 'Flags-10', imagepath: 'images/flags/ax.svg' },
+  #{ correct_option: 'Togo', topic: 'Flags-10', imagepath: 'images/flags/tg.svg' },
+  #{ correct_option: 'Zimbabue', topic: 'Flags-10', imagepath: 'images/flags/zw.svg' },
+  #{ correct_option: 'Isla de Navidad', topic: 'Flags-10', imagepath: 'images/flags/cx.svg' },
+  #{ correct_option: 'Bután', topic: 'Flags-10', imagepath: 'images/flags/bt.svg' },
+  #{ correct_option: 'Islas Marianas del Norte', topic: 'Flags-10', imagepath: 'images/flags/mp.svg' },
+  #{ correct_option: 'Islas Caimán', topic: 'Flags-10', imagepath: 'images/flags/ky.svg' },
+  #{ correct_option: 'Guinea Ecuatorial', topic: 'Flags-10', imagepath: 'images/flags/gq.svg' },
+  #{ correct_option: 'Islas Cook', topic: 'Flags-10', imagepath: 'images/flags/ck.svg' },
+  #{ correct_option: 'Tuvalu', topic: 'Flags-10', imagepath: 'images/flags/tv.svg' },
+  #{ correct_option: 'Macao', topic: 'Flags-10', imagepath: 'images/flags/mo.svg' }
 ]
 
 options_data = [
@@ -682,6 +680,48 @@ options_data.each do |o_data|
   Option.find_or_create_by(response: o_data[:response], topics_id: topic.id)
 end
 
+niveles = ["Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Nivel 5", "Nivel 6"]
+
+niveles.each_with_index do |nivel_name, index|
+  Level.create(number: index + 1, name: nivel_name)
+end
+
+(1..6).each do |i|
+  lesson = Lesson.find_by(title: "Flags")
+  level = Level.find_by(number: i)
+  Exam.create(name: "Banderas #{i}", lesson_id: lesson.id, level: level)
+end
+
+(1..6).each do |i|
+  lesson = Lesson.find_by(title: "Physical Geography")
+  level = Level.find_by(number: i)
+  Exam.create(name: "Geografía Física #{i}", lesson_id: lesson.id, level: level)
+end
+
+(1..6).each do |i|
+  lesson = Lesson.find_by(title: "Human Geography")
+  level = Level.find_by(number: i)
+  Exam.create(name: "Geografía Humana #{i}", lesson_id: lesson.id, level: level)
+end
+
+(1..6).each do |i|
+  lesson = Lesson.find_by(title: "Continents")
+  level = Level.find_by(number: i)
+  Exam.create(name: "Continentes, Océanos y Mares #{i}", lesson_id: lesson.id, level: level)
+end
+
+(1..6).each do |i|
+  lesson = Lesson.find_by(title: "Capitals")
+  level = Level.find_by(number: i)
+  Exam.create(name: "Capitales #{i}", lesson_id: lesson.id, level: level)
+end
+
+(1..6).each do |i|
+  lesson = Lesson.find_by(title: "Political Geography")
+  level = Level.find_by(number: i)
+  Exam.create(name: "Geografía Política #{i}", lesson_id: lesson.id, level: level)
+end
+
 questions_data.each do |q_data|
   topic = Topic.find_by(topic: q_data[:topic])
   next unless topic
@@ -693,37 +733,8 @@ questions_data.each do |q_data|
     Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath])
   else
     question = Question.create!(question: q_data[:question], topics_id: topic.id)
-    Qa.create!(questions_id: question.id, options_id: correct_option.id)
+    exam = Exam.find_by(name: q_data[:exam])
+    Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath], exam_id: exam&.id)
   end
   
-end
-
-(1..6).each do |i|
-  Exam.create(name: "Banderas #{i}")
-end
-
-(1..6).each do |i|
-  Exam.create(name: "Geografía Física #{i}")
-end
-
-(1..6).each do |i|
-  Exam.create(name: "Geografía Humana #{i}")
-end
-
-(1..6).each do |i|
-  Exam.create(name: "Continentes, Océanos y Mares #{i}")
-end
-
-(1..6).each do |i|
-  Exam.create(name: "Capitales #{i}")
-end
-
-(1..6).each do |i|
-  Exam.create(name: "Geografía Política #{i}")
-end
-
-niveles = ["Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Nivel 5", "Nivel 6"]
-
-niveles.each do |nivel_name|
-  Level.create(name: nivel_name)
 end
