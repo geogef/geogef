@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, presence: true, uniqueness: true
   validates :password, presence: true
+  has_many :progress_lessons
   after_initialize :init
 
   def password
