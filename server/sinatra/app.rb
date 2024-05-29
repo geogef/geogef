@@ -124,10 +124,6 @@ get '/dashboard' do
   erb :dashboard
 end
 
-get '/geoglifos' do
-  erb :geoglifos
-end
-
 get '/lessons_details' do
   @lessons = Lesson.all
   erb :lessons_details
@@ -211,10 +207,10 @@ get '/api/qa/:qa_id' do |qa_id|
 
   question = Question.find_by(id: qa.questions_id)
   correct_option = Option.find_by(id: qa.options_id)
-  topic = question.topics_id
+  topic = question.topic_id
 
   incorrect_options = Option.where.not(id: correct_option.id).
-                     where(topics_id: topic).order('RANDOM()').limit(3)
+                     where(topic_id: topic).order('RANDOM()').limit(3)
 
   question_data = {
     question: question.question,
