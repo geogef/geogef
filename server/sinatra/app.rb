@@ -136,7 +136,7 @@ end
 
 get '/lesson_levels/:lesson_id/:level' do
   @lesson = Lesson.find(params[:lesson_id])
-  @level = Level.find_by(number: params[:level])
+  @level = Level.find_by(number: params[:level], lesson: @lesson)
   @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
 
   if !level_unlocked?(@lesson, @level.number)
