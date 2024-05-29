@@ -15,7 +15,7 @@ require './models/qa.rb'
 require './models/exam.rb'
 require './models/progresslesson'
 require './models/level'
-
+require './models/material'
 
 session_secret = ENV['SESSION_SECRET'] || 'default_secret'
 
@@ -30,10 +30,18 @@ helpers do
   end
 
   def level_unlocked?(lesson, level)
-    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
-    progress && progress.level.number >= level
+    # El primer nivel siempre está desbloqueado
+    return true if level == 1
+
+    # Verifica si el usuario ha completado el examen del nivel anterior
+    previous_level = Level.find_by(number: level - 1)
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson, level: previous_level)
+    progress && progress.passed_exam?
   end
+  
 end
+
+
 
 get '/' do
   erb :index
@@ -116,39 +124,80 @@ get '/dashboard' do
   erb :dashboard
 end
 
-get '/lessons' do
-  if session[:user_id]
-      @lessons = Lesson.all
-      level = Level.find_by(number: 1)
-      unless current_user.progress_lessons.exists?
-        Lesson.all.each do |lesson|
-          ProgressLesson.create(user: current_user, lesson: lesson, level: level)
-        end
-      end
-      erb :lessons
+get '/geoglifos' do
+  erb :geoglifos
+end
+
+get '/lessons_details' do
+  @lessons = Lesson.all
+  erb :lessons_details
+end
+
+get '/lessons_levels' do
+  @lessons = Lesson.all
+  erb :lessons_levels
+end
+
+get '/lesson_levels/:lesson_id/:level' do
+  @lesson = Lesson.find(params[:lesson_id])
+  @level = Level.find_by(number: params[:level])
+  @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
+
+  if !level_unlocked?(@lesson, @level.number)
+    redirect '/lessons_levels', error: "You have not unlocked this level yet."
   else
-    redirect '/login'
+    erb :level
   end
 end
+
+get '/lessons_levels/:lesson_id/levels/:level_id' do
+  @lesson = Lesson.find(params[:lesson_id])
+  @level = Level.find(params[:level_id])
+  erb :'level'
+end
+
+get '/lesson_level/:lesson_id/:level_id' do
+  authenticate_user
+
+  lesson_id = params[:lesson_id]
+  level_id = params[:level_id]
+
+  lesson = Lesson.find_by(id: lesson_id)
+  level = Level.find_by(id: level_id)
+
+  if lesson && level
+    erb :level, locals: { lesson: lesson, level: level }
+  else
+    redirect '/lessons_levels', error: "Lesson or level not found."
+  end
+end
+
+get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
+  @lesson = Lesson.find(lesson_id)
+  @level = Level.find(level_id)
+  @materials = Material.where(level_id: level_id)
+  erb :materials, locals: { lesson: @lesson, level: @level, materials: @materials }
+end
+
+get '/lessons/:lesson_id/levels/:level_id/quiz' do |lesson_id, level_id|
+  @lesson = Lesson.find(lesson_id)
+  @level = Level.find(level_id)
+  @exam = Exam.find_by(lesson_id: @lesson.id, level_id: @level.id)
+  erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam }
+end
+
+get '/exam' do
+  @exam_id = params[:exam_id] 
+  authenticate_user
+  erb :quiz 
+end
+
 
 get '/quiz/:exam_id' do
   @exam_id = params[:exam_id]
   authenticate_user
   erb :quiz
 end
-
-get '/lesson/:lesson_id/:level' do
-  @lesson = Lesson.find(params[:lesson_id])
-  @level = Level.find_by(number: params[:level])
-  @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
-
-  if !level_unlocked?(@lesson, @level.number)
-    redirect '/lessons', error: "You have not unlocked this level yet."
-  else
-    erb :lesson
-  end
-end
-
 
 get '/logout' do
   session.clear
@@ -232,7 +281,7 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
     lesson = exam.lesson
     progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
 
-      if progress
+    if progress
       current_level_number = progress.level.number
       next_level = Level.find_by(number: current_level_number + 1)
 
