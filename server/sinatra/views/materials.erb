@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/output.css" rel="stylesheet">
+    <title>Materials</title>
+    <style>
+        .bg-image {
+            background-image: url('/images/fondo3.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            margin-top: 0;
+            color: #081a51;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-button#view-materials {
+            background-color: #00bcd4;
+            color: #fff;
+        }
+
+        .modal-button#view-materials:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-button#go-to-exam {
+            background-color: #2196f3;
+            color: #fff;
+        }
+
+        .modal-button#go-to-exam:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-button#go-to-level {
+            background-color: #64b5f6;
+            color: #fff;
+        }
+
+        .modal-button#go-to-level:hover {
+            transform: scale(1.1);
+        }
+
+        .material-card {
+            width: 600px;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s, width 0.5s, height 0.5s;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: auto;
+            margin-top: 10vh;
+        }
+
+        .material-content {
+            padding: 20px;
+            font-size: 28px;
+            transition: font-size 0.5s;
+            color: #081a51;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .next-button,
+        .prev-button,
+        .finish-button {
+            font-size: 20px;
+            padding: 10px 20px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-right: 10px;
+            display: none;
+        }
+
+        .next-button {
+            background-color: #00bcd4;
+        }
+
+        .next-button:hover {
+            background-color: #018ba2;
+            transform: scale(1.1);
+        }
+
+        .prev-button {
+            background-color: #2196f3;
+        }
+
+        .prev-button:hover {
+            background-color: #1c87e0;
+            transform: scale(1.1);
+        }
+
+        .finish-button {
+            background-color: #64b5f6;
+        }
+
+        .finish-button:hover {
+            background-color: #4fa9e8;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-image">
+    <div class="container">
+        <h1>Materiales de <%= @lesson.title %></h1>
+
+        <div class="card-container">
+            <div id="current-material" class="material-card">
+                <div class="material-content">
+                    <%= @materials[0].content %>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button id="prev-button" class="prev-button">Material Anterior</button>
+
+                <button id="next-button" class="next-button">Siguiente Material</button>
+
+                <button id="finish-button" class="finish-button">Fin</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const materialCard = document.getElementById('current-material');
+        const nextButton = document.getElementById('next-button');
+        const prevButton = document.getElementById('prev-button');
+        const finishButton = document.getElementById('finish-button');
+        const materials = [
+            <% @materials.each do |material| %>
+            '<%= material.content %>',
+            <% end %>
+        ];
+        let currentIndex = 0;
+        const maxIndex = materials.length - 1;
+
+        // Función para mostrar el material actual
+        function showCurrentMaterial() {
+            materialCard.innerHTML = `
+      <div class="material-content">${materials[currentIndex]}</div>
+    `;
+            // Ocultar o mostrar los botones de acuerdo con la posición actual
+            if (currentIndex === 0) {
+                prevButton.style.display = 'none';
+            } else {
+                prevButton.style.display = 'inline-block';
+            }
+            if (currentIndex === maxIndex) {
+                nextButton.style.display = 'none';
+                finishButton.style.display = 'inline-block';
+            } else {
+                nextButton.style.display = 'inline-block';
+                finishButton.style.display = 'none';
+            }
+        }
+
+        // Función para mostrar el siguiente material
+        function showNextMaterial() {
+            currentIndex++;
+            showCurrentMaterial();
+        }
+
+        // Función para mostrar el material anterior
+        function showPrevMaterial() {
+            currentIndex--;
+            showCurrentMaterial();
+        }
+
+        // Función para finalizar y mostrar las opciones en una ventana emergente
+        function finishLesson() {
+            const decisionContainer = document.createElement('div');
+            decisionContainer.classList.add('modal-container');
+
+            decisionContainer.innerHTML = `
+    <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
+      <p style="font-size: 24px; color: #081a51;">Elija una opción:</p>
+      <button id="view-materials" class="modal-button">Volver a ver los materiales</button>
+      <button id="go-to-exam" class="modal-button">Ir al examen</button>
+      <button id="go-to-level" class="modal-button">Volver a la vista del nivel</button>
+    </div>
+  `;
+
+            const viewMaterialsButton = decisionContainer.querySelector('#view-materials');
+            const goToExamButton = decisionContainer.querySelector('#go-to-exam');
+            const goToLevelButton = decisionContainer.querySelector('#go-to-level');
+
+            viewMaterialsButton.addEventListener('click', function () {
+                currentIndex = 0;
+                showCurrentMaterial();
+                modal.remove();
+            });
+
+            goToExamButton.addEventListener('click', function () {
+                window.location.href = '/exam';
+            });
+
+            goToLevelButton.addEventListener('click', function () {
+                window.location.href = '/level'; // Cambia '/levels' por la ruta correcta a la página de todos los niveles
+            });
+
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+
+            modal.appendChild(decisionContainer);
+            document.body.appendChild(modal);
+        }
+
+
+        nextButton.addEventListener('click', showNextMaterial);
+
+        prevButton.addEventListener('click', showPrevMaterial);
+
+        finishButton.addEventListener('click', finishLesson);
+
+        showCurrentMaterial();
+    </script>
+
+</body>
+
+</html>
+

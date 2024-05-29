@@ -1,0 +1,87 @@
+/* styles.css */
+
+body {
+    background-image: url('/images/bg2.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .lesson-header {
+    background-color: #ffffff; /* Fondo blanco */
+    color: #000000; /* Letras negras */
+    padding: 10px; /* Ajuste de espaciado interno */
+    text-align: center; /* Centrar el texto */
+  }
+  
+  .lesson-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .lesson-content h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .lesson-content p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .lesson-button {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .lesson-button:hover {
+    background-color: #45a049;
+  }
+
+  /* lessons-style.css */
+
+/* lessons-style.css */
+
+.lesson-card {
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px; /* Reducir el padding para hacer el fondo blanco más pequeño */
+    margin-bottom: 20px;
+  }
+  
+  
+  .lesson-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333333;
+  }
+  
+  .lesson-card p {
+    font-size: 1rem;
+    color: #666666;
+  }
+  
+  .lesson-card-content {
+    padding: 10px;
+  }
+
+  /* lessons-style.css */
+
+.lesson-link {
+    text-decoration: none; /* Eliminar subrayado */
+    color: inherit; /* Heredar el color del texto del contenedor padre */
+  }
+  
+  

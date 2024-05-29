@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/output.css" rel="stylesheet">
+
+    <title>Level Details</title>
+    <style>
+        .bg-image {
+            background-image: url('/images/fondo3.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: #081a51; /* Texto en azul oscuro */
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .level-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0 10px;
+            background-color: #2196f3; /* Azul */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .level-button:hover {
+            background-color: #0c7bbf; /* Azul más oscuro al pasar el ratón */
+            transform: scale(1.1); /* Efecto de escala al pasar el ratón */
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #081a51; /* Texto en azul oscuro */
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline; /* Subrayado al pasar el ratón */
+        }
+    </style>
+</head>
+
+<body class="bg-image">
+
+    <div class="container">
+        <h1><%= @level.name %></h1>
+
+        <div class="button-container">
+            <a href="/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/materials" class="level-button">Ver Materiales</a>
+
+            <a href="/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam" class="level-button">Tomar Examen</a>
+        </div>
+
+        <a href="/lessons/<%= @lesson.id %>/levels" class="back-link">Volver a Niveles</a>
+    </div>
+
+</body>
+
+</html>

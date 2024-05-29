@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lessons</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('images/fondo3.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      background-color: rgba(99, 115, 163, 0.8); 
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .lesson-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .lesson-card {
+      width: 300px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.3s ease;
+      border: 2px solid rgba(99, 115, 163, 0.8);
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .lesson-card h2 {
+      color: #333;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .lesson-card p {
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .btn-go-to-learn {
+      display: inline-block;
+      background-color: rgba(99, 115, 163, 0.8);
+      color: #fff;
+      padding: 20px 40px;
+      border-radius: 10px; 
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      margin-top: 20px; 
+      font-weight: bold;
+      font-size: 1.2rem; 
+    }
+
+    .btn-go-to-learn:hover {
+      background-color: rgba(99, 115, 163, 1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Explora nuestras lecciones</h1>
+
+    <div class="lesson-cards">
+      <% @lessons.each do |lesson| %>
+      <div class="lesson-card">
+        <h2><%= lesson[:title] %></h2>
+        <p><%= lesson[:description] %></p>
+      </div>
+      <% end %>
+    </div>
+
+    <a href="/lessons_levels" class="btn-go-to-learn">¡Comenzar a aprender!</a>
+  </div>
+</body>
+
+</html>
