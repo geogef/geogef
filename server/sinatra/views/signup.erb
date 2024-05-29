@@ -4,9 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/output.css" rel="stylesheet">
+  <style>
+  .bg-image {
+    background-image: url('/images/fondo3.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  </style>
 </head>
 <body>
-<div class="bg-[url('/images/bg2.jpg')] bg-cover bg-center">
+<div class="bg-image">
   <div class="flex min-h-screen justify-center items-center">
     <div class="bg-fun-blue-50 py-12 w-4/5 rounded-md shadow-md lg:w-2/5">
       <% if locals[:error] %>
