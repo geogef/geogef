@@ -1302,8 +1302,8 @@ select {
   background-color: rgb(187 247 208 / var(--tw-bg-opacity));
 }
 
-.bg-\[url\(\'\/images\/bg2\.jpg\'\)\] {
-  background-image: url('/images/bg2.jpg');
+.bg-\[url\(\'\/images\/fondo3\.jpg\'\)\] {
+  background-image: url('/images/fondo3.jpg');
 }
 
 .bg-gradient-to-r {
