@@ -160,7 +160,7 @@
               <% @lessons.each do |lesson| %>
                 <div class="col-span-1 flex flex-col items-center" style="margin-bottom: 40px; margin-left: 40px; margin-right: 40px;">
                   <div class="lesson-title text-center mb-2 font-bold"><%= lesson.title %></div>
-                  <% (1..6).each do |level| %>
+                  <% (1..lesson.num_levels).each do |level| %>
                     <div class="flex flex-col items-center">
                       <% if level_unlocked?(lesson, level) %>
                         <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked">
@@ -171,7 +171,7 @@
                         <img src="images/mundorojo.png" alt="Earth Logo"> 
                       </div>
                       <% end %>
-                      <% unless level == 6 %>
+                      <% unless level == lesson.num_levels %>
                         <div class="lesson-line"></div>
                       <% end %>
                     </div>
