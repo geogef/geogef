@@ -178,7 +178,7 @@ end
 get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
-  @exam = Exam.find_by(lesson: @lesson, level: @level).id
+  @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
   erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam }
 end
 
