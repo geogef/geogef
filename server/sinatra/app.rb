@@ -175,10 +175,10 @@ get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
   erb :materials, locals: { lesson: @lesson, level: @level, materials: @materials }
 end
 
-get '/lessons/:lesson_id/levels/:level_id/quiz' do |lesson_id, level_id|
+get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
-  @exam = Exam.find_by(lesson_id: @lesson.id, level_id: @level.id)
+  @exam = Exam.find_by(lesson: @lesson, level: @level).id
   erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam }
 end
 
@@ -210,7 +210,7 @@ get '/api/qa/:qa_id' do |qa_id|
   topic = question.topic_id
 
   incorrect_options = Option.where.not(id: correct_option.id).
-                     where(topic_id: topic).order('RANDOM()').limit(3)
+                     where(topics_id: topic).order('RANDOM()').limit(3)
 
   question_data = {
     question: question.question,
