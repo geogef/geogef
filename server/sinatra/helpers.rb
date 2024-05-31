@@ -6,4 +6,14 @@ helpers do
   def authenticate_user
     redirect '/login' unless session[:user_id]
   end
+
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+
+  def level_unlocked?(lesson, level_number)
+    level = Level.find_by(number: level_number, lesson: lesson)
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+    progress && progress.level.number >= level_number
+  end
 end

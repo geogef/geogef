@@ -24,25 +24,6 @@ set :database_file, './config/database.yml'
 
 use AuthMiddleware
 
-helpers do
-  def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
-  end
-
-  def level_unlocked?(lesson, level)
-    # El primer nivel siempre está desbloqueado
-    return true if level == 1
-
-    # Verifica si el usuario ha completado el examen del nivel anterior
-    previous_level = Level.find_by(number: level - 1)
-    progress = ProgressLesson.find_by(user: current_user, lesson: lesson, level: previous_level)
-    progress && progress.passed_exam?
-  end
-  
-end
-
-
-
 get '/' do
   erb :index
 end
@@ -125,16 +106,27 @@ get '/dashboard' do
 end
 
 get '/lessons_details' do
+  authenticate_user
   @lessons = Lesson.all
   erb :lessons_details
 end
 
 get '/lessons_levels' do
-  @lessons = Lesson.all
-  erb :lessons_levels
+  authenticate_user
+    if session[:user_id]
+      @lessons = Lesson.all
+      unless current_user.progress_lessons.exists?
+        Lesson.all.each do |lesson|
+          level = Level.find_by(number: 1, lesson: lesson)
+          ProgressLesson.create(user: current_user, lesson: lesson, level: level)
+        end
+      end
+      erb :lessons_levels
+    end
 end
 
 get '/lesson_levels/:lesson_id/:level' do
+  authenticate_user
   @lesson = Lesson.find(params[:lesson_id])
   @level = Level.find_by(number: params[:level], lesson: @lesson)
   @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
@@ -147,19 +139,20 @@ get '/lesson_levels/:lesson_id/:level' do
 end
 
 get '/lessons_levels/:lesson_id/levels/:level_id' do
+  authenticate_user
   @lesson = Lesson.find(params[:lesson_id])
   @level = Level.find(params[:level_id])
   erb :'level'
 end
 
-get '/lesson_level/:lesson_id/:level_id' do
+get '/lesson_level/:lesson_id/:level_number' do
   authenticate_user
 
   lesson_id = params[:lesson_id]
-  level_id = params[:level_id]
+  level_number = params[:level_number]
 
-  lesson = Lesson.find_by(id: lesson_id)
-  level = Level.find_by(id: level_id)
+  lesson = Lesson.find(lesson_id)
+  level = Level.find_by(number: level_number, lesson: lesson)
 
   if lesson && level
     erb :level, locals: { lesson: lesson, level: level }
@@ -169,6 +162,7 @@ get '/lesson_level/:lesson_id/:level_id' do
 end
 
 get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
+  authenticate_user
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @materials = Material.where(level_id: level_id)
@@ -176,6 +170,7 @@ get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
 end
 
 get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
+  authenticate_user
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
@@ -285,7 +280,7 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
 
     if progress
       current_level_number = progress.level.number
-      next_level = Level.find_by(number: current_level_number + 1)
+      next_level = Level.find_by(number: current_level_number + 1, lesson: lesson)
 
       if next_level
         progress.update(level: next_level)
