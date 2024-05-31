@@ -126,8 +126,16 @@ get '/lessons_details' do
 end
 
 get '/lessons_levels' do
-  @lessons = Lesson.all
-  erb :lessons_levels
+    if session[:user_id]
+      @lessons = Lesson.all
+      unless current_user.progress_lessons.exists?
+        Lesson.all.each do |lesson|
+          level = Level.find_by(number: 1, lesson: lesson)
+          ProgressLesson.create(user: current_user, lesson: lesson, level: level)
+        end
+      end
+      erb :lessons_levels
+    end
 end
 
 get '/lesson_levels/:lesson_id/:level' do
@@ -148,14 +156,14 @@ get '/lessons_levels/:lesson_id/levels/:level_id' do
   erb :'level'
 end
 
-get '/lesson_level/:lesson_id/:level_id' do
+get '/lesson_level/:lesson_id/:level_number' do
   authenticate_user
 
   lesson_id = params[:lesson_id]
-  level_id = params[:level_id]
+  level_number = params[:level_number]
 
-  lesson = Lesson.find_by(id: lesson_id)
-  level = Level.find_by(id: level_id)
+  lesson = Lesson.find(lesson_id)
+  level = Level.find_by(number: level_number, lesson: lesson)
 
   if lesson && level
     erb :level, locals: { lesson: lesson, level: level }
@@ -281,7 +289,7 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
 
     if progress
       current_level_number = progress.level.number
-      next_level = Level.find_by(number: current_level_number + 1)
+      next_level = Level.find_by(number: current_level_number + 1, lesson: lesson)
 
       if next_level
         progress.update(level: next_level)
