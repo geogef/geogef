@@ -29,14 +29,10 @@ helpers do
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
-  def level_unlocked?(lesson, level)
-    # El primer nivel siempre está desbloqueado
-    return true if level == 1
-
-    # Verifica si el usuario ha completado el examen del nivel anterior
-    previous_level = Level.find_by(number: level - 1)
-    progress = ProgressLesson.find_by(user: current_user, lesson: lesson, level: previous_level)
-    progress && progress.passed_exam?
+  def level_unlocked?(lesson, level_number)
+    level = Level.find_by(number: level_number, lesson: lesson)
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+    progress && progress.level.number >= level_number
   end
   
 end
