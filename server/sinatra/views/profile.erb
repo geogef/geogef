@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('/images/fondo3.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      font-family: sans-serif;
+      margin: 0;
+      display: flex; /* Center content vertically */
+      justify-content: center; /* Center content horizontally */
+      align-items: center; /* Align content in the center of the viewport */
+    }
+
+    h1 {
+      animation: enter-title 1s ease-in-out forwards;
+    }
+
+    .user-info {
+      background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+      animation: enter-info 1s ease-in-out forwards;
+      border-radius: 1rem; /* Rounded corners */
+      padding: 2rem;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    @keyframes enter-title {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes enter-info {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold text-black">User Profile</h1>
+    <div class="user-info">
+      <p class="text-lg font-medium"><strong>Username:</strong> <%= @user.username %></p>
+      <p class="text-lg font-medium"><strong>Email:</strong> <%= @user.email %></p>
+      <p class="text-lg font-medium"><strong>App Progress:</strong> <%= @user.app_progress %></p>
+      <p class="text-lg font-medium"><strong>Highest Streak:</strong> <%= @user.highest_streak %></p>
+      <p class="text-lg font-medium"><strong>Completed Lessons:</strong> <%= @user.completed_lessons %></p>
+      <p class="text-lg font-medium"><strong>Geogems:</strong> <%= @user.geogems %></p>
+    </div>
+  </div>
+</body>
+</html>
