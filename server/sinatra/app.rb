@@ -188,6 +188,12 @@ get '/exam' do
   erb :quiz 
 end
 
+get '/profile' do
+  authenticate_user
+  @user = current_user
+  erb :profile
+end
+
 
 get '/quiz/:exam_id' do
   @exam_id = params[:exam_id]
