@@ -237,7 +237,7 @@
             });
 
             goToExamButton.addEventListener('click', function () {
-                window.location.href = '/exam';
+                window.location.href = '/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam';
             });
 
             goToLevelButton.addEventListener('click', function () {
