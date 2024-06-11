@@ -2,7 +2,11 @@ let qaIds = [];
 let currentQaIndex = 0;
 let correctAnswers = 0;
 let examId;
+let currentUser;
 
+function setCurrentUser(user) {
+    currentUser = user;
+}
 
 function fetchQuestionAndOptions(qaId) {
     var xhr = new XMLHttpRequest();
@@ -82,10 +86,19 @@ function checkAnswer(qaId, userAnswer) {
                 selectedButton.classList.remove('bg-[#e6edf8]', 'hover:bg-[#c7d9f0]');
                 if (userAnswer === correctAnswer) {
                     correctAnswers++;
+                    let currentStreak = parseInt(localStorage.getItem("highestStreak"));
+                    currentStreak++;
+                    localStorage.setItem("highestStreak", currentStreak);
                     selectedButton.classList.add('bg-green-500', 'hover:bg-green-400');
                 } else {
+                    const highestStreak = parseInt(localStorage.getItem('highestStreak'), 10) || 0;
+                    if (highestStreak > currentUser.highest_streak) {
+                        updateStreak(highestStreak);
+                    }
+                    localStorage.setItem("highestStreak", 0);
                     selectedButton.classList.add('bg-red-500');
                 }
+
             }
 
             document.getElementById('next-question').disabled = false;
@@ -167,6 +180,31 @@ function fetchNextQuestion() {
         checkLevelUp(examId);
     }
 }
+
+
+function updateStreak(newStreak) {
+    currentUser.highest_streak = newStreak;
+    const user = JSON.parse(localStorage.getItem('user'));
+    fetch('/update_streak', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: currentUser.id, highest_streak: newStreak }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Streak updated:', data);
+            if (data.status === 'success') {
+                console.log('Streak successfully updated.');
+            } else {
+                console.error('Error updating streak:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
 
 document.getElementById('next-question').addEventListener('click', fetchNextQuestion);
 
