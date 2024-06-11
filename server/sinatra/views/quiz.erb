@@ -30,10 +30,11 @@
   </div>
 
   <script>
-    window.onload = function() {
-        const examId = <%= @exam_id %>;
-        fetchQaIds(examId);
-    };
+      window.onload = function() {
+          const examId = <%= @exam_id %>;
+          setCurrentUser(<%= @current_user.to_json %>)
+          fetchQaIds(examId);
+      };
   </script>
   <script src="/js/quiz.js"></script>
 </body>
