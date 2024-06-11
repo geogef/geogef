@@ -171,11 +171,14 @@ end
 
 get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
   authenticate_user
+  @current_user = current_user
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
-  erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam }
+
+  erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam}
 end
+
 
 get '/exam' do
   @exam_id = params[:exam_id] 
@@ -293,5 +296,19 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
     end
   else
     return { message: 'Not all answers are correct.', qas: qas }.to_json
+  end
+end
+
+post '/update_streak' do
+  content_type :json
+
+  data = JSON.parse(request.body.read)
+  user_id = data['id']
+  new_streak = data['highest_streak']
+
+  user = User.find(user_id)
+
+  if user.highest_streak < new_streak
+    user.update(highest_streak: new_streak)
   end
 end
