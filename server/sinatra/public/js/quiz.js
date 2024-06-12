@@ -75,10 +75,7 @@ function checkAnswer(qaId, userAnswer) {
             var buttons = document.querySelectorAll('.answer-button');
             buttons.forEach(function(btn) {
                 btn.classList.remove('bg-green-500', 'hover:bg-green-500', 'bg-red-500', 'hover:bg-red-500');
-                if (btn.textContent === correctAnswer) {
-                    btn.classList.remove('bg-[#e6edf8]', 'hover:bg-[#c7d9f0]');
-                    btn.classList.add('bg-green-500', 'hover:bg-green-400');
-                }
+                btn.disabled = true; // Deshabilita todos los botones de respuesta
             });
 
             var selectedButton = [...buttons].find(btn => btn.textContent === userAnswer);
@@ -98,7 +95,6 @@ function checkAnswer(qaId, userAnswer) {
                     localStorage.setItem("highestStreak", 0);
                     selectedButton.classList.add('bg-red-500');
                 }
-
             }
 
             document.getElementById('next-question').disabled = false;
