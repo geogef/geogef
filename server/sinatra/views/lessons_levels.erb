@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="/css/output.css" rel="stylesheet">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
     body {
       margin: 0;
       padding: 0;
@@ -12,142 +14,149 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
     }
-  
+
+    nav {
+      background-color: rgba(45, 55, 72, 0.9);
+      padding: 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      color: #cbd5e0;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-link:hover {
+      background-color: #4a5568;
+      color: #ffffff;
+    }
+
+    .nav-link.active {
+      background-color: #1a202c;
+      color: #ffffff;
+    }
+
+    main {
+      margin-top: 80px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .lesson-container {
+      background: rgba(45, 55, 72, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      margin: 20px; /* Espacio entre las lecciones */
+      width: 200px; /* Ancho fijo para cada lección */
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .lesson-container:hover {
+      transform: translateY(-10px);
+    }
+
     .lesson-title {
-      background-color: #ffffff;
-      padding: 8px 16px;
-      border-radius: 8px; 
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       margin-bottom: 20px;
-    }
-    .lesson-circle {
-      width: 80px;
-      height: 80px;
+      font-weight: 700;
+      color: #2d3748;
+      height: 70px; /* Altura fija para todos los contenedores de título */
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #ffffff; /* Fondo para los círculos */
-      border-radius: 50%; /* Hacer los círculos redondos */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
     }
 
-    .lesson-circle.locked img {
-      width: 60px;
-      height: 60px;
+    .lesson-circle {
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 4px 0;
+      transition: transform 0.3s;
     }
 
+    .lesson-circle:hover {
+      transform: scale(1.1);
+    }
+
+    .lesson-circle.locked img,
     .lesson-circle.unlocked img {
-      width: 60px;
-      height: 60px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(42, 1fr);
+      width: 85px;
+      height: 85px;
     }
 
     .lesson-line {
-      width: 2px;
-      height: 50px;
+      width: 3px;
+      height: 30px;
       background-color: #ffffff;
+      margin: -10px 0;
     }
   </style>
 </head>
 <body class="h-full">
   <div class="min-h-full">
-    <nav class="bg-fun-blue-800">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 items-center justify-between">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <img class="h-12 w-12" src="images/logo.png" alt="Geogef">
-            </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="/dashboard" class="text-gray-300 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Dashboard</a>
-                <a href="/lessons_details" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Lecciones</a>
-              </div>
-            </div>
-          </div>
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6">
-              <div class="relative ml-3">
-                <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                  <!-- Active: "bg-gray-100", Not Active: "" -->
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Tu Perfil</a>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Ajustes</a>
-                  <a href="/login" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Salir</a>
-                </div>
-              </div>  
-            </div>
-          </div>
-          <div class="-mr-2 flex md:hidden">
-            <!-- Mobile menu button -->
-            <button type="button" class="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false">
-              <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Open main menu</span>
-              <!-- Menu open: "hidden", Menu closed: "block" -->
-              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24
-              <span class="sr-only">Open main menu</span>
-              <!-- Menu open: "hidden", Menu closed: "block" -->
-              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-              <!-- Menu open: "block", Menu closed: "hidden" -->
-              <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-        </div>
+    <nav>
+      <div class="nav-links">
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/lessons_details" class="nav-link active" aria-current="page">Lecciones</a>
+        <a href="/profile" class="nav-link" role="menuitem" tabindex="-1" id="user-menu-item-0">Tu Perfil</a>
+        <a href="/logout" class="nav-link" role="menuitem" tabindex="-1" id="user-menu-item-2">Salir</a>
       </div>
-
-      <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="md:hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="/dashboard" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Dashboard</a>
-          <a href="/lessons_details" class="text-gray-300 hover:bg-gray-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Lecciones</a>
-
-          <div class="mt-3 space-y-1 px-2">
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Tu Perfil</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Ajustes</a>
-            <a href="/login" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Salir</a>
-          </div>
-        </div>
-        </div>
-        </nav>
-    
-        <main>
-          <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-7 gap-4">
-              <% @lessons.each do |lesson| %>
-                <div class="col-span-1 flex flex-col items-center" style="margin-bottom: 40px; margin-left: 40px; margin-right: 40px;">
-                  <div class="lesson-title text-center mb-2 font-bold"><%= lesson.title %></div>
-                  <% (1..lesson.num_levels).each do |level| %>
-                    <div class="flex flex-col items-center">
-                      <% if level_unlocked?(lesson, level) %>
-                        <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked">
-                          <img src="images/mundonormal.png" alt="Earth Logo"> 
-                        </a>
-                      <% else %>
-                      <div class="lesson-circle locked">
-                        <img src="images/mundorojo.png" alt="Earth Logo"> 
-                      </div>
-                      <% end %>
-                      <% unless level == lesson.num_levels %>
-                        <div class="lesson-line"></div>
-                      <% end %>
-                    </div>
-                  <% end %>
+    </nav>
+    <main>
+      <% @lessons.each do |lesson| %>
+        <div class="lesson-container">
+          <div class="lesson-title mb-2 font-bold"><%= lesson.title %></div>
+          <% (1..lesson.num_levels).each do |level| %>
+            <div class="flex flex-col items-center">
+              <% if level_unlocked?(lesson, level) %>
+                <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked">
+                  <img src="images/mundonormal.png" alt="Earth Logo"> 
+                </a>
+              <% else %>
+                <div class="lesson-circle locked">
+                  <img src="images/mundorojo.png" alt="Earth Logo"> 
                 </div>
               <% end %>
+              <% unless level == lesson.num_levels %>
+                <div class="lesson-line"></div>
+              <% end %>
             </div>
-          </div>
-        </main>
-      </div>
-      <script src="/js/menu.js"></script>
+          <% end %>
+        </div>
+      <% end %>
+    </main>
+  </div>
+  <script src="/js/menu.js"></script>
 </body>
 </html>
-    
