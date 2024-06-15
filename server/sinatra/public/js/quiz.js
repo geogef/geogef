@@ -117,6 +117,7 @@ function checkLevelUp() {
             document.getElementById('completion-message').style.display = 'block';
 
             if (data.message === 'Level up!') {
+                addCompletedLesson();
                 document.getElementById('completion-message').innerHTML = `
                     <p class="text-center text-gray-600">Congratulations! You have completed the quiz.</p>
                     <p class="text-center text-gray-600">You answered <span id="correct-answers">${correctAnswers}</span> questions correctly.</p>
@@ -173,6 +174,16 @@ function fetchNextQuestion() {
     }
 }
 
+function addCompletedLesson() {
+    console.log('updatinggggg')
+    fetch('/completed_lesson', {
+        method: 'POST', 
+        headers: {
+            'Content-Type' : 'application/json',
+        },
+        body: JSON.stringify({id: currentUser.id}),
+    });
+}
 
 function updateStreak(streak) {
     fetch('/update_streak', {

@@ -23,6 +23,24 @@ class User < ActiveRecord::Base
     self.password == input_password
   end
 
+  def update_streak (current_streak)
+    if self.update(current_streak: current_streak)
+      if self.highest_streak < current_streak
+        self.update(highest_streak: current_streak)
+      end
+    end
+  end
+
+  def update_completed_lessons
+    aux = self.completed_lessons + 1
+    self.update(completed_lessons: aux)
+  end
+
+  def update_app_progress(total_lessons)
+    progress = (self.completed_lessons.to_f / total_lessons.to_f) * 100
+    self.update(app_progress: progress.round)
+  end
+
   def init
     self.app_progress ||= 0.0
     self.highest_streak ||= 0
@@ -36,7 +54,7 @@ class User < ActiveRecord::Base
     public_user.id = self.id
     public_user.highest_streak = self.highest_streak
     public_user.current_streak = self.current_streak
-          
+
     public_user
   end
 
