@@ -171,7 +171,7 @@ end
 
 get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
   authenticate_user
-  @current_user = current_user
+  @publicUser = current_user.public_data
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
@@ -304,11 +304,12 @@ post '/update_streak' do
 
   data = JSON.parse(request.body.read)
   user_id = data['id']
-  new_streak = data['highest_streak']
+  user_current_streak = data['current_streak']
 
   user = User.find(user_id)
-
-  if user.highest_streak < new_streak
-    user.update(highest_streak: new_streak)
+  if user.update(current_streak: user_current_streak)
+    if user.highest_streak < user_current_streak
+      user.update(highest_streak: user_current_streak)
+    end
   end
 end
