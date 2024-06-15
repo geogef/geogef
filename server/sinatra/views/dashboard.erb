@@ -1,18 +1,43 @@
 <% @title =  "Dashboard" %>
 
-<!-- Main Content -->
-<div class="container mx-auto flex flex-cols gap-8">
+<div class="header py-8 px-4 mb-4 bg-white text-center rounded-b-lg shadow-md">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="logo">
+            <img src="images/logo.png" alt="Perfil" class="max-w-20">
+        </div>
+        <div class="flex-grow text-center">
+            <h1 class="text-4xl font-bold text-gray-900">¡Descubre el Mundo!</h1>
+            <p class="text-lg text-gray-600">Explora, aprende y déjate llevar por la curiosidad</p>
+        </div>
+        <div class="nav-links">
+            <a href="/lessons_details" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition duration-300">COMENZAR A APRENDER</a>
+        </div>
+    </nav>
+</div>
 
-    <!-- Map Container -->
+<div id="side-buttons" class="fixed top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-50 flex flex-col gap-4">
+    <a href="/profile" class="bg-blue-200 hover:bg-blue-400 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full">
+        Perfil
+    </a>
+    <a href="https://es.wikipedia.org/wiki/Geograf%C3%ADa" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
+        <img src="images/world_icon.png" alt="¿Qué es la geografía" class="w-12 h-12 rounded-full">
+    </a>
+    <a href="https://www.repsol.com/es/energia-futuro/futuro-planeta/como-cuidar-el-medio-ambiente/index.cshtml" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
+        <img src="images/medioambiente.png" alt="Cuidemos el planeta" class="w-12 h-12 rounded-full">
+    </a>
+    <a href="https://librosparaimaginar.com.mx/wp-content/uploads/2020/03/InterioresElGranPoder.pdf" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
+        <img src="images/tree.png" alt="Naturaleza" class="w-12 h-12 rounded-full">
+    </a>
+</div>
+
+<div class="container mx-auto flex flex-col md:flex-row gap-8">
     <div class="w-full md:w-1/2 bg-white bg-opacity-80 p-4 rounded-xl shadow-md">
         <div id="map" class="h-96"></div>
     </div>
 
-    <!-- Curious Facts Container -->
     <div class="w-full md:w-1/2 bg-white bg-opacity-80 p-4 rounded-xl shadow-md">
         <div id="curious-facts" class="space-y-4"></div>
     </div>
-
 </div>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />

@@ -849,6 +849,14 @@ select {
   top: 0px;
 }
 
+.left-4 {
+  left: 1rem;
+}
+
+.top-1\/2 {
+  top: 50%;
+}
+
 .isolate {
   isolation: isolate;
 }
@@ -985,6 +993,22 @@ select {
   margin-top: 2rem;
 }
 
+.-mt-96 {
+  margin-top: -24rem;
+}
+
+.ml-64 {
+  margin-left: 16rem;
+}
+
+.mr-16 {
+  margin-right: 4rem;
+}
+
+.mt-20 {
+  margin-top: 5rem;
+}
+
 .block {
   display: block;
 }
@@ -999,6 +1023,10 @@ select {
 
 .inline-flex {
   display: inline-flex;
+}
+
+.table {
+  display: table;
 }
 
 .flow-root {
@@ -1125,6 +1153,10 @@ select {
   max-width: 24rem;
 }
 
+.max-w-20 {
+  max-width: 5rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1139,6 +1171,11 @@ select {
 
 .origin-top-right {
   transform-origin: top right;
+}
+
+.-translate-y-1\/2 {
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .transform {
@@ -1293,6 +1330,11 @@ select {
   border-radius: 0.75rem;
 }
 
+.rounded-b-lg {
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
 .border-0 {
   border-width: 0px;
 }
@@ -1303,6 +1345,10 @@ select {
 
 .border-4 {
   border-width: 4px;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .border-t {
@@ -1417,6 +1463,11 @@ select {
 .bg-blue-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(191 219 254 / var(--tw-bg-opacity));
+}
+
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -1564,6 +1615,11 @@ select {
   padding-bottom: 0.75rem;
 }
 
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
 .pb-3 {
   padding-bottom: 0.75rem;
 }
@@ -1584,8 +1640,16 @@ select {
   padding-top: 1rem;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .text-2xl {
@@ -1893,6 +1957,16 @@ select {
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
 .hover\:text-fun-blue-500:hover {
   --tw-text-opacity: 1;
   color: rgb(56 119 191 / var(--tw-text-opacity));
@@ -2023,6 +2097,10 @@ select {
 
   .md\:w-1\/2 {
     width: 50%;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
   }
 }
 
