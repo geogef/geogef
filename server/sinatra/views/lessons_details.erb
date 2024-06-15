@@ -1,149 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<% @title =  "Lesson" %>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lessons</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-image: url('images/fondo3.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<div class="container mx-auto px-4 text-center text-white">
+  <h1 class="text-4xl font-bold bg-gray-800 bg-opacity-90 inline-block p-4 rounded-md mb-8 animate-enter-title">Explora nuestras lecciones</h1>
 
-    .container {
-      text-align: center;
-      color: #fff;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-      background-color: rgba(45, 55, 72, 0.9);
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 5px;
-    }
-
-    .lesson-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-    }
-
-    .lesson-card {
-      width: 300px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      transition: transform 0.3s ease;
-      border: 2px solid rgba(45, 55, 72, 0.9);
-    }
-
-    .lesson-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .lesson-card h2 {
-      color: #333;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-    }
-
-    .lesson-card p {
-      color: #666;
-      margin-bottom: 15px;
-    }
-
-    .btn-go-to-learn {
-      display: inline-block;
-      background-color: rgba(45, 55, 72, 0.9);
-      color: #fff;
-      padding: 20px 40px;
-      border-radius: 10px; 
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      margin-top: 20px; 
-      font-weight: bold;
-      font-size: 1.2rem; 
-    }
-
-    .btn-go-to-learn:hover {
-      background-color: rgba(99, 115, 163, 1);
-    }
-    nav {
-      background-color: rgba(45, 55, 72, 0.9);
-      padding: 1rem;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 50;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-    }
-
-    .nav-link {
-      color: #cbd5e0;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .nav-link:hover {
-      background-color: #4a5568;
-      color: #ffffff;
-    }
-
-    .nav-link.active {
-      background-color: #1a202c;
-      color: #ffffff;
-    }
-  </style>
-</head>
-
-<body>
-  <nav>
-  <div class="nav-links">
-      <a href="/dashboard" class="nav-link">Dashboard</a>
-      <a href="/lessons_details" class="nav-link active" aria-current="page">Lecciones</a>
-      <a href="/profile" class="nav-link" role="menuitem" tabindex="-1" id="user-menu-item-0">Tu Perfil</a>
-      <a href="/logout" class="nav-link" role="menuitem" tabindex="-1" id="user-menu-item-2">Salir</a>
-  </div>
-  </nav>
-  <div class="container">
-    <h1>Explora nuestras lecciones</h1>
-
-    <div class="lesson-cards">
-      <% @lessons.each do |lesson| %>
-      <div class="lesson-card">
-        <h2><%= lesson[:title] %></h2>
-        <p><%= lesson[:description] %></p>
-      </div>
-      <% end %>
+  <div class="lesson-cards flex flex-wrap justify-center gap-6">
+    <% @lessons.each do |lesson| %>
+    <div class="lesson-card w-72 bg-white rounded-lg shadow-md p-6 transition-transform transform hover:translate-y-[-10px] border-2 border-gray-800 animate-enter-info">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-2"><%= lesson[:title] %></h2>
+      <p class="text-gray-600 mb-4"><%= lesson[:description] %></p>
     </div>
-
-    <a href="/lessons_levels" class="btn-go-to-learn">¡Comenzar a aprender!</a>
+    <% end %>
   </div>
-</body>
 
-</html>
+  <a href="/lessons_levels" class="mt-8 inline-block bg-gray-800 text-white py-4 px-8 rounded-lg transition-colors hover:bg-indigo-600 font-bold text-xl animate-enter-info">¡Comenzar a aprender!</a>
+</div>
+
