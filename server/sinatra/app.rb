@@ -313,3 +313,8 @@ post '/completed_lesson' do
   total_levels = Level.count
   user.update_app_progress(total_levels)
 end
+
+get '/leaderboard' do
+  @users = User.all.sort_by { |user| -user.highest_streak }
+  erb :ranking
+end
