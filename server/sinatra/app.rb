@@ -17,12 +17,19 @@ require './models/progresslesson'
 require './models/level'
 require './models/material'
 
-session_secret = ENV['SESSION_SECRET'] || 'default_secret'
-
 enable :sessions
 set :database_file, './config/database.yml'
 
 use AuthMiddleware
+
+session_secret = ENV['SESSION_SECRET'] || 'default_secret'
+
+# Callback before for protected endpoints
+before do
+  unless request.path_info =~ /^\/(login|signup|api|assets|)$/
+    authenticate_user
+  end
+end
 
 get '/' do
   erb :index
@@ -76,7 +83,7 @@ post '/signup' do
   end
 
   if User.find_by(email: email)
-    return erb :signup, locals: { 
+    return erb :signup, locals: {
       error: 'Another account with this email already exists'
     }
   end
@@ -101,12 +108,10 @@ end
 
 
 get '/dashboard' do
-  authenticate_user
   erb :dashboard
 end
 
 get '/lessons_details' do
-  authenticate_user
   @lessons = Lesson.all
   erb :lessons_details
 end
@@ -126,7 +131,6 @@ get '/lessons_levels' do
 end
 
 get '/lesson_levels/:lesson_id/:level' do
-  authenticate_user
   @lesson = Lesson.find(params[:lesson_id])
   @level = Level.find_by(number: params[:level], lesson: @lesson)
   @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
@@ -139,15 +143,12 @@ get '/lesson_levels/:lesson_id/:level' do
 end
 
 get '/lessons_levels/:lesson_id/levels/:level_id' do
-  authenticate_user
   @lesson = Lesson.find(params[:lesson_id])
   @level = Level.find(params[:level_id])
   erb :'level'
 end
 
 get '/lesson_level/:lesson_id/:level_number' do
-  authenticate_user
-
   lesson_id = params[:lesson_id]
   level_number = params[:level_number]
 
@@ -162,7 +163,6 @@ get '/lesson_level/:lesson_id/:level_number' do
 end
 
 get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
-  authenticate_user
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @materials = Material.where(level_id: level_id)
@@ -170,8 +170,7 @@ get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
 end
 
 get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
-  authenticate_user
-  @current_user = current_user
+  @publicUser = current_user.public_data
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
@@ -180,14 +179,7 @@ get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
 end
 
 
-get '/exam' do
-  @exam_id = params[:exam_id] 
-  authenticate_user
-  erb :quiz 
-end
-
 get '/profile' do
-  authenticate_user
   @user = current_user
   erb :profile
 end
@@ -195,7 +187,6 @@ end
 
 get '/quiz/:exam_id' do
   @exam_id = params[:exam_id]
-  authenticate_user
   erb :quiz
 end
 
@@ -242,7 +233,7 @@ get '/api/qa/:id/correct_answer' do
 
   if question.nil?
     status 404
-    return { 
+    return {
       error: "Question not found for QA record with ID #{qa_id}"
     }.to_json
   end
@@ -304,11 +295,21 @@ post '/update_streak' do
 
   data = JSON.parse(request.body.read)
   user_id = data['id']
-  new_streak = data['highest_streak']
+  user_current_streak = data['current_streak']
 
   user = User.find(user_id)
+  user.update_streak(user_current_streak)
+end
 
-  if user.highest_streak < new_streak
-    user.update(highest_streak: new_streak)
-  end
+post '/completed_lesson' do
+  content_type :json
+
+  data = JSON.parse(request.body.read)
+  user_id = data ['id']
+
+  user = User.find(user_id)
+  user.update_completed_lessons
+
+  total_levels = Level.count
+  user.update_app_progress(total_levels)
 end

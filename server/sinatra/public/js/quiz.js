@@ -75,7 +75,7 @@ function checkAnswer(qaId, userAnswer) {
             var buttons = document.querySelectorAll('.answer-button');
             buttons.forEach(function(btn) {
                 btn.classList.remove('bg-green-500', 'hover:bg-green-500', 'bg-red-500', 'hover:bg-red-500');
-                btn.disabled = true; // Deshabilita todos los botones de respuesta
+                btn.disabled = true; 
             });
 
             var selectedButton = [...buttons].find(btn => btn.textContent === userAnswer);
@@ -83,17 +83,13 @@ function checkAnswer(qaId, userAnswer) {
                 selectedButton.classList.remove('bg-[#e6edf8]', 'hover:bg-[#c7d9f0]');
                 if (userAnswer === correctAnswer) {
                     correctAnswers++;
-                    let currentStreak = parseInt(localStorage.getItem("highestStreak"));
-                    currentStreak++;
-                    localStorage.setItem("highestStreak", currentStreak);
                     selectedButton.classList.add('bg-green-500', 'hover:bg-green-400');
+                    currentUser.current_streak ++;
+                    updateStreak(currentUser.current_streak);
                 } else {
-                    const highestStreak = parseInt(localStorage.getItem('highestStreak'), 10) || 0;
-                    if (highestStreak > currentUser.highest_streak) {
-                        updateStreak(highestStreak);
-                    }
-                    localStorage.setItem("highestStreak", 0);
                     selectedButton.classList.add('bg-red-500');
+                    currentUser.current_streak = 0;
+                    updateStreak(currentUser.current_streak);
                 }
             }
 
@@ -121,6 +117,7 @@ function checkLevelUp() {
             document.getElementById('completion-message').style.display = 'block';
 
             if (data.message === 'Level up!') {
+                addCompletedLesson();
                 document.getElementById('completion-message').innerHTML = `
                     <p class="text-center text-gray-600">Congratulations! You have completed the quiz.</p>
                     <p class="text-center text-gray-600">You answered <span id="correct-answers">${correctAnswers}</span> questions correctly.</p>
@@ -177,28 +174,27 @@ function fetchNextQuestion() {
     }
 }
 
+function addCompletedLesson() {
+    console.log('updatinggggg')
+    fetch('/completed_lesson', {
+        method: 'POST', 
+        headers: {
+            'Content-Type' : 'application/json',
+        },
+        body: JSON.stringify({id: currentUser.id}),
+    });
+}
 
-function updateStreak(newStreak) {
-    currentUser.highest_streak = newStreak;
-    const user = JSON.parse(localStorage.getItem('user'));
+function updateStreak(streak) {
     fetch('/update_streak', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: currentUser.id, highest_streak: newStreak }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Streak updated:', data);
-            if (data.status === 'success') {
-                console.log('Streak successfully updated.');
-            } else {
-                console.error('Error updating streak:', data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
+        body: JSON.stringify({ id: currentUser.id, current_streak: streak }),
+    });
 }
+
 
 
 
