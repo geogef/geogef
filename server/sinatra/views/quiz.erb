@@ -35,7 +35,7 @@
   <script>
       window.onload = function() {
           const examId = <%= @exam_id %>;
-          setCurrentUser(<%= @current_user.to_json %>)
+          setCurrentUser(<%= @publicUser.to_json %>);
           fetchQaIds(examId);
       };
   </script>
