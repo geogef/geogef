@@ -3,6 +3,9 @@ let currentQaIndex = 0;
 let correctAnswers = 0;
 let examId;
 let currentUser;
+let timerDuration = 300; // Duración del temporizador en segundos
+let timerInterval;
+let timeLeft;
 
 function setCurrentUser(user) {
     currentUser = user;
@@ -149,14 +152,16 @@ function fetchQaIds(Id) {
     xhr.onload = function() {
         if (xhr.status === 200) {
             var data = JSON.parse(xhr.responseText);
-            qaIds = data.qas; // Store the retrieved QA IDs
-            fetchNextQuestion(examId); // Start fetching questions for the first QA ID
+            qaIds = data.qas;
+            fetchNextQuestion(examId);
+            startTimer(timerDuration); // Start the timer
         } else {
             console.error('Request failed. Status:', xhr.status);
         }
     };
     xhr.send();
 }
+
 
 // Function to fetch and display the next question
 function fetchNextQuestion() {
@@ -167,6 +172,7 @@ function fetchNextQuestion() {
         currentQaIndex++; // Move to the next QA ID for the next iteration
     } else {
         console.log('All questions fetched.');
+        clearInterval(timerInterval); // Stop the timer
         document.getElementById('question').style.display = 'none';
         document.getElementById('center-svg-container').style.display = 'none';
         document.getElementById('options').style.display = 'none';
@@ -200,7 +206,40 @@ function updateStreak(newStreak) {
         .catch(error => console.error('Error:', error));
 }
 
+function startTimer(duration) {
+    timeLeft = duration;
+    updateTimerDisplay();
+
+    timerInterval = setInterval(function() {
+        timeLeft--;
+        updateTimerDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endQuiz();
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    document.getElementById('time').textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+function endQuiz() {
+    document.getElementById('question').style.display = 'none';
+    document.getElementById('center-svg-container').style.display = 'none';
+    document.getElementById('options').style.display = 'none';
+    document.getElementById('next-question').style.display = 'none';
+    document.getElementById('completion-message').style.display = 'block';
+    document.getElementById('correct-answers').textContent = correctAnswers;
+
+    checkLevelUp(examId);
+}
+
+
 
 
 document.getElementById('next-question').addEventListener('click', fetchNextQuestion);
-
