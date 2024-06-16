@@ -1,12 +1,12 @@
+<%# Set the title for the page %>
 <% @title = "Level Details" %>
 
 <div class="mx-auto mt-8 p-4 max-w-4xl bg-white bg-opacity-80 rounded-lg shadow-lg">
-    <h1 class="text-center mt-0 mb-8 text-blue-900 text-shadow"> <%= @level.name %> </h1>
+    <h1 class="text-center text-3xl mt-0 mb-8 text-blue-900 text-shadow"> <%= @level.name %> </h1>
     <div class="flex justify-center mt-5">
-        <a href="/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/materials" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">Ver Materiales</a>
-        <a href="/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 ml-5 rounded transition duration-300">Tomar Examen</a>
+        <a href="/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/materials" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">Ver materiales</a>
+        <a href="/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 ml-5 rounded transition duration-300">Tomar examen</a>
     </div>
 
-    <a href="/lessons_levels" class="block text-center mt-10 text-blue-900 hover:underline">Volver a Niveles</a>
+    <a href="/lessons_levels" class="block text-center mt-10 text-blue-900 hover:underline">Volver a niveles</a>
 </div>
-
