@@ -1,51 +1,30 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ranking - Quiz de Geografía</title>
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100">
-  <!-- Navbar -->
-  <nav class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between shadow-lg">
-    <div class="flex space-x-4">
-      <a href="/dashboard" class="nav-link">Dashboard</a>
-      <a href="/lessons_details" class="nav-link">Lecciones</a>
-      <a href="/profile" class="nav-link">Tu Perfil</a>
-      <a href="/leaderboard" class="nav-link">Leaderboard</a>
-    </div>
-    <a href="/logout" class="nav-link">Salir</a>
-  </nav>
+<% @title =  "Leaderboard" %>
 
-  <!-- Contenido principal -->
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-center mb-8">Ranking de Jugadores</h1>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center mb-8">Ranking de Jugadores</h1>
 
-    <table class="w-full rounded-lg border bg-white shadow-md">
-      <thead class="bg-gray-200">
-        <tr>
-          <th class="text-left p-2 border">Posición</th>
-          <th class="text-left p-2 border">Nombre</th>
-          <th class="text-center p-2 border">Puntuación</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @users.each_with_index do |user, index| %>
-        <tr class="<%= index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' %>">
-          <td class="text-left p-2 border"><%= index + 1 %></td>
-          <td class="text-left p-2 border"><%= user.username %></td>
-          <td class="text-center p-2 border"><%= user.highest_streak %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+  <table class="w-full rounded-lg border bg-white shadow-md">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="text-left p-2 border">Posición</th>
+        <th class="text-left p-2 border">Nombre</th>
+        <th class="text-center p-2 border">Puntuación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each_with_index do |user, index| %>
+      <tr class="<%= index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' %>">
+        <td class="text-left p-2 border"><%= index + 1 %></td>
+        <td class="text-left p-2 border"><%= user.username %></td>
+        <td class="text-center p-2 border"><%= user.highest_streak %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
-  <!-- Script para adaptar tabla a dispositivos móviles -->
-  <script>
-    const table = document.querySelector('table');
-    table.classList.add('sm:mx-auto', 'sm:w-full');
-  </script>
-</body>
-</html>
+<!-- Script para adaptar tabla a dispositivos móviles -->
+<script>
+  const table = document.querySelector('table');
+  table.classList.add('sm:mx-auto', 'sm:w-full');
+</script>

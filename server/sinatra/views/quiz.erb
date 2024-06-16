@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
-    <link href="/css/output.css" rel="stylesheet">
-</head>
-<body class="bg-[url('/images/fondo3.jpg')] bg-cover bg-center flex items-center justify-center min-h-screen">
+<% @title =  "Exam" %>
+
+<div class="flex items-center justify-center">
   <div class="quiz-container max-w-full w-full sm:w-4/5 lg:w-2/5 bg-white rounded-lg shadow-lg overflow-hidden">
     <div class="p-6">
       <div id="timer" class="text-right text-gray-700 font-semibold mb-4">
@@ -28,9 +22,10 @@
         <p class="text-center text-gray-600">You answered <span id="correct-answers"></span> questions correctly.</p>
       <p class="text-center text-gray-600">Thank you for participating.</p>
     </div>
-  </div>
+    </div>
     </div>
   </div>
+</div>
 
   <script>
       window.onload = function() {
@@ -40,5 +35,3 @@
       };
   </script>
   <script src="/js/quiz.js"></script>
-</body>
-</html>

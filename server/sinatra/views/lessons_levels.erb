@@ -1,162 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/css/output.css" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+<% @title =  "Lesson Levels" %>
 
-    body {
-      margin: 0;
-      padding: 0;
-      background-image: url('images/fondo3.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      font-family: 'Montserrat', sans-serif;
-      color: #fff;
-    }
-
-    nav {
-      background-color: rgba(45, 55, 72, 0.9);
-      padding: 1rem;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 50;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-    }
-
-    .nav-link {
-      color: #cbd5e0;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .nav-link:hover {
-      background-color: #4a5568;
-      color: #ffffff;
-    }
-
-    .nav-link.active {
-      background-color: #1a202c;
-      color: #ffffff;
-    }
-
-    main {
-      margin-top: 80px;
-      padding: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .lesson-container {
-      background: rgba(45, 55, 72, 0.8);
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      padding: 10px;
-      margin: 20px; /* Espacio entre las lecciones */
-      width: 200px; /* Ancho fijo para cada lección */
-      text-align: center;
-      transition: transform 0.3s;
-    }
-
-    .lesson-container:hover {
-      transform: translateY(-10px);
-    }
-
-    .lesson-title {
-      background-color: rgba(255, 255, 255, 0.9);
-      padding: 10px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      margin-bottom: 20px;
-      font-weight: 700;
-      color: #2d3748;
-      height: 70px; /* Altura fija para todos los contenedores de título */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lesson-circle {
-      width: 90px;
-      height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      margin: 4px 0;
-      transition: transform 0.3s;
-    }
-
-    .lesson-circle:hover {
-      transform: scale(1.1);
-    }
-
-    .lesson-circle.locked img,
-    .lesson-circle.unlocked img {
-      width: 85px;
-      height: 85px;
-    }
-
-    .lesson-line {
-      width: 3px;
-      height: 30px;
-      background-color: #ffffff;
-      margin: -10px 0;
-    }
-  </style>
-</head>
-<body class="h-full">
-  <div class="min-h-full">
-    <nav>
-      <div class="nav-links">
-        <a href="/dashboard" class="nav-link">Dashboard</a>
-        <a href="/lessons_details" class="nav-link active" aria-current="page">Lecciones</a>
-        <a href="/profile" class="nav-link" role="menuitem" tabindex="-1" id="user-menu-item-0">Tu Perfil</a>
-        <a href="/logout" class="nav-link" role="menuitem" tabindex="-1" id="user-menu-item-2">Salir</a>
+<main class="flex flex-wrap justify-center">
+  <% @lessons.each do |lesson| %>
+    <div class="lesson-container bg-gray-800 bg-opacity-80 rounded-lg shadow-md p-6 m-4 w-52 text-center transition-transform transform hover:translate-y-[-10px]">
+      <div class="lesson-title bg-white bg-opacity-90 p-4 rounded-lg shadow-md mb-4 text-gray-800 font-bold h-16 flex items-center justify-center">
+        <%= lesson.title %>
       </div>
-    </nav>
-    <main>
-      <% @lessons.each do |lesson| %>
-        <div class="lesson-container">
-          <div class="lesson-title mb-2 font-bold"><%= lesson.title %></div>
-          <% (1..lesson.num_levels).each do |level| %>
-            <div class="flex flex-col items-center">
-              <% if level_unlocked?(lesson, level) %>
-                <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked">
-                  <img src="images/mundonormal.png" alt="Earth Logo"> 
-                </a>
-              <% else %>
-                <div class="lesson-circle locked">
-                  <img src="images/mundorojo.png" alt="Earth Logo"> 
-                </div>
-              <% end %>
-              <% unless level == lesson.num_levels %>
-                <div class="lesson-line"></div>
-              <% end %>
+      <% (1..lesson.num_levels).each do |level| %>
+        <div class="flex flex-col items-center">
+          <% if level_unlocked?(lesson, level) %>
+            <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
+              <img src="images/mundonormal.png" alt="Earth Logo" class="w-20 h-20"> 
+            </a>
+          <% else %>
+            <div class="lesson-circle locked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform">
+              <img src="images/mundorojo.png" alt="Earth Logo" class="w-20 h-20"> 
             </div>
+          <% end %>
+          <% unless level == lesson.num_levels %>
+            <div class="lesson-line bg-white w-1 h-8"></div>
           <% end %>
         </div>
       <% end %>
-    </main>
-  </div>
-  <script src="/js/menu.js"></script>
-</body>
-</html>
+    </div>
+  <% end %>
+</main>
+

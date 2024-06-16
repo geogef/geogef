@@ -18,6 +18,20 @@ module.exports = {
           '950': '#14243d',
         },
       },
+        animation: {
+            'enter-info': 'enter-info 1s ease-in-out forwards',
+            'enter-title': 'enter-title 1s ease-in-out forwards'
+        },
+        keyframes: {
+        'enter-title': {
+          '0%': { opacity: 0, transform: 'translateY(20px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        'enter-info': {
+          '0%': { opacity: 0, transform: 'scale(0.9)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
+      },
       backgroundImage: theme => ({
         'login-background': "url('src/static/images/bg1.png')",
       }),

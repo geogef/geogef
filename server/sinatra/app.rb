@@ -4,6 +4,7 @@ require 'bcrypt'
 require 'json'
 require 'dotenv/load'
 
+
 require './auth_middleware'
 require './helpers'
 require './models/user.rb'
@@ -32,12 +33,12 @@ before do
 end
 
 get '/' do
-  erb :index
+  erb :index, layout: :index
 end
 
 get '/login' do
   redirect_if_logged_in
-  erb :login
+  erb :login, layout: :login
 end
 
 post '/login' do
