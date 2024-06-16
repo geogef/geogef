@@ -59,7 +59,7 @@ end
 
 get '/signup' do
   redirect_if_logged_in
-  erb :signup
+  erb :signup, layout: :signup
 end
 
 post '/signup' do
@@ -174,6 +174,9 @@ get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
   @publicUser = current_user.public_data
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
+  if not level_unlocked?(@lesson, @level.number)
+    redirect '/lessons_levels'
+  end
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
 
   erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam}
@@ -275,13 +278,17 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
 
     if progress
       current_level_number = progress.level.number
-      next_level = Level.find_by(number: current_level_number + 1, lesson: lesson)
+      if exam.level.number == current_level_number
+        next_level = Level.find_by(number: current_level_number + 1, lesson: lesson)
 
-      if next_level
-        progress.update(level: next_level)
-        return { message: 'Level up!', new_level: next_level.name, qas: qas }.to_json
-      else
-        return { message: 'No higher level found.', qas: qas }.to_json
+        if next_level
+          progress.update(level: next_level)
+          return { message: 'Level up!', new_level: next_level.name, qas: qas }.to_json
+        else
+          return { message: 'No higher level found.', qas: qas }.to_json
+        end
+
+        return { message: 'Error' }.to_json
       end
     else
       return { error: 'Progress not found for the current user and lesson.' }.to_json
