@@ -1,13 +1,17 @@
+<%# Set the title for the page %>
 <% @title =  "Lesson Levels" %>
 
 <main class="flex flex-wrap justify-center">
+  <%# Iterate over each lesson to display lesson levels %>
   <% @lessons.each do |lesson| %>
     <div class="lesson-container bg-gray-800 bg-opacity-80 rounded-lg shadow-md p-6 m-4 w-52 text-center transition-transform transform hover:translate-y-[-10px]">
       <div class="lesson-title bg-white bg-opacity-90 p-4 rounded-lg shadow-md mb-4 text-gray-800 font-bold h-16 flex items-center justify-center">
         <%= lesson.title %>
       </div>
+      <%# Iterate over each level of the lesson %>
       <% (1..lesson.num_levels).each do |level| %>
         <div class="flex flex-col items-center">
+          <%# Check if the level is unlocked to display different styles %>
           <% if level_unlocked?(lesson, level) %>
             <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
               <img src="images/mundonormal.png" alt="Earth Logo" class="w-20 h-20"> 
@@ -17,6 +21,7 @@
               <img src="images/mundorojo.png" alt="Earth Logo" class="w-20 h-20"> 
             </div>
           <% end %>
+          <%# Display a line between levels if it's not the last level %>
           <% unless level == lesson.num_levels %>
             <div class="lesson-line bg-white w-1 h-8"></div>
           <% end %>
@@ -25,4 +30,3 @@
     </div>
   <% end %>
 </main>
-

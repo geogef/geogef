@@ -6,18 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-       #bg-video {
-        position: fixed;
-        right: 0;
-        bottom: 20;
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
-        z-index: -1;
-        background-size: cover;
+        /* Styling for background video */
+        #bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 20; /* Adjusted bottom spacing */
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            background-size: cover;
         }
 
+        /* Styles for main content section */
         .relative-content {
             position: relative;
             z-index: 10;
@@ -27,6 +29,7 @@
             justify-content: flex-end;
         }
 
+        /* Styles for elements at bottom left */
         .bottom-left {
             margin-bottom: 20px;
             margin-left: 20px;
@@ -35,22 +38,25 @@
             align-items: flex-start;
         }
 
+        /* Button styling */
         .menu-button {
-            padding: 1rem 2rem; /* Aumentar el tamaño del padding */
+            padding: 1rem 2rem; /* Increased padding */
             margin-bottom: 0.5rem;
             background-color: white;
             border-radius: 0.5rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* Styling for 'Get Started' button */
         .get-started-button {
-            padding: 1rem 2rem; /* Aumentar el tamaño del padding */
+            padding: 1rem 2rem; /* Increased padding */
             margin-bottom: 0.5rem;
-            background-color: yellow; /* Cambiar el color de fondo a amarillo */
+            background-color: yellow; /* Changed background color to yellow */
             border-radius: 0.5rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* Logo styling */
         .logo {
             position: absolute;
             bottom: 20px;
@@ -60,18 +66,18 @@
             z-index: 50;
         }
     </style>
-    
 </head>
 
 <body>
-    <!-- Video de fondo -->
+    <%# Background video %>
     <video autoplay muted loop id="bg-video">
         <source src="/videos/background_index.mp4" type="video/mp4">
-        Tu navegador no soporta el elemento de video.
+        <%# Your browser does not support the video tag. %>
     </video>
 
-    <!-- Contenido de tu página -->
+    <%# Main content of the page %>
     <div class="relative-content">
+        <%# Header section with navigation %>
         <header class="absolute inset-x-0 top-0 z-50 text-container">
             <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div class="flex lg:flex-1 items-center">
@@ -83,7 +89,7 @@
                 </div>
                 <div class="flex lg:hidden">
                     <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                        <span class="sr-only">Abrir menu</span>
+                        <span class="sr-only">Open menu</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                             aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -91,17 +97,17 @@
                     </button>
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
-                    <a href="mailto:florenciah1968@gmail.com" class="menu-button text-sm font-semibold leading-6 text-gray-900">Contacto</a>
-                    <a href="https://github.com/eg-v/project-geography" target="_blank" class="menu-button text-sm font-semibold leading-6 text-gray-900">Acerca de Nosotros</a>
+                    <a href="mailto:florenciah1968@gmail.com" class="menu-button text-sm font-semibold leading-6 text-gray-900">Contact</a>
+                    <a href="https://github.com/eg-v/project-geography" target="_blank" class="menu-button text-sm font-semibold leading-6 text-gray-900">About Us</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                     <a href="/login"
-                        class="text-sm font-semibold leading-6 text-gray-900 bg-gray-200 py-2 px-4 rounded-md hover:bg-gray-300">Iniciar Sesion <span aria-hidden="true">&rarr;</span></a>
+                        class="text-sm font-semibold leading-6 text-gray-900 bg-gray-200 py-2 px-4 rounded-md hover:bg-gray-300">Sign In <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </nav>
-            <!-- Mobile menu, show/hide based on menu open state. -->
+            <%# Mobile menu, show/hide based on menu open state. %>
             <div class="lg:hidden" role="dialog" aria-modal="true">
-                <!-- Background backdrop, show/hide based on slide-over state. -->
+                <%# Background backdrop, show/hide based on slide-over state. %>
                 <div class="fixed inset-0 z-50"></div>
                 <div
                     class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
@@ -110,7 +116,7 @@
                             <span class="sr-only">Geogef</span>
                         </a>
                         <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                            <span class="sr-only">Cerrar menu</span>
+                            <span class="sr-only">Close menu</span>
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -121,13 +127,13 @@
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="space-y-2 py-6">
                                 <a href="mailto:florenciah1968@gmail.com"
-                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Contacto</a>
+                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Contact</a>
                                 <a href="#"
-                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Acerca de Nosotros</a>
+                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">About Us</a>
                             </div>
                             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                                 <a href="/login"
-                                    class="text-lg xl:text-xl font-semibold leading-6 text-gray-900">Iniciar Sesion <span
+                                    class="text-lg xl:text-xl font-semibold leading-6 text-gray-900">Sign In <span
                                         aria-hidden="true">
                                     </a>
                             </div>
@@ -136,19 +142,23 @@
                 </div>
             </header>
 
+            <%# Content section at bottom left %>
             <div class="relative isolate px-6 pt-32 lg:px-8 flex flex-1 items-end justify-end">
-                <div                 class="bottom-left flex flex-col items-start">
-                <a href="/signup"
-                    class="get-started-button rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-4">Comenzar</a>
-                <a href="https://github.com/eg-v/project-geography/blob/main/README.md"
-                    class="menu-button text-sm font-semibold leading-6 text-gray-900 bg-white px-3.5 py-2.5 rounded-md hover:bg-gray-100" target="_blank">Git Hub<span aria-hidden="true"> →</span></a>
+                <div class="bottom-left flex flex-col items-start">
+                    <%# 'Get Started' button %>
+                    <a href="/signup"
+                        class="get-started-button rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-4">Get Started</a>
+                    <%# GitHub link button %>
+                    <a href="https://github.com/eg-v/project-geography/blob/main/README.md"
+                        class="menu-button text-sm font-semibold leading-6 text-gray-900 bg-white px-3.5 py-2.5 rounded-md hover:bg-gray-100" target="_blank">GitHub <span aria-hidden="true">→</span></a>
+                </div>
             </div>
         </div>
-    </div>
-    <footer class="footer">
-        <p>&copy; 2024 Geogef. Licensed under the GPL-3 License.</p>
-    </footer>
-</body>
+
+        <%# Footer section %>
+        <footer class="footer">
+            <p>&copy; 2024 Geogef. Licensed under the GPL-3 License.</p>
+        </footer>
+    </body>
 
 </html>
-

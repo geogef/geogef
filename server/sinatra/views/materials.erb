@@ -1,30 +1,36 @@
-<% @title =  "Materials" %>
-  <div class="flex items-center justify-center">
+<%# Define the page title %>
+<% @title = "Materials" %>
+<div class="flex items-center justify-center">
     <div class="container mx-auto p-4 max-w-4xl">
-              <h1 class="text-3xl font-bold text-blue-900 bg-white bg-opacity-80 p-4 rounded-lg text-center shadow-md mb-8 w-full">
+        <%# Header with the lesson materials title %>
+        <h1 class="text-3xl font-bold text-blue-900 bg-white bg-opacity-80 p-4 rounded-lg text-center shadow-md mb-8 w-full">
             Materiales de <%= @lesson.title %>
         </h1>
 
+        <%# Main container for the current material %>
         <div class="bg-white shadow-lg rounded-lg overflow-hidden mx-auto mt-4">
             <div id="current-material" class="flex flex-col items-center p-6">
+                <%# Displaying the content of the current material %>
                 <div class="text-xl text-gray-800 mb-4">
                     <%= @materials[0].content %>
                 </div>
+                <%# Display the image of the current material if present %>
                 <% if @materials[0].imagepath.present? %>
-                  <div class="material-image">
+                <div class="material-image">
                     <svg class="w-full h-auto" viewBox="0 0 200 150">
-                          <image href="/<%= @materials[0].imagepath %>"/>
-                      </svg>
-                  </div>
+                        <image href="/<%= @materials[0].imagepath %>"/>
+                    </svg>
+                </div>
                 <% end %>
             </div>
 
+            <%# Buttons to navigate between materials %>
             <div class="flex justify-between mt-6 p-4">
                 <button id="prev-button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 hidden">
-                    Material Anterior
+                    Material previo
                 </button>
                 <button id="next-button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                    Siguiente Material
+                    Siguiente material
                 </button>
                 <button id="finish-button" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 hidden">
                     Fin
@@ -32,97 +38,101 @@
             </div>
         </div>
     </div>
-  </div>
+</div>
 
-    <script>
-        // Elementos DOM
-        const materialCard = document.getElementById('current-material');
-        const nextButton = document.getElementById('next-button');
-        const prevButton = document.getElementById('prev-button');
-        const finishButton = document.getElementById('finish-button');
-        const materials = [
-            <% @materials.each do |material| %>
-            '<%= material.content %>',
-            <% end %>
-        ];
-        <% if @materials[0].imagepath.present? %>
-          const flagPaths = [
-              <% @materials.each do |material| %>
-              '<%= material.imagepath %>',
-              <% end %>
-          ];
+<%# JavaScript script for handling materials %>
+<script>
+    // DOM elements
+    const materialCard = document.getElementById('current-material');
+    const nextButton = document.getElementById('next-button');
+    const prevButton = document.getElementById('prev-button');
+    const finishButton = document.getElementById('finish-button');
+    const materials = [
+        <%# Iterate over materials to get their contents %>
+        <% @materials.each do |material| %>
+        '<%= material.content %>',
         <% end %>
-        let currentIndex = 0;
-        const maxIndex = materials.length - 1;
+    ];
+    <%# Check and store image paths if present %>
+    <% if @materials[0].imagepath.present? %>
+    const flagPaths = [
+        <% @materials.each do |material| %>
+        '<%= material.imagepath %>',
+        <% end %>
+    ];
+    <% end %>
+    let currentIndex = 0;
+    const maxIndex = materials.length - 1;
 
-        // Función para mostrar el material actual
-        function showCurrentMaterial() {
-            materialCard.innerHTML = `
-                <div class="text-xl text-gray-800 mb-4">${materials[currentIndex]}</div>
-                <% if @materials[0].imagepath.present? %>
-                <div class="material-image">
-                    <svg class="w-full h-auto" viewBox="0 0 200 150">
-                        <image href="/${flagPaths[currentIndex]}"/>
-                    </svg>
-                <% end %>
-                </div>
-            `;
-            // Ocultar o mostrar los botones de acuerdo con la posición actual
-            prevButton.classList.toggle('hidden', currentIndex === 0);
-            nextButton.classList.toggle('hidden', currentIndex === maxIndex);
-            finishButton.classList.toggle('hidden', currentIndex !== maxIndex);
-        }
+    // Function to display the current material
+    function showCurrentMaterial() {
+        materialCard.innerHTML = `
+            <div class="text-xl text-gray-800 mb-4">${materials[currentIndex]}</div>
+            <%# Display the image of the current material if present %>
+            <% if @materials[0].imagepath.present? %>
+            <div class="material-image">
+                <svg class="w-full h-auto" viewBox="0 0 200 150">
+                    <image href="/${flagPaths[currentIndex]}"/>
+                </svg>
+            </div>
+            <% end %>
+        `;
+        // Toggle visibility of buttons based on current position
+        prevButton.classList.toggle('hidden', currentIndex === 0);
+        nextButton.classList.toggle('hidden', currentIndex === maxIndex);
+        finishButton.classList.toggle('hidden', currentIndex !== maxIndex);
+    }
 
-        // Función para mostrar el siguiente material
-        function showNextMaterial() {
-            currentIndex++;
-            showCurrentMaterial();
-        }
-
-        // Función para mostrar el material anterior
-        function showPrevMaterial() {
-            currentIndex--;
-            showCurrentMaterial();
-        }
-
-        // Función para finalizar y mostrar las opciones en una ventana emergente
-        function finishLesson() {
-            const decisionContainer = document.createElement('div');
-            decisionContainer.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'h-full', 'bg-black', 'bg-opacity-50', 'flex', 'justify-center', 'items-center');
-
-            decisionContainer.innerHTML = `
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <p class="text-2xl text-blue-900 mb-4">Elija una opción:</p>
-                    <button id="view-materials" class="modal-button bg-cyan-500 text-white text-xl py-2 px-4 rounded m-2 transform transition hover:scale-110">Volver a ver los materiales</button>
-                    <button id="go-to-exam" class="modal-button bg-blue-600 text-white text-xl py-2 px-4 rounded m-2 transform transition hover:scale-110">Ir al examen</button>
-                    <button id="go-to-level" class="modal-button bg-blue-400 text-white text-xl py-2 px-4 rounded m-2 transform transition hover:scale-110">Volver a la vista del nivel</button>
-                </div>
-            `;
-
-            const viewMaterialsButton = decisionContainer.querySelector('#view-materials');
-            const goToExamButton = decisionContainer.querySelector('#go-to-exam');
-            const goToLevelButton = decisionContainer.querySelector('#go-to-level');
-
-            viewMaterialsButton.addEventListener('click', function () {
-                currentIndex = 0;
-                showCurrentMaterial();
-                decisionContainer.remove();
-            });
-
-            goToExamButton.addEventListener('click', function () {
-                window.location.href = '/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam';
-            });
-
-            goToLevelButton.addEventListener('click', function () {
-                window.location.href = '/lessons_levels'; // Cambia '/levels' por la ruta correcta a la página de todos los niveles
-            });
-
-            document.body.appendChild(decisionContainer);
-        }
-
-        nextButton.addEventListener('click', showNextMaterial);
-        prevButton.addEventListener('click', showPrevMaterial);
-        finishButton.addEventListener('click', finishLesson);
-
+    // Function to show the next material
+    function showNextMaterial() {
+        currentIndex++;
         showCurrentMaterial();
-    </script>
+    }
+
+    // Function to show the previous material
+    function showPrevMaterial() {
+        currentIndex--;
+        showCurrentMaterial();
+    }
+
+    // Function to finish and show options in a popup window
+    function finishLesson() {
+        const decisionContainer = document.createElement('div');
+        decisionContainer.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'h-full', 'bg-black', 'bg-opacity-50', 'flex', 'justify-center', 'items-center');
+
+        decisionContainer.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <p class="text-2xl text-blue-900 mb-4">Choose an option:</p>
+                <button id="view-materials" class="modal-button bg-cyan-500 text-white text-xl py-2 px-4 rounded m-2 transform transition hover:scale-110">Ver materiales de nuevo</button>
+                <button id="go-to-exam" class="modal-button bg-blue-600 text-white text-xl py-2 px-4 rounded m-2 transform transition hover:scale-110">Ir al examen</button>
+                <button id="go-to-level" class="modal-button bg-blue-400 text-white text-xl py-2 px-4 rounded m-2 transform transition hover:scale-110">Volver a los niveles</button>
+            </div>
+        `;
+
+        const viewMaterialsButton = decisionContainer.querySelector('#view-materials');
+        const goToExamButton = decisionContainer.querySelector('#go-to-exam');
+        const goToLevelButton = decisionContainer.querySelector('#go-to-level');
+
+        viewMaterialsButton.addEventListener('click', function () {
+            currentIndex = 0;
+            showCurrentMaterial();
+            decisionContainer.remove();
+        });
+
+        goToExamButton.addEventListener('click', function () {
+            window.location.href = '/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam';
+        });
+
+        goToLevelButton.addEventListener('click', function () {
+            window.location.href = '/lessons_levels'; // Change '/levels' to correct path to all levels page
+        });
+
+        document.body.appendChild(decisionContainer);
+    }
+
+    nextButton.addEventListener('click', showNextMaterial);
+    prevButton.addEventListener('click', showPrevMaterial);
+    finishButton.addEventListener('click', finishLesson);
+
+    showCurrentMaterial();
+</script>
