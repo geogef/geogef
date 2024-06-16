@@ -1,15 +1,18 @@
-<% @title =  "User Profile" %>
+<%# Set the page title %>
+<% @title = "User Profile" %>
 
 <div class="container mx-auto px-4">
-  <h1 class="text-4xl font-bold text-black mb-6 animate-enter-title">User Profile</h1>
+  <%# Title of the user profile section %>
+  <h1 class="text-4xl font-bold text-black mb-6 animate-enter-title">Perfil de usuario</h1>
+
+  <%# Main container for user information %>
   <div class="bg-white bg-opacity-80 rounded-lg p-8 shadow-lg animate-enter-info">
-    <p class="text-lg font-medium"><strong>Username:</strong> <%= @user.username %></p>
+    <p class="text-lg font-medium"><strong>Nombre de usuario:</strong> <%= @user.username %></p>
     <p class="text-lg font-medium"><strong>Email:</strong> <%= @user.email %></p>
-    <p class="text-lg font-medium"><strong>App Progress:</strong> <%= @user.app_progress %>%</p>
-    <p class="text-lg font-medium"><strong>Highest Streak:</strong> <%= @user.highest_streak %></p>
-    <p class="text-lg font-medium"><strong>Current Streak:</strong> <%= @user.current_streak %></p>
-    <p class="text-lg font-medium"><strong>Completed Lessons:</strong> <%= @user.completed_lessons %></p>
+    <p class="text-lg font-medium"><strong>Progreso:</strong> <%= @user.app_progress %>%</p>
+    <p class="text-lg font-medium"><strong>Racha mas alta:</strong> <%= @user.highest_streak %></p>
+    <p class="text-lg font-medium"><strong>Racha actual:</strong> <%= @user.current_streak %></p>
+    <p class="text-lg font-medium"><strong>Lecciones completadas:</strong> <%= @user.completed_lessons %></p>
     <p class="text-lg font-medium"><strong>Geogems:</strong> <%= @user.geogems %></p>
   </div>
 </div>
-
