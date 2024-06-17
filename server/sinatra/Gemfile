@@ -7,3 +7,9 @@ gem "rake"
 gem "bcrypt"
 gem "rackup"
 gem "dotenv"
+group :development, :test do
+  gem 'rspec'
+  gem 'rspec-sinatra'
+  gem 'rack-test'
+  gem 'database_cleaner-active_record'
+end
