@@ -7,16 +7,17 @@ require 'dotenv/load'
 
 require './auth_middleware'
 require './helpers'
-require './models/user.rb'
-require './models/question.rb'
-require './models/option.rb'
-require './models/topic.rb'
-require './models/lesson.rb'
-require './models/qa.rb'
-require './models/exam.rb'
+require './models/user'
+require './models/question'
+require './models/option'
+require './models/topic'
+require './models/lesson'
+require './models/qa'
+require './models/exam'
 require './models/progresslesson'
 require './models/level'
 require './models/material'
+require './models/country'
 
 enable :sessions
 set :database_file, './config/database.yml'
@@ -109,6 +110,7 @@ end
 
 
 get '/dashboard' do
+  @countries_data = Country.all
   erb :dashboard
 end
 
