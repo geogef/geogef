@@ -7,6 +7,7 @@ require './models/lesson'
 require './models/exam'
 require './models/level'
 require './models/material'
+require './models/country'
 
 Material.destroy_all
 Qa.destroy_all
@@ -15,7 +16,8 @@ Option.destroy_all
 Exam.destroy_all
 Level.destroy_all
 Lesson.destroy_all
-Topic.destroy_all   
+Topic.destroy_all
+Country.destroy_all
 
 topics_data = [
   { topic: 'Banderas' },
@@ -27,50 +29,50 @@ topics_data = [
 ]
 
 lessons_data = [
-    { 
+    {
       title: 'Lección Geografía Física',
       name_topic: 'Geografía Física',
       description: 'Esta lección abarca el estudio de las características naturales de la Tierra, incluyendo formas del terreno, cuerpos de agua, clima, suelos y vegetación.',
       num_levels: 5
     },
-    { 
+    {
       title: 'Lección Geografía Humana',
       name_topic: 'Geografía Humana',
       description: 'Esta lección explora los aspectos espaciales de la existencia humana, centrándose en temas como población, migración, cultura, urbanización y actividades económicas.',
       num_levels: 6
     },
-    { 
+    {
       title: 'Lección Geografía Política',
       name_topic: 'Geografía Política',
       description: 'Esta lección examina la organización política del mundo, incluyendo países, estados, fronteras, gobiernos y cuestiones geopolíticas.',
       num_levels: 6
     },
-    { 
+    {
       title: 'Lección Continentes',
       name_topic: 'Continentes',
       description: 'Esta lección introduce los siete continentes del mundo, sus características geográficas y poblaciones.',
       num_levels: 2
     },
-    { 
+    {
       title: 'Lección Océanos y Mares',
       name_topic: 'Océanos y Mares',
       description: 'Esta lección abarca los océanos y mares de la Tierra, incluyendo sus características físicas y ubicacíón.',
       num_levels: 3
     },
-    { 
+    {
       title: 'Lección Banderas',
       name_topic: 'Banderas',
       description: 'Esta lección explora las banderas de varios países, sus símbolos y colores.',
       num_levels: 6
     },
-    { 
+    {
       title: 'Lección Capitales',
       name_topic: 'Capitales',
       description: 'Esta lección cubre las capitales de los países del mundo.',
       num_levels: 6
     }
   ]
-  
+
 levels_data = [
   { number: 1, name: 'Nivel Geografía Física 1', lesson_title: 'Lección Geografía Física' },
   { number: 2, name: 'Nivel Geografía Física 2', lesson_title: 'Lección Geografía Física' },
@@ -192,7 +194,7 @@ questions_data = [
   { question: '¿Cuál es la definición de convección?', correct_option: 'El movimiento de fluidos, como aire o agua, causado por diferencias en la temperatura y la densidad, que transporta calor desde una fuente caliente a otra más fría.', topic: 'Geografía Física', exam_name: 'Examen Geografía Física 5' },
   { question: '¿Qué es la hidrografía?', correct_option: 'El estudio y la descripción de las aguas superficiales de la Tierra, incluyendo océanos, mares, ríos, lagos y sus características físicas y distribución.', topic: 'Geografía Física', exam_name: 'Examen Geografía Física 5' },
   { question: '¿Qué es el clima?', correct_option: 'El patrón promedio del tiempo atmosférico en un área particular, que incluye temperatura, humedad, viento y precipitación, a lo largo de un período prolongado.', topic: 'Geografía Física', exam_name: 'Examen Geografía Física 5' },
-  #Geografia Humana 
+  #Geografia Humana
   #Nivel 1
   { question: '¿Qué es la población de un área geográfica?', correct_option: 'El número total de personas que viven en esa área', topic: 'Geografía Humana', exam_name: 'Examen Geografía Humana 1' },
   { question: '¿Qué es la cultura en geografía humana?', correct_option: 'Las tradiciones y creencias compartidas por un grupo de personas', topic: 'Geografía Humana', exam_name: 'Examen Geografía Humana 1' },
@@ -301,7 +303,7 @@ questions_data = [
   { question: '¿Qué es la globalización?', correct_option: 'El proceso de interconexión e interdependencia creciente entre las economías, las sociedades y las culturas a nivel mundial', topic: 'Geografía Política', exam_name: 'Examen Geografía Política 6' },
   { question: '¿Qué es el nacionalismo étnico?', correct_option: 'La identificación y lealtad hacia un grupo étnico particular como base de la identidad nacional y política', topic: 'Geografía Política', exam_name: 'Examen Geografía Política 6' },
   { question: '¿Qué es la diplomacia multilateral?', correct_option: 'El proceso de negociación y cooperación entre tres o más países para abordar problemas y desafíos comunes', topic: 'Geografía Política', exam_name: 'Examen Geografía Política 6' },
-  { question: '¿Qué es un referéndum?', correct_option: 'Una votación en la que los ciudadanos expresan su opinión sobre una cuestión específica, generalmente de importancia nacional', topic: 'Geografía Política', exam_name: 'Examen Geografía Política 6' },  
+  { question: '¿Qué es un referéndum?', correct_option: 'Una votación en la que los ciudadanos expresan su opinión sobre una cuestión específica, generalmente de importancia nacional', topic: 'Geografía Política', exam_name: 'Examen Geografía Política 6' },
   #Continentes
   #Nivel 1
   { question: '¿Dónde se encuentra principalmente el continente de África?', correct_option: 'Mayormente en el hemisferio sur, extendiéndose desde el océano Atlántico en el oeste hasta el océano Índico en el este.', topic: 'Continentes', exam_name: 'Examen Continentes 1' },
@@ -518,7 +520,7 @@ options_data = [
   { response: 'Plovdiv', topic: 'Banderas' },
   { response: 'Košice', topic: 'Banderas' },
   { response: 'Zadar', topic: 'Banderas' },
-  { response: 'Tarija', topic: 'Banderas' },        
+  { response: 'Tarija', topic: 'Banderas' },
   { response: 'Una entidad política soberana con un territorio definido y un gobierno', topic: 'Geografía Física' },
   { response: 'Una montaña o colina formada por la acumulación de materiales expulsados desde el interior de la Tierra', topic: 'Geografía Física' },
   { response: 'Centro administrativo y político de un país o estado', topic: 'Geografía Política' },
@@ -531,7 +533,7 @@ options_data = [
   { response: 'Un golfo es una formación geográfica compuesta por tierras altas y montañas.', topic: 'Geografía Física' },
   { response: 'Una isla es una extensión de tierra que no está rodeada por agua.', topic: 'Geografía Física' },
   { response: 'Un río es una formación geológica que se encuentra bajo tierra.', topic: 'Geografía Física' },
-  { response: 'Las placas tectónicas en geografía física son formaciones de hielo en los polos terrestres.', topic: 'Geografía Física' }, 
+  { response: 'Las placas tectónicas en geografía física son formaciones de hielo en los polos terrestres.', topic: 'Geografía Física' },
   { question: '¿Qué es la meteorización?', correct_option: 'El proceso de descomposición y desgaste de rocas y suelo debido a factores como el clima y la acción biológica', topic: 'Geografía Física' },
   { question: '¿Qué son las montañas?', correct_option: 'Elevaciones naturales del terreno que se caracterizan por su altura y relieve escarpado', topic: 'Geografía Física' },
   { question: '¿Qué es la tundra?', correct_option: 'Un bioma frío y árido caracterizado por suelos congelados y vegetación escasa, como musgos y líquenes', topic: 'Geografía Física' },
@@ -551,7 +553,7 @@ options_data = [
   { response: 'La pobreza se define como el acceso abundante a recursos básicos como alimentos, vivienda y educación.', topic: 'Human Geography' },
   { response: 'La diversidad cultural se refiere a la homogeneidad cultural dentro de una sociedad.', topic: 'Human Geography' },
   { response: 'La gentrificación es el proceso de renovación urbana que a menudo resulta en la mejora de la calidad de vida de los residentes de bajos ingresos.', topic: 'Human Geography' },
-  { response: 'La migración se refiere al proceso de inmovilización de personas dentro de un mismo lugar.', topic: 'Human Geography' },  
+  { response: 'La migración se refiere al proceso de inmovilización de personas dentro de un mismo lugar.', topic: 'Human Geography' },
   { response: 'Es un continente pequeño ubicado en el hemisferio sur, rodeado principalmente por el océano Índico.', topic: 'Continentes' },
   { response: 'Este continente se encuentra en el hemisferio norte y está rodeado principalmente por el océano Atlántico y el océano Pacífico.', topic: 'Continentes' },
   { response: 'Ubicado en el hemisferio sur, este continente limita con Europa y África al norte.', topic: 'Continentes' },
@@ -873,7 +875,7 @@ materials_data = [
   { content: 'Esta bandera le pertenece a India', topic: 'Banderas', level: 'Nivel Banderas 5', imagepath: 'images/flags/in.svg' },
   { content: 'Esta bandera le pertenece a Irán', topic: 'Banderas', level: 'Nivel Banderas 5', imagepath: 'images/flags/ir.svg' },
   { content: 'Esta bandera le pertenece a Israel', topic: 'Banderas', level: 'Nivel Banderas 5', imagepath: 'images/flags/il.svg' },
-  #Nivel 
+  #Nivel
   { content: 'Esta bandera le pertenece a Jamaica', topic: 'Banderas', level: 'Nivel Banderas 6', imagepath: 'images/flags/jm.svg' },
   { content: 'Esta bandera le pertenece a Países Bajos', topic: 'Banderas', level: 'Nivel Banderas 6', imagepath: 'images/flags/nl.svg' },
   { content: 'Esta bandera le pertenece a Nueva Zelanda', topic: 'Banderas', level: 'Nivel Banderas 6', imagepath: 'images/flags/nz.svg' },
@@ -884,8 +886,88 @@ materials_data = [
   { content: 'Esta bandera le pertenece a Arabia Saudita', topic: 'Banderas', level: 'Nivel Banderas 6', imagepath: 'images/flags/sa.svg' }
 ]
 
+# list of somo countries whith interesting facts
+countries_data = [
+  {
+    name: "Argentina",
+    flag_url: "images/flags/ar.svg",
+    population: 45195777,
+    surface_area: 2780400,
+    capital: "Buenos Aires",
+    currency: "Peso argentino",
+    languages: "Español",
+    interesting_fact: "Argentina es el segundo país más grande de América del Sur."
+  },
+  {
+    name: "Brasil",
+    flag_url: "images/flags/br.svg",
+    population: 213418000,
+    surface_area: 8515767,
+    capital: "Brasilia",
+    currency: "Real brasileño",
+    languages: "Portugués",
+    interesting_fact: "Brasil alberga la selva amazónica, la más grande del mundo."
+  },
+  {
+    name: "Chile",
+    flag_url: "images/flags/cl.svg",
+    population: 19107216,
+    surface_area: 756950,
+    capital: "Santiago",
+    currency: "Peso chileno",
+    languages: "Español",
+    interesting_fact: "Chile es uno de los países más largos del mundo de norte a sur."
+  },
+  {
+    name: "Colombia",
+    flag_url: "images/flags/co.svg",
+    population: 50372424,
+    surface_area: 1141748,
+    capital: "Bogotá",
+    currency: "Peso colombiano",
+    languages: "Español",
+    interesting_fact: "Colombia es el segundo país más biodiverso del mundo después de Brasil."
+  },
+  {
+    name: "México",
+    flag_url: "images/flags/mx.svg",
+    population: 126190788,
+    surface_area: 1964375,
+    capital: "Ciudad de México",
+    currency: "Peso mexicano",
+    languages: "Español",
+    interesting_fact: "México tiene la pirámide más grande del mundo, la Pirámide del Sol en Teotihuacán."
+  },
+  {
+    name: "Perú",
+    flag_url: "images/flags/pe.svg",
+    population: 32510453,
+    surface_area: 1285216,
+    capital: "Lima",
+    currency: "Sol peruano",
+    languages: "Español",
+    interesting_fact: "Perú fue el hogar del Imperio Inca, una de las civilizaciones antiguas más importantes."
+  }
+]
+
+# create countries data
+countries_data.each do |c|
+
+  Country.create!(
+    name: c[:name],
+    flag_url: c[:flag_url],
+    population: c[:population],
+    surface_area: c[:surface_area],
+    capital: c[:capital],
+    currency: c[:currency],
+    languages: c[:languages],
+    interesting_fact: c[:interesting_fact]
+  )
+
+end
+
 #Create topics
-topics_data.each do |data| 
+topics_data.each do |data|
   topic = Topic.find_or_create_by(topic: data[:topic])
 end
 
@@ -944,20 +1026,20 @@ questions_data.each do |q_data|
   next unless topic
 
   correct_option = Option.find_or_create_by(response: q_data[:correct_option], topics_id: topic.id)
-  
+
   if (q_data[:imagepath] != nil)
-    question = Question.find_or_create_by(question: '¿A qué país pertenece esta bandera?', topic_id: topic.id)    
+    question = Question.find_or_create_by(question: '¿A qué país pertenece esta bandera?', topic_id: topic.id)
     Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath])
   else
     question = Question.create!(question: q_data[:question], topic_id: topic.id)
     exam = Exam.find_by(name: q_data[:exam_name])
     Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath], exam_id: exam&.id)
   end
-  
+
 end
 
 #Create options
-options_data.each do |o_data| 
+options_data.each do |o_data|
   topic = Topic.find_by(topic: o_data[:topic])
   next unless topic
 
@@ -981,7 +1063,7 @@ end
 
 levels = Level.all
 materials = Material.all
-levels.each do |l|  
+levels.each do |l|
   materials = materials_data.select { |q| q[:level] == l[:name] }
   materials.each do |m|
     materials_list = Material.find_or_create_by(content: m[:content])
