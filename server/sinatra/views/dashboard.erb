@@ -1,139 +1,256 @@
 <% @title =  "Dashboard" %>
 
-<div class="header py-8 px-4 mb-4 bg-white text-center rounded-b-lg shadow-md">
-      <nav class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-        <div class="logo mb-4 md:mb-0">
-            <img src="images/logo.png" alt="Perfil" class="max-w-20 mx-auto md:mx-0">
-        </div>
-        <div class="flex-grow text-center mb-4 md:mb-0">
-            <h1 class="text-4xl font-bold text-gray-900">¡Descubre el Mundo!</h1>
-            <p class="text-lg text-gray-600">Explora, aprende y déjate llevar por la curiosidad</p>
-        </div>
-        <div class="nav-links">
-            <a href="/lessons_details" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 md:py-3 md:px-6 rounded-full shadow-md transition duration-300 text-sm md:text-base block md:inline-block">COMENZAR A APRENDER</a>
-        </div>
-    </nav>
-</div>
+	<div class="header py-8 px-4 mb-4 bg-white text-center rounded-b-lg shadow-md">
+		<nav class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+			<div class="logo mb-4 md:mb-0">
+				<img src="images/logo.png" alt="Perfil" class="max-w-20 mx-auto md:mx-0">
+			</div>
+			<div class="flex-grow text-center mb-4 md:mb-0">
+				<h1 class="text-4xl font-bold text-gray-900">¡Descubre el Mundo!</h1>
+				<p class="text-lg text-gray-600">Explora, aprende y déjate llevar por la curiosidad</p>
+			</div>
+			<div class="nav-links">
+				<a href="/lessons_details" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 md:py-3 md:px-6 rounded-full shadow-md transition duration-300 text-sm md:text-base block md:inline-block">COMENZAR A APRENDER</a>
+			</div>
+		</nav>
+	</div>
 
-<div id="side-buttons" class="fixed top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-50 flex flex-col gap-4 hidden md:flex">
-    <a href="/profile" class="bg-blue-200 hover:bg-blue-400 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full">
+	<div id="side-buttons" class="fixed top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-0 flex flex-col gap-4 hidden md:flex">
+		<a href="/profile" class="bg-blue-200 hover:bg-blue-400 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full">
         Perfil
     </a>
-    <a href="https://es.wikipedia.org/wiki/Geograf%C3%ADa" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
-        <img src="images/world_icon.png" alt="¿Qué es la geografía" class="w-12 h-12 rounded-full">
-    </a>
-    <a href="https://www.repsol.com/es/energia-futuro/futuro-planeta/como-cuidar-el-medio-ambiente/index.cshtml" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
-        <img src="images/medioambiente.png" alt="Cuidemos el planeta" class="w-12 h-12 rounded-full">
-    </a>
-    <a href="https://librosparaimaginar.com.mx/wp-content/uploads/2020/03/InterioresElGranPoder.pdf" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
-        <img src="images/tree.png" alt="Naturaleza" class="w-12 h-12 rounded-full">
-    </a>
-</div>
+		<a href="https://es.wikipedia.org/wiki/Geograf%C3%ADa" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
+			<img src="images/world_icon.png" alt="¿Qué es la geografía" class="w-12 h-12 rounded-full">
+		</a>
+		<a href="https://www.repsol.com/es/energia-futuro/futuro-planeta/como-cuidar-el-medio-ambiente/index.cshtml" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
+			<img src="images/medioambiente.png" alt="Cuidemos el planeta" class="w-12 h-12 rounded-full">
+		</a>
+		<a href="https://librosparaimaginar.com.mx/wp-content/uploads/2020/03/InterioresElGranPoder.pdf" class="bg-white hover:bg-gray-200 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full" target="_blank">
+			<img src="images/tree.png" alt="Naturaleza" class="w-12 h-12 rounded-full">
+		</a>
+	</div>
 
-<div class="container mx-auto flex flex-col md:flex-row gap-8">
-    <div class="w-full md:w-1/2 bg-white bg-opacity-80 p-4 rounded-xl shadow-md">
-        <div id="map" class="h-96"></div>
-    </div>
+	<div class="container mx-auto flex flex-col md:flex-row gap-8">
+		<div class="w-full md:w-1/2 bg-white bg-opacity-80 p-4 rounded-xl shadow-md">
+			<div id="map" class="h-96 z-0"></div>
+		</div>
 
-    <div class="w-full md:w-1/2 bg-white bg-opacity-80 p-4 rounded-xl shadow-md">
-        <div id="curious-facts" class="space-y-4"></div>
-    </div>
-</div>
+		<div class="w-full md:w-1/2 bg-white bg-opacity-80 p-4 rounded-xl shadow-md">
+			<div id="curious-facts" class="space-y-4"></div>
+		</div>
+	</div>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var map = L.map('map').setView([0, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+	<div id="countryModal" class="fixed z-100 inset-0 overflow-y-auto hidden bg-gray-800 bg-opacity-75 transition-all duration-300">
+		<div class="flex items-center justify-center min-h-screen px-4 text-center">
+			<div class="relative bg-white rounded-lg shadow-xl transform max-w-lg w-full overflow-hidden">
+				<div class="bg-white p-6 flex flex-col">
+					<img src="images/logo.png" class="w-36 mb-8 mx-auto" alt="App Logo">
+					<h1 class="text-3xl font-bold text-center mb-4">¡SABÍAS QUÉ?</h1>
+					<h2 id="modal-country-name" class="text-xl font-bold text-center mb-4"></h2>
 
-        var curiousFacts = [
-              { title: 'Altitud del Monte Everest', fact: '8,848 metros' },
-              { title: 'Punto más profundo del océano', fact: 'La fosa de las Marianas, 10,994 metros' },
-              { title: 'País más grande del mundo por área', fact: 'Rusia' },
-              { title: 'Río más largo del mundo', fact: 'El río Amazonas, con una longitud aproximada de 6,400 km' },
-              { title: 'Lago más grande del mundo por área de superficie', fact: 'El mar Caspio' },
-              { title: 'Ciudad más poblada del mundo', fact: 'Tokio, Japón' },
-              { title: 'Ciudad más alta del mundo', fact: 'La Rinconada, Perú' },
-              { title: 'País más pequeño del mundo', fact: 'Ciudad del Vaticano' },
-              { title: 'Desierto más grande del mundo', fact: 'El desierto de Antártida' },
-              { title: 'Montaña más alta fuera del sistema Himalaya', fact: 'El monte Aconcagua en Argentina, con 6,959 metros de altura' },
-              { title: 'Volcán más alto del mundo', fact: 'El volcán Ojos del Salado en la frontera entre Argentina y Chile, con 6,893 metros de altura' },
-              { title: 'Lago más profundo del mundo', fact: 'El lago Baikal en Rusia, con 1,642 metros de profundidad' },
-              { title: 'Lago más salado del mundo', fact: 'El mar Muerto' },
-              { title: 'País con más islas', fact: 'Suecia' },
-              { title: 'País sin ríos', fact: 'Arabia Saudita' },
-              { title: 'Río más caudaloso del mundo', fact: 'El río Amazonas' },
-              { title: 'Río más corto del mundo', fact: 'El río Roe en el estado de Montana, EE. UU., con solo 61 metros de longitud' },
-              { title: 'Ciudad más antigua del mundo', fact: 'Damasco, Siria' },
-              { title: 'País más densamente poblado del mundo', fact: 'Mónaco' },
-              { title: 'País más plano del mundo', fact: 'Maldivas' },
-              { title: 'País con más volcanes', fact: 'Indonesia' },
-              { title: 'País con más fronteras internacionales', fact: 'China' },
-              { title: 'País con más idiomas oficiales', fact: 'Zimbabue' },
-              { title: 'Río más ancho del mundo', fact: 'El río Amazonas' },
-              { title: 'Mayor isla del mundo', fact: 'Groenlandia' },
-              { title: 'País más llano del mundo', fact: 'Maldivas' },
-              { title: 'País con más lagos', fact: 'Canadá' },
-              { title: 'País con más variedad de climas', fact: 'Brasil' },
-              { title: 'País más montañoso del mundo', fact: 'Bután' },
-              { title: 'País con más tiempo en horas de sol al año', fact: 'Níger' },
-              { title: 'País con más ríos', fact: 'Bangladesh' },
-              { title: 'País con más tiempo en horas de luz al día', fact: 'Finlandia' },
-              { title: 'País con más ciudades elevadas a más de 3,000 metros', fact: 'Bolivia' },
-              { title: 'País más pequeño de América Latina', fact: 'San Cristóbal y Nieves' },
-              { title: 'País más pequeño de Europa', fact: 'Vaticano' },
-              { title: 'País más grande de América del Sur', fact: 'Brasil' },
-              { title: 'País con más variedad de climas', fact: 'Chile' },
-              { title: 'País con más islas', fact: 'Suecia' },
-              { title: 'País con mayor cantidad de lagos', fact: 'Finlandia' },
-              { title: 'País con mayor cantidad de ríos', fact: 'Bangladesh' },
-              { title: 'País con mayor cantidad de montañas', fact: 'Nepal' },
-              { title: 'País con mayor cantidad de desiertos', fact: 'Australia' },
-              { title: 'País con más fronteras terrestres', fact: 'China' },
-              { title: 'País con más tiempo de luz solar al año', fact: 'Brasil' },
-              { title: 'País con más diversidad de paisajes', fact: 'México' },
-              { title: 'País con más islas volcánicas', fact: 'Indonesia' },
-              { title: 'País con la mayor concentración de ríos', fact: 'Bangladesh' },
-              { title: 'País con la mayor variedad de climas', fact: 'Brasil' },
-              { title: 'País con la mayor altitud promedio', fact: 'Bután' }
-        ];
+					<div class="grid grid-cols-2 gap-4 mb-8">
+						<div id="svg-container" class="w-36  bg-gray-100 rounded-lg shadow-md p-4 flex items-center justify-center"></div>
+						<div class="bg-gray-100 rounded-lg shadow-md p-4 text-center">
+							<p id="modal-country-capital" class="text-gray-600 font-bold mb-2">Capital:</p>
+						</div>
+					</div>
 
-        function createCuriousFactCard(title, fact) {
-            return `<div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold">${title}</h2>
-                        <p class="text-gray-700">${fact}</p>
-                    </div>`;
-        }
+					<div class="grid grid-cols-2 gap-4 mb-8">
+						<div class="bg-gray-100 rounded-lg shadow-md p-4 text-center">
+							<p id="modal-country-population" class="text-gray-600 font-bold mb-2">Población:</p>
+						</div>
+						<div class="bg-gray-100 rounded-lg shadow-md p-4 text-center">
+							<p id="modal-country-surface-area" class="text-gray-600 font-bold mb-2">Superficie:</p>
+						</div>
+					</div>
 
-        function updateCuriousFacts() {
-            var factsContainer = document.getElementById('curious-facts');
-            factsContainer.innerHTML = '';
-            for (var i = 0; i < 4; i++) {
-                var randomIndex = Math.floor(Math.random() * curiousFacts.length);
-                var fact = curiousFacts[randomIndex];
-                var card = createCuriousFactCard(fact.title, fact.fact);
-                factsContainer.insertAdjacentHTML('beforeend', card);
-            }
-        }
+					<div class="grid grid-cols-2 gap-4 mb-8">
+						<div class="bg-gray-100 rounded-lg shadow-md p-4 text-center">
+							<p id="modal-country-currency" class="text-gray-600 font-bold mb-2">Moneda:</p>
+						</div>
+						<div class="bg-gray-100 rounded-lg shadow-md p-4 text-center">
+							<p id="modal-country-languages" class="text-gray-600 font-bold mb-2">Idiomas:</p>
 
-        updateCuriousFacts();
+						</div>
+					</div>
 
-        function showNextCard() {
-            var cards = document.querySelectorAll('#curious-facts .bg-white');
-            cards.forEach(function (card) {
-                card.style.opacity = 0;
-                setTimeout(function () {
-                    card.remove();
-                    updateCuriousFacts();
-                }, 300);
+					<div class="bg-gray-100 rounded-lg shadow-md p-4 text-center mb-8">
+						<p id="modal-country-interesting-fact" class="text-gray-600 font-bold mb-2">Dato Curioso:</p>
+					</div>
+
+					<button id="closeModalBtn" class="text-blue-500 font-bold text-lg">cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the map
+    var map = L.map('map').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Function to handle map click event
+    function onMapClick(e) {
+        // Get the coordinates of the click
+        var latlng = e.latlng;
+
+        // Use OpenStreetMap's Nominatim API to get reverse location information
+        var url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + latlng.lat + '&lon=' + latlng.lng;
+
+        // Make a GET request using fetch
+        fetch(url)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                // The country name will be in data.address.country
+                var country = data.address.country;
+                showCountryData(country)
             });
+    }
+
+    // Function to show country data
+
+    function showCountryData(countryName) {
+        const countriesData = <%= @countries_data.to_json %>;
+        const country = countriesData.find(country => country.name === countryName);
+
+        if (country) {
+            document.getElementById('modal-country-name').textContent = `${country.name}`;
+            document.getElementById('modal-country-capital').textContent = `Capital: ${country.capital}`;
+            document.getElementById('modal-country-population').textContent = `Población: ${country.population}`;
+            document.getElementById('modal-country-surface-area').textContent = `Área: ${country.surface_area} km²`;
+            document.getElementById('modal-country-currency').textContent = `Moneda: ${country.currency}`;
+            document.getElementById('modal-country-languages').textContent = `Idioma(s): ${country.languages}`;
+            document.getElementById('modal-country-interesting-fact').textContent = `Dato curioso: ${country.interesting_fact}`;
+            const svgUrl = country.flag_url; // Assuming corrected file extension
+
+            fetch(svgUrl)
+                .then(response => response.text()) // Parse the response as text
+                .then(svgData => {
+                    const svgContainer = document.getElementById('svg-container');
+                    svgContainer.innerHTML = svgData; // Inject the SVG data into the container
+                })
+                .catch(error => {
+                    console.error('Error fetching SVG:', error);
+                    // Handle the error gracefully
+                });
+            // Show the modal
+            document.getElementById('countryModal').classList.remove('hidden');
+        } else {
+            console.log("País no encontrado.");
         }
+    }
 
-        setInterval(showNextCard, 10000);
+    // Function to close the modal
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        document.getElementById('countryModal').classList.add('hidden');
     });
-</script>
 
+    // Close the modal when clicking outside the modal content
+    document.getElementById('countryModal').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('countryModal')) {
+            document.getElementById('countryModal').classList.add('hidden');
+        }
+    });
+    
+    map.on('click', onMapClick);
+    
+    // Array of curious facts
+    var curiousFacts = [
+        { title: 'Altitude of Mount Everest', fact: '8,848 meters' },
+        { title: 'Deeper point in the ocean', fact: 'The Mariana Trench, 10,994 meters' },
+        { title: 'Largest country in the world by area', fact: 'Russia' },
+        { title: 'Longest river in the world', fact: 'The Amazon River, with an approximate length of 6,400 km' },
+        { title: 'Largest lake in the world by surface area', fact: 'The Caspian Sea' },
+        { title: 'Most populous city in the world', fact: 'Tokyo, Japan' },
+        { title: 'Highest city in the world', fact: 'La Rinconada, Peru' },
+        { title: 'Smallest country in the world', fact: 'Vatican City' },
+        { title: 'Largest desert in the world', fact: 'The Antarctic Desert' },
+        { title: 'Highest mountain outside the Himalaya system', fact: 'Mount Aconcagua in Argentina, with a height of 6,959 meters' },
+        { title: 'Highest volcano in the world', fact: 'The Ojos del Salado volcano on the border between Argentina and Chile, with a height of 6,893 meters' },
+        { title: 'Deeper lake in the world', fact: 'Lake Baikal in Russia, with a depth of 1,642 meters' },
+        { title: 'Saltiest lake in the world', fact: 'The Dead Sea' },
+        { title: 'Country with the most islands', fact: 'Sweden' },
+        { title: 'Country without rivers', fact: 'Saudi Arabia' },
+        { title: 'Most voluminous river in the world', fact: 'The Amazon River' },
+        { title: 'Shortest river in the world', fact: 'The Roe River in the state of Montana, USA, with a length of only 61 meters' },
+        { title: 'Oldest city in the world', fact: 'Damascus, Syria' },
+        { title: 'Most densely populated country in the world', fact: 'Monaco' },
+        { title: 'Flattest country in the world', fact: 'Maldives' },
+        { title: 'Country with the most volcanoes', fact: 'Indonesia' },
+        { title: 'Country with the most international borders', fact: 'China' },
+        { title: 'Country with the most official languages', fact: 'Zimbabwe' },
+        { title: 'Widest river in the world', fact: 'The Amazon River' },
+        { title: 'Largest island in the world', fact: 'Greenland' },
+        { title: 'Flattest country in the world', fact: 'Maldives' },
+        { title: 'Country with the most lakes', fact: 'Canada' },
+        { title: 'Country with the most variety of climates', fact: 'Brazil' },
+        { title: 'Most mountainous country in the world', fact: 'Bhutan' },
+        { title: 'Country with the most hours of sunshine per year', fact: 'Niger' },
+        { title: 'Country with the most rivers', fact: 'Bangladesh' },
+        { title: 'Country with the most hours of daylight per day', fact: 'Finland' },
+        { title: 'Country with the most cities elevated to over 3,000 meters', fact: 'Bolivia' },
+        { title: 'Smallest country in Latin America', fact: 'Saint Kitts and Nevis' },
+        { title: 'Smallest country in Europe', fact: 'Vatican City' },
+        { title: 'Largest country in South America', fact: 'Brazil' },
+        { title: 'Country with the most variety of climates', fact: 'Chile' },
+        { title: 'Country with the most islands', fact: 'Sweden' },
+        { title: 'Country with the most lakes', fact: 'Finland' },
+        { title: 'Country with the most rivers', fact: 'Bangladesh' },
+        { title: 'Country with the most mountains', fact: 'Nepal' },
+        { title: 'Country with the most deserts', fact: 'Australia' },
+        { title: 'Country with the most land borders', fact: 'China' },
+        { title: 'Country with the most sunlight per year', fact: 'Brazil' },
+        { title: 'Country with the most diversity of landscapes', fact: 'Mexico' },
+        { title: 'Country with the most volcanic islands', fact: 'Indonesia' },
+        { title: 'Country with the highest concentration of rivers', fact: 'Bangladesh' },
+        { title: 'Country with the most variety of climates', fact: 'Brazil' },
+        { title: 'Country with the highest average altitude', fact: 'Bhutan' }
+    ];
+
+    // Function to create a curious fact card
+    function createCuriousFactCard(title, fact) {
+        return `<div class="bg-white p-4 rounded-lg shadow-md">
+				                        <h2 class="text-xl font-bold">${title}</h2>
+				                        <p class="text-gray-700">${fact}</p>
+				                    </div>`;
+    }
+
+    // Function to update the displayed curious facts
+    function updateCuriousFacts() {
+        var factsContainer = document.getElementById('curious-facts');
+        factsContainer.innerHTML = '';
+        for (var i = 0; i < 4; i++) {
+            var randomIndex = Math.floor(Math.random() * curiousFacts.length);
+            var fact = curiousFacts[randomIndex];
+            var card = createCuriousFactCard(fact.title, fact.fact);
+            factsContainer.insertAdjacentHTML('beforeend', card);
+        }
+    }
+
+    // Update the curious facts initially
+    updateCuriousFacts();
+
+    // Function to show the next curious fact card
+    function showNextCard() {
+        var cards = document.querySelectorAll('#curious-facts .bg-white');
+        cards.forEach(function(card) {
+            card.style.opacity = 0;
+            setTimeout(function() {
+                card.remove();
+                updateCuriousFacts();
+            }, 300);
+        });
+    }
+    // Show the next curious fact card every 10 seconds
+    setInterval(showNextCard, 10000);
+});
+	</script>
