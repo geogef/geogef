@@ -23,11 +23,10 @@ class User < ActiveRecord::Base
     self.password == input_password
   end
 
-  def update_streak (current_streak)
-    if self.update(current_streak: current_streak)
-      if self.highest_streak < current_streak
-        self.update(highest_streak: current_streak)
-      end
+  def update_streak(current_streak)
+    self.update(current_streak: current_streak)
+    if self.highest_streak < current_streak
+      self.update(highest_streak: current_streak)
     end
   end
 
@@ -44,7 +43,7 @@ class User < ActiveRecord::Base
   def init
     self.app_progress ||= 0.0
     self.highest_streak ||= 0
-    self.current_streak ||=0
+    self.current_streak ||= 0
     self.completed_lessons ||= 0
     self.geogems ||= 0
   end
