@@ -51,7 +51,7 @@ post '/login' do
     session[:user_id] = user.id
     redirect '/dashboard'
   else
-    erb :login, locals: {
+    erb :login, layout: :login, locals: {
       error: 'Invalid username or password.'
     }
   end
@@ -72,25 +72,25 @@ post '/signup' do
      email.empty? ||
      password.empty? ||
      password_confirmation.empty?
-    return erb :signup, locals: {
+    return erb :signup, layout: :signup, locals: {
       error: 'All fields are required.'
     }
   end
 
   if User.find_by(username: username)
-    return erb :signup, locals: {
+    return erb :signup, layout: :signup, locals: {
       error: 'Username already exists.'
     }
   end
 
   if User.find_by(email: email)
-    return erb :signup, locals: {
+    return erb :signup, layout: :signup, locals: {
       error: 'Another account with this email already exists'
     }
   end
 
   if password != password_confirmation
-    return erb :signup, locals: {
+    return erb :signup, layout: :signup, locals: {
       error: 'Passwords do not match.'
     }
   end
@@ -101,7 +101,7 @@ post '/signup' do
     session[:user_id] = user.id
     redirect '/dashboard'
   else
-    erb :signup, locals: {
+    erb :signup, layout: :signup, locals: {
       error: 'Failed to create user.'
     }
   end
