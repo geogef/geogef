@@ -65,6 +65,37 @@
             height: auto;
             z-index: 50;
         }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #888;
+        }
     </style>
 </head>
 
@@ -99,13 +130,13 @@
                 <div class="hidden lg:flex lg:gap-x-12">
                     <a href="https://forms.gle/sksYgutNhn4soYV89"
                     class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Contact
+                    Contacto
                     </a>                                 
-                    <a href="https://github.com/eg-v/project-geography" target="_blank" class="menu-button text-sm font-semibold leading-6 text-gray-900">About Us</a>
+                    <a href="#" id="donation-button" class="menu-button text-sm font-semibold leading-6 text-gray-900">Donaciones</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                     <a href="/login"
-                        class="text-sm font-semibold leading-6 text-gray-900 bg-gray-200 py-2 px-4 rounded-md hover:bg-gray-300">Sign In <span aria-hidden="true">&rarr;</span></a>
+                        class="text-sm font-semibold leading-6 text-gray-900 bg-gray-200 py-2 px-4 rounded-md hover:bg-gray-300">Ingresar <span aria-hidden="true">&rarr;</span></a>
                 </div>
             </nav>
             <%# Mobile menu, show/hide based on menu open state. %>
@@ -119,7 +150,7 @@
                             <span class="sr-only">Geogef</span>
                         </a>
                         <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                            <span class="sr-only">Close menu</span>
+                            <span class="sr-only">Cerrar menu</span>
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -131,14 +162,14 @@
                             <div class="space-y-2 py-6">
                                 <a href="https://forms.gle/sksYgutNhn4soYV89"
                                 class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                                Contact
+                                Contacto
                                 </a>                         
                                 <a href="#"
-                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">About Us</a>
+                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Donaciones</a>
                             </div>
                             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                                 <a href="/login"
-                                    class="text-lg xl:text-xl font-semibold leading-6 text-gray-900">Sign In <span
+                                    class="text-lg xl:text-xl font-semibold leading-6 text-gray-900">Ingresar <span
                                         aria-hidden="true">
                                     </a>
                             </div>
@@ -152,18 +183,65 @@
                 <div class="bottom-left flex flex-col items-start">
                     <%# 'Get Started' button %>
                     <a href="/signup"
-                        class="get-started-button rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-4">Get Started</a>
+                        class="get-started-button rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-4">Comenzar</a>
                     <%# GitHub link button %>
                     <a href="https://github.com/eg-v/project-geography/blob/main/README.md"
                         class="menu-button text-sm font-semibold leading-6 text-gray-900 bg-white px-3.5 py-2.5 rounded-md hover:bg-gray-100" target="_blank">GitHub <span aria-hidden="true">→</span></a>
                 </div>
             </div>
         </div>
-
+            <div id="donation-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2 class="text-xl font-semibold mb-4">¡Ayúdanos con tu donación!</h2>
+                    <p class="mb-4">Escanee el código QR con su aplicación de pago bitcoin para donar.</p>
+                    <img src="images/qrbitcoin.jpeg" alt="Código QR de donación" class="mx-auto mb-4">
+                    <p class="text-sm text-gray-500">Dirección: bc1qhwfvk3k8jpxjg8c0dt6md25y3qlkwmvgcmzw39</p>
+                    <p class="text-sm text-gray-500">Su apoyo es crucial para nuestro proyecto. ¡Gracias por donar!</p>
+                </div>
+            </div>
         <%# Footer section %>
         <footer class="footer">
             <p>&copy; 2024 Geogef. Licensed under the GPL-3 License.</p>
         </footer>
+        <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Selección de elementos del DOM
+        const donationButton = document.getElementById('donation-button');
+        const closeModal = document.querySelector('.close-modal');
+        const modal = document.getElementById('donation-modal');
+
+        // Función para mostrar el modal
+        function showModal() {
+            modal.style.display = 'flex';
+        }
+
+        // Función para ocultar el modal
+        function hideModal() {
+            modal.style.display = 'none';
+        }
+
+        // Evento al hacer clic en el botón de donaciones para mostrar el modal
+        donationButton.addEventListener('click', showModal);
+
+        // Evento al hacer clic en la "x" para cerrar el modal
+        closeModal.addEventListener('click', hideModal);
+
+        // Evento para cerrar el modal al hacer clic fuera del área del modal
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+
+        // Evento para cerrar el modal al presionar la tecla ESC
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                hideModal();
+            }
+        });
+    });
+</script>
     </body>
 
 </html>
