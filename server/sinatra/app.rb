@@ -114,12 +114,12 @@ get '/dashboard' do
   erb :dashboard
 end
 
-get '/lessons_details' do
+get '/lessons' do
   @lessons = Lesson.all
   erb :lessons_details
 end
 
-get '/lessons_levels' do
+get '/lessons/levels' do
   authenticate_user
     if session[:user_id]
       @lessons = Lesson.all
@@ -133,51 +133,31 @@ get '/lessons_levels' do
     end
 end
 
-get '/lesson_levels/:lesson_id/:level' do
+get '/lessons/levels/:lesson_id/:level' do
   @lesson = Lesson.find(params[:lesson_id])
   @level = Level.find_by(number: params[:level], lesson: @lesson)
   @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
 
   if !level_unlocked?(@lesson, @level.number)
-    redirect '/lessons_levels', error: "You have not unlocked this level yet."
+    redirect '/lessons/levels', error: "You have not unlocked this level yet."
   else
     erb :level
   end
 end
 
-get '/lessons_levels/:lesson_id/levels/:level_id' do
-  @lesson = Lesson.find(params[:lesson_id])
-  @level = Level.find(params[:level_id])
-  erb :'level'
-end
-
-get '/lesson_level/:lesson_id/:level_number' do
-  lesson_id = params[:lesson_id]
-  level_number = params[:level_number]
-
-  lesson = Lesson.find(lesson_id)
-  level = Level.find_by(number: level_number, lesson: lesson)
-
-  if lesson && level
-    erb :level, locals: { lesson: lesson, level: level }
-  else
-    redirect '/lessons_levels', error: "Lesson or level not found."
-  end
-end
-
-get '/lessons/:lesson_id/levels/:level_id/materials' do |lesson_id, level_id|
+get '/materials/:lesson_id/:level_id' do |lesson_id, level_id|
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @materials = Material.where(level_id: level_id)
   erb :materials, locals: { lesson: @lesson, level: @level, materials: @materials }
 end
 
-get '/lessons/:lesson_id/levels/:level_id/exam' do |lesson_id, level_id|
+get '/exam/:lesson_id/:level_id' do |lesson_id, level_id|
   @publicUser = current_user.public_data
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   if not level_unlocked?(@lesson, @level.number)
-    redirect '/lessons_levels'
+    redirect '/lessons/levels'
   end
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
 
@@ -189,7 +169,6 @@ get '/profile' do
   @user = current_user
   erb :profile
 end
-
 
 get '/quiz/:exam_id' do
   @exam_id = params[:exam_id]

@@ -14,7 +14,7 @@
           <%# Check if the level is unlocked to display different styles %>
           <% if level_completed?(lesson, level) %>
             <div class="lesson-circle locked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform relative">
-            <img src="images/mundonormal.png" alt="Earth Logo" class="w-20 h-20">
+            <img src="/images/mundonormal.png" alt="Earth Logo" class="w-20 h-20">
             <div class="absolute top-0 right-0 bg-green-700 text-white rounded-full p-1">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -22,12 +22,12 @@
             </div>
           </div>
           <% elsif current_level?(lesson, level) %>
-            <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
-              <img src="images/mundonormal.png" alt="Earth Logo" class="w-20 h-20"> 
+            <a href="/lessons/levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
+              <img src="/images/mundonormal.png" alt="Earth Logo" class="w-20 h-20"> 
             </a>
           <% else %>
             <div class="lesson-circle locked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform">
-              <img src="images/mundorojo.png" alt="Earth Logo" class="w-20 h-20"> 
+              <img src="/images/mundorojo.png" alt="Earth Logo" class="w-20 h-20"> 
             </div>
           <% end %>
           <%# Display a line between levels if it's not the last level %>
