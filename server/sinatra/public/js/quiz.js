@@ -58,7 +58,7 @@ function fetchQuestionAndOptions(qaId) {
 // Function to load an SVG image from a URL
 function loadSVG(url) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, false);
+    xhr.open("GET", '/' + url, false);
     xhr.overrideMimeType("image/svg+xml");
     xhr.send(null);
 

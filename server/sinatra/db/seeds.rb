@@ -1027,14 +1027,9 @@ questions_data.each do |q_data|
 
   correct_option = Option.find_or_create_by(response: q_data[:correct_option], topics_id: topic.id)
 
-  if (q_data[:imagepath] != nil)
-    question = Question.find_or_create_by(question: '¿A qué país pertenece esta bandera?', topic_id: topic.id)
-    Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath])
-  else
-    question = Question.create!(question: q_data[:question], topic_id: topic.id)
-    exam = Exam.find_by(name: q_data[:exam_name])
-    Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath], exam_id: exam&.id)
-  end
+  question = Question.create!(question: q_data[:question], topic_id: topic.id)
+  exam = Exam.find_by(name: q_data[:exam_name])
+  Qa.create!(questions_id: question.id, options_id: correct_option.id, imagepath: q_data[:imagepath], exam_id: exam&.id)
 
 end
 
