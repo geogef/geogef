@@ -205,43 +205,43 @@
             <p>&copy; 2024 Geogef. Licensed under the GPL-3 License.</p>
         </footer>
         <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Abrir modal al hacer clic en el botón de donaciones
-            const donationButton = document.getElementById('donation-button');
-            const donationButtonMobile = document.getElementById('donation-button-mobile');
-            const modal = document.getElementById('donation-modal');
-            const closeModal = document.querySelector('.close-modal');
+    document.addEventListener('DOMContentLoaded', function () {
+        // Selección de elementos del DOM
+        const donationButton = document.getElementById('donation-button');
+        const closeModal = document.querySelector('.close-modal');
+        const modal = document.getElementById('donation-modal');
 
-            // Mostrar modal
-            function showModal() {
-                modal.style.display = 'flex';
+        // Función para mostrar el modal
+        function showModal() {
+            modal.style.display = 'flex';
+        }
+
+        // Función para ocultar el modal
+        function hideModal() {
+            modal.style.display = 'none';
+        }
+
+        // Evento al hacer clic en el botón de donaciones para mostrar el modal
+        donationButton.addEventListener('click', showModal);
+
+        // Evento al hacer clic en la "x" para cerrar el modal
+        closeModal.addEventListener('click', hideModal);
+
+        // Evento para cerrar el modal al hacer clic fuera del área del modal
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                hideModal();
             }
-
-            // Ocultar modal
-            function hideModal() {
-                modal.style.display = 'none';
-            }
-
-            // Eventos para abrir y cerrar el modal
-            donationButton.addEventListener('click', showModal);
-            donationButtonMobile.addEventListener('click', showModal);
-            closeModal.addEventListener('click', hideModal);
-
-            // Cerrar modal al hacer clic fuera del área de contenido
-            window.addEventListener('click', function (event) {
-                if (event.target === modal) {
-                    hideModal();
-                }
-            });
-
-            // Cerrar modal al presionar ESC
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') {
-                    hideModal();
-                }
-            });
         });
-        </script>
+
+        // Evento para cerrar el modal al presionar la tecla ESC
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                hideModal();
+            }
+        });
+    });
+</script>
     </body>
 
 </html>
