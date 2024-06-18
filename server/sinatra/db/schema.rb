@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_26_163927) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_17_171309) do
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.string "flag_url"
+    t.integer "population"
+    t.float "surface_area"
+    t.string "capital"
+    t.string "currency"
+    t.string "languages"
+    t.text "interesting_fact"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "exams", force: :cascade do |t|
     t.integer "duration"
     t.integer "lesson_id"
@@ -22,38 +35,36 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_163927) do
     t.index ["level_id"], name: "index_exams_on_level_id"
   end
 
-  create_table "learnings", force: :cascade do |t|
-    t.integer "level_id"
-    t.integer "topic_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["level_id"], name: "index_learnings_on_level_id"
-    t.index ["topic_id"], name: "index_learnings_on_topic_id"
-  end
-
   create_table "lessons", force: :cascade do |t|
     t.string "title"
     t.integer "topic_id"
     t.integer "lesson_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
+    t.integer "num_levels"
     t.index ["lesson_id"], name: "index_lessons_on_lesson_id"
     t.index ["topic_id"], name: "index_lessons_on_topic_id"
   end
 
   create_table "levels", force: :cascade do |t|
     t.integer "number"
+    t.integer "lesson_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.index ["lesson_id"], name: "index_levels_on_lesson_id"
   end
 
   create_table "materials", force: :cascade do |t|
     t.string "content"
-    t.integer "learning_id"
+    t.integer "level_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["learning_id"], name: "index_materials_on_learning_id"
+    t.integer "topic_id"
+    t.string "imagepath"
+    t.index ["level_id"], name: "index_materials_on_level_id"
+    t.index ["topic_id"], name: "index_materials_on_topic_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -87,12 +98,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_163927) do
 
   create_table "questions", force: :cascade do |t|
     t.string "question"
-    t.integer "topics_id"
+    t.integer "topic_id"
     t.integer "exams_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exams_id"], name: "index_questions_on_exams_id"
-    t.index ["topics_id"], name: "index_questions_on_topics_id"
+    t.index ["topic_id"], name: "index_questions_on_topic_id"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -118,20 +129,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_26_163927) do
     t.integer "geogems"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.integer "current_streak"
   end
 
   add_foreign_key "exams", "lessons"
   add_foreign_key "exams", "levels"
-  add_foreign_key "learnings", "levels"
-  add_foreign_key "learnings", "topics"
   add_foreign_key "lessons", "lessons"
   add_foreign_key "lessons", "topics"
-  add_foreign_key "materials", "learnings"
+  add_foreign_key "levels", "lessons"
+  add_foreign_key "materials", "levels"
+  add_foreign_key "materials", "topics"
   add_foreign_key "options", "topics", column: "topics_id"
   add_foreign_key "progress_lessons", "lessons"
   add_foreign_key "progress_lessons", "levels"
   add_foreign_key "progress_lessons", "users"
   add_foreign_key "qas", "exams"
   add_foreign_key "questions", "exams", column: "exams_id"
-  add_foreign_key "questions", "topics", column: "topics_id"
+  add_foreign_key "questions", "topics"
 end
