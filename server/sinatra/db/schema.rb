@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_17_171309) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_18_164116) do
   create_table "countries", force: :cascade do |t|
     t.string "name"
     t.string "flag_url"
@@ -79,6 +79,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_17_171309) do
     t.integer "user_id"
     t.integer "lesson_id"
     t.integer "level_id"
+    t.boolean "is_completed", default: false
     t.index ["lesson_id"], name: "index_progress_lessons_on_lesson_id"
     t.index ["level_id"], name: "index_progress_lessons_on_level_id"
     t.index ["user_id"], name: "index_progress_lessons_on_user_id"
@@ -104,13 +105,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_17_171309) do
     t.datetime "updated_at", null: false
     t.index ["exams_id"], name: "index_questions_on_exams_id"
     t.index ["topic_id"], name: "index_questions_on_topic_id"
-  end
-
-  create_table "rewards", force: :cascade do |t|
-    t.string "name"
-    t.integer "cost"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "topics", force: :cascade do |t|

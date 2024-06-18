@@ -266,9 +266,10 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
 
         if next_level
           progress.update(level: next_level)
-          return { message: 'Level up!', new_level: next_level.name, qas: qas }.to_json
+          return { message: 'Level up!', new_level: next_level.name }.to_json
         else
-          return { message: 'No higher level found.', qas: qas }.to_json
+          progress.update(is_completed: true)
+          return { message: 'You have completed all lessons!' }.to_json
         end
 
         return { message: 'Error' }.to_json

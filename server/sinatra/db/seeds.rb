@@ -104,7 +104,7 @@ levels_data = [
   { number: 6, name: 'Nivel Banderas 6', lesson_title: 'Lección Banderas' },
   { number: 1, name: 'Nivel Capitales 1', lesson_title: 'Lección Capitales' },
   { number: 2, name: 'Nivel Capitales 2', lesson_title: 'Lección Capitales' },
-  { number: 3, name: 'Nivel Capitales 3', lesson_title: 'Lección capitales' },
+  { number: 3, name: 'Nivel Capitales 3', lesson_title: 'Lección Capitales' },
   { number: 4, name: 'Nivel Capitales 4', lesson_title: 'Lección Capitales' },
   { number: 5, name: 'Nivel Capitales 5', lesson_title: 'Lección Capitales' },
   { number: 6, name: 'Nivel Capitales 6', lesson_title: 'Lección Capitales' }
