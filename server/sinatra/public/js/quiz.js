@@ -162,7 +162,7 @@ function checkLevelUp() {
                 <p class="text-center text-gray-600">Has respondido <span id="correct-answers">${correctAnswers}</span> preguntas correctamente.</p>
                 <p class="text-center text-gray-600">Gracias por participar.</p>
                 <div class="text-center mt-4">
-                    <a href="/lessons_levels" class="completion-message-btn">Volver a los niveles de lecciones</a>
+                    <a href="/lessons/levels" class="completion-message-btn">Volver a los niveles de lecciones</a>
                 </div>`;
 
             if (data.message === 'Level up!') {
