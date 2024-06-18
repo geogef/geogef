@@ -120,11 +120,11 @@
         });
 
         goToExamButton.addEventListener('click', function () {
-            window.location.href = '/lessons/<%= @lesson.id %>/levels/<%= @level.id %>/exam';
+            window.location.href = '/exam/<%= @lesson.id %>/<%= @level.id %>';
         });
 
         goToLevelButton.addEventListener('click', function () {
-            window.location.href = '/lessons_levels'; // Change '/levels' to correct path to all levels page
+            window.location.href = '/lessons'; // Change '/levels' to correct path to all levels page
         });
 
         document.body.appendChild(decisionContainer);
