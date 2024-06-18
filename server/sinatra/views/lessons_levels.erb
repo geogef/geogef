@@ -22,7 +22,7 @@
             </div>
           </div>
           <% elsif current_level?(lesson, level) %>
-            <a href="/lesson_levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
+            <a href="/lessons/levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
               <img src="images/mundonormal.png" alt="Earth Logo" class="w-20 h-20"> 
             </a>
           <% else %>
