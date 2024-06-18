@@ -6,6 +6,8 @@ let currentUser;
 let timerDuration = 300; //Timer duration
 let timerIntervalId; // Variable to store the ID of the active timer interval
 let timeLeft;
+let lesson;
+let level;
 
 // Styles for the exam completion message
 const completionMessageStyle = `
@@ -37,6 +39,11 @@ const completionMessageButtonHoverStyle = `
 // Function to set the current user
 function setCurrentUser(user) {
     currentUser = user;
+}
+
+function setLessonAndLevel(leson_id, level_id){
+    lesson = lesson_id;
+    level = level_id;
 }
 
 // Function to get a question and its options
@@ -162,7 +169,7 @@ function checkLevelUp() {
                 <p class="text-center text-gray-600">Has respondido <span id="correct-answers">${correctAnswers}</span> preguntas correctamente.</p>
                 <p class="text-center text-gray-600">Gracias por participar.</p>
                 <div class="text-center mt-4">
-                    <a href="/lessons/levels" class="completion-message-btn">Volver a los niveles de lecciones</a>
+                    <a href="/lessons/levels" class="completion-message-btn">Volver</a>
                 </div>`;
 
             if (data.message === 'Level up!') {
@@ -173,7 +180,7 @@ function checkLevelUp() {
                 completionMessage.innerHTML += `
                     <p class="text-center text-gray-600">${data.message}</p>
                     <div class="text-center mt-4">
-                        <a id="retry-exam" href="#" class="completion-message-btn">Volver a realizar examen</a>
+                        <a id="retry-exam" href="/exam/${lesson}/${level}" class="completion-message-btn">Volver a realizar examen</a>
                     </div>`;
                 
                 // Add event to repeat the exam

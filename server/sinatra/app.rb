@@ -156,6 +156,8 @@ get '/exam/:lesson_id/:level_id' do |lesson_id, level_id|
   @publicUser = current_user.public_data
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
+  @lesson_id = params[:lesson_id]
+  @level_id = params[:level_id]
   if not level_unlocked?(@lesson, @level.number)
     redirect '/lessons/levels'
   end
