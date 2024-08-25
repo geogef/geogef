@@ -13,6 +13,13 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+# Add SimpleCov
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/spec/' # Excluye el directorio de pruebas de la cobertura
+end
+
 require 'rack/test'
 require 'database_cleaner-active_record'
 require_relative '../app.rb'
