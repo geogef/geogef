@@ -110,9 +110,26 @@ describe 'Sinatra Project' do
       get '/logout'
 
       get "/api/qa/#{@qa1.id}"
-      
+
       expect(last_response.status).to eq(401)
       expect(last_response.body).to include('Unauthorized')
+    end
+  end
+
+  context 'GET /api/exam/:exam_id' do
+    it 'returns 404 if exam has no associated QAs' do
+      empty_exam = Exam.create(duration: 60, name: 'Empty Exam', lesson: @lesson, level: @level1)
+      get "/api/exam/#{empty_exam.id}"
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('No QAs found for the exam')
+    end
+  end
+
+  context 'GET /materials/:lesson_id/:level_id' do
+    it 'returns 404 if no materials exist for given lesson and level' do
+      get "/materials/#{@lesson.id}/#{@level1.id}"
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Materials not found')
     end
   end
 
@@ -190,7 +207,7 @@ describe 'Sinatra Project' do
     before(:each) do
       allow_any_instance_of(User).to receive(:update_completed_lessons).and_return(true)
       allow_any_instance_of(User).to receive(:update_app_progress).and_return(true)
-      
+
       post '/login', email: @user.email, password: 'password'
     end
 
@@ -217,7 +234,183 @@ describe 'Sinatra Project' do
       expect(last_response.status).to eq(400)
       expect(last_response.body).to include('User ID is required')
     end
+
+    it 'returns an error if lesson is already completed' do
+      ProgressLesson.create(user: @user, lesson: @lesson, level: @level1)
+      post '/completed_lesson', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('Lesson already completed')
+    end
+
+  end
+
+  context 'GET /profile' do
+    it 'shows user profile page' do
+      get '/profile'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include(@user.username)
+    end
+
+    it 'redirects to login if not authenticated' do
+      get '/logout'
+      get '/profile'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+  end
+
+  context 'POST /update_streak' do
+    it 'successfully updates streak' do
+      post '/update_streak', { id: @user.id, current_streak: 5 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+      expect(last_response).to be_ok
+      @user.reload
+      expect(@user.streak).to eq(5)
+    end
+
+    it 'returns 404 if user is not found' do
+      post '/update_streak', { id: 9999, current_streak: 5 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('User not found')
+    end
+
+    it 'returns 400 if streak is not provided' do
+      post '/update_streak', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('Current streak is required')
+    end
+  end
+
+  context 'GET /leaderboard' do
+    it 'shows the leaderboard with users sorted by highest streak' do
+      User.create(username: 'anotheruser', email: 'another@example.com', password: 'password', highest_streak: 10)
+      get '/leaderboard'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include(@user.username)
+      expect(last_response.body).to include('anotheruser')
+    end
+  end
+
+  context 'GET /materials/:lesson_id/:level_id' do
+    it 'shows materials for a lesson and level' do
+      Material.create(level: @level1, content: 'Material 1')
+      get "/materials/#{@lesson.id}/#{@level1.id}"
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Material 1')
+    end
+
+    it 'returns 404 if lesson_id or level_id is invalid' do
+      get "/materials/999/999"
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Materials not found')
+    end
+
+    it 'returns 404 if no materials exist for the given lesson and level' do
+      get "/materials/#{@lesson.id}/#{@level1.id}"
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Materials not found')
+    end
+  end
+
+  context 'GET /logout' do
+    it 'clears session and redirects to login' do
+      get '/logout'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+      expect(session[:user_id]).to be_nil # Verifica que la sesión se ha borrado
+    end
+  end
+
+  context 'GET /leaderboard' do
+    it 'shows leaderboard even when no users have streaks' do
+      User.delete_all # Clear users
+      get '/leaderboard'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('No users found') # Adjust based on actual behavior if no users are present
+    end
+  end
+
+  context 'GET /profile' do
+    it 'redirects to login if not authenticated' do
+      get '/logout'
+      get '/profile'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+  end
+
+  context 'POST /completed_lesson' do
+    it 'successfully updates lesson progress' do
+      post '/completed_lesson', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+      expect(last_response).to be_ok
+      @user.reload
+      expect(@user.completed_lessons).to include(@lesson) # Verificar que la lección se marcó como completada
+    end
+  end
+
+  context 'POST /update_streak' do
+    it 'returns error if user ID is missing' do
+      post '/update_streak', { current_streak: 5 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('User ID is required')
+    end
+  end
+
+  context 'GET /api/exam/:exam_id/:correct_answers' do
+    it 'returns "Not all answers are correct" when correct_answers is less than total questions' do
+      get "/api/exam/#{@exam1.id}/0"
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['message']).to eq('Not all answers are correct.')
+      expect(data['qas']).to include(@qa1.id)
+    end
+  end
+
+  context 'GET /materials/:lesson_id/:level_id' do
+    it 'returns 404 if no materials exist for given lesson and level' do
+      get "/materials/#{@lesson.id}/#{@level1.id}"
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Materials not found')
+    end
+  end
+
+  context 'GET /lessons/levels' do
+    it 'initializes progress for all lessons if none exists' do
+      ProgressLesson.destroy_all # Clear existing progress
+      get '/lessons/levels'
+      expect(last_response).to be_ok
+      expect(ProgressLesson.count).to eq(Lesson.count) # Verify progress records are created
+    end
+  end
+
+  context 'POST /signup' do
+    it 'returns error if passwords do not match' do
+      post '/signup', username: 'newuser', email: 'new@example.com', password: 'password1', 'password-confirmation': 'password2'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Passwords do not match.')
+    end
+
+    it 'returns error if any field is empty' do
+      post '/signup', username: '', email: '', password: '', 'password-confirmation': ''
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('All fields are required.')
+    end
+
+    it 'returns error if username is already taken' do
+      User.create(username: 'existinguser', email: 'existing@example.com', password: 'password', password_confirmation: 'password')
+      post '/signup', username: 'existinguser', email: 'new@example.com', password: 'password', 'password-confirmation': 'password'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Username has already been taken.')
+    end
+
+    it 'returns error if email is already taken' do
+      User.create(username: 'newuser', email: 'existing@example.com', password: 'password', password_confirmation: 'password')
+      post '/signup', username: 'anotheruser', email: 'existing@example.com', password: 'password', 'password-confirmation': 'password'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Email has already been taken.')
+    end
   end
 
 end
-
