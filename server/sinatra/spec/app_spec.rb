@@ -76,5 +76,148 @@ describe 'Sinatra Project' do
       expect(data['qas']).to include(@qa1.id)
     end
   end
+
+  context 'API Error Handling' do
+    it 'returns 404 for non-existent QA' do
+      get '/api/qa/999'
+      expect(last_response.status).to eq(404)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('QA not found')
+    end
+
+    it 'returns 404 for non-existent QA correct answer' do
+      get '/api/qa/999/correct_answer'
+      expect(last_response.status).to eq(404)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('QA record with ID 999 not found')
+    end
+
+    it 'returns 404 for non-existent exam' do
+      get '/api/exam/999'
+      expect(last_response.status).to eq(404)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('Exam not found')
+    end
+
+    it 'returns an error if the exam is not found' do
+      get "/api/exam/999/1"
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('Exam not found')
+    end
+
+    it 'returns 401 for unauthenticated access to API' do
+      get '/logout'
+
+      get "/api/qa/#{@qa1.id}"
+      
+      expect(last_response.status).to eq(401)
+      expect(last_response.body).to include('Unauthorized')
+    end
+  end
+
+  context 'GET /exam/:lesson_id/:level_id' do
+    it 'redirects if the level is not unlocked' do
+      get "/exam/#{@lesson.id}/#{@level2.id}"
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/lessons/levels')
+    end
+
+    it 'renders the exam page if the level is unlocked' do
+      get "/exam/#{@lesson.id}/#{@level1.id}"
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Roman Empire Exam')
+      expect(last_response.body).to include('Level 1')
+    end
+
+    it 'redirects if lesson_id is invalid' do
+      get "/exam/999/#{@level1.id}"
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/lessons/levels')
+    end
+
+    it 'redirects if level_id is invalid' do
+      get "/exam/#{@lesson.id}/999"
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/lessons/levels')
+    end
+  end
+
+  context 'GET /api/exam/:exam_id/:correct_answers' do
+    it 'returns "Not all answers are correct" when not all correct answers are given' do
+      get "/api/exam/#{@exam1.id}/0"
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['message']).to eq('Not all answers are correct.')
+    end
+
+    it 'returns "Level up!" and progresses the user to the next level' do
+      get "/api/exam/#{@exam1.id}/1"
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['message']).to eq('Level up!')
+      expect(data['new_level']).to eq(@level2.name)
+    end
+
+    it 'returns "No higher level found" if no more levels exist' do
+      ProgressLesson.find_by(user: @user, lesson: @lesson).update(level: @level2)
+
+      get "/api/exam/#{@exam2.id}/1"
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['message']).to eq('No higher level found.')
+    end
+
+    it 'returns an error if progress is not found for the user and lesson' do
+      ProgressLesson.find_by(user: @user, lesson: @lesson).destroy
+
+      get "/api/exam/#{@exam1.id}/1"
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('Progress not found for the current user and lesson.')
+    end
+  end
+
+
+  context 'POST /completed_lesson' do
+    before(:each) do
+      allow_any_instance_of(User).to receive(:update_completed_lessons).and_return(true)
+      allow_any_instance_of(User).to receive(:update_app_progress).and_return(true)
+      
+      post '/login', email: @user.email, password: 'password'
+    end
+
+    it 'successfully completes a lesson and updates progress' do
+      total_levels = Level.count
+
+      post '/completed_lesson', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+
+      expect(last_response).to be_ok
+      expect(@user).to have_received(:update_completed_lessons)
+      expect(@user).to have_received(:update_app_progress).with(total_levels)
+    end
+
+    it 'returns 404 if user is not found' do
+      post '/completed_lesson', { id: 9999 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('User not found')
+    end
+
+    it 'returns 400 if user ID is not provided' do
+      post '/completed_lesson', {}.to_json, { 'CONTENT_TYPE' => 'application/json' }
+
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('User ID is required')
+    end
+  end
+
 end
 
