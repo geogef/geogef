@@ -534,6 +534,12 @@ describe 'Sinatra Project' do
       expect(last_response).to be_ok
       expect(last_response.body).to include('Another account with this email already exists')
     end
+
+    it 'returns error if email is not actually an email' do
+      post '/signup', username: 'anotheruser', email: 'test', password: 'password', 'password-confirmation': 'password'
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Failed to create user.')
+    end
   end
 
   context 'GET /lessons/levels/:lesson_id/:level' do
