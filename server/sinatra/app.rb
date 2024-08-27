@@ -271,8 +271,6 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
           progress.update(is_completed: true)
           return { message: 'You have completed all lessons!' }.to_json
         end
-
-        return { message: 'Error' }.to_json
       end
     else
       return { error: 'Progress not found for the current user and lesson.' }.to_json
