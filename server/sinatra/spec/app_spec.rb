@@ -188,6 +188,17 @@ describe 'Sinatra Project' do
       expect(data['error']).to eq('Progress not found for the current user and lesson.')
     end
 
+    it 'returns 404 if the question is not found for the QA record' do
+      allow(Question).to receive(:find_by).with(id: @qa1.questions_id).and_return(nil)
+
+      get "/api/qa/#{@qa1.id}/correct_answer"
+
+      expect(last_response.status).to eq(404)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq("Question not found for QA record with ID #{@valid_qa.id}")
+    end
+
+
     it 'returns 404 if the correct answer is not found for the QA record' do
       allow(Option).to receive(:find_by).with(id: @qa1.options_id).and_return(nil)
 
