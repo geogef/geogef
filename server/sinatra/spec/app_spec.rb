@@ -23,6 +23,17 @@ describe 'Sinatra Project' do
     post '/login', email: @user.email, password: 'password'
   end
 
+  context 'GET /' do
+    it 'renders the index page with the correct layout' do
+      get '/'
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Contacto')
+      expect(last_response.body).to include('Donaciones')
+      expect(last_response.body).to include('Ingresar')
+    end
+  end
+
   context 'Authentication' do
     it 'logs in the user' do
       expect(last_response).to be_redirect
@@ -30,12 +41,46 @@ describe 'Sinatra Project' do
       expect(last_request.path).to eq('/dashboard')
     end
 
+  it 'renders the login page with an error message for invalid credentials' do
+    post '/login', email: 'wrong@example.com', password: 'wrongpassword'
+
+    expect(last_response).to be_ok
+    expect(last_response.body).to include('Invalid username or password.')
+  end
+
+  it 'renders the login page with an error message when no credentials are provided' do
+    post '/login', email: '', password: ''
+
+    expect(last_response).to be_ok
+    expect(last_response.body).to include('Invalid username or password.')
+  end
+
     it 'prevents access to protected routes without login' do
       get '/logout'
       get '/dashboard'
       expect(last_response).to be_redirect
       follow_redirect!
       expect(last_request.path).to eq('/login')
+    end
+  end
+
+  context 'GET /signup' do
+    it 'renders the signup page for non-logged-in users' do
+      get '/logout'
+      get '/signup'
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Crear una cuenta')
+    end
+
+    it 'redirects logged-in users away from the signup page' do
+      # Mock a logged-in user
+      post '/login', email: 'test@example.com', password: 'password'
+      get '/signup'
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/dashboard')
     end
   end
 
@@ -199,6 +244,69 @@ describe 'Sinatra Project' do
       expect(last_response.status).to eq(200)
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq('Progress not found for the current user and lesson.')
+    end
+
+    it 'returns 404 if the question is not found for the QA record' do
+      allow(Question).to receive(:find_by).with(id: @qa1.questions_id).and_return(nil)
+
+      get "/api/qa/#{@qa1.id}/correct_answer"
+
+      expect(last_response.status).to eq(404)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq("Question not found for QA record with ID #{@valid_qa.id}")
+    end
+
+    it 'returns 404 if the correct answer is not found for the QA record' do
+      allow(Option).to receive(:find_by).with(id: @qa1.options_id).and_return(nil)
+
+      get "/api/qa/#{@qa1.id}/correct_answer"
+
+      expect(last_response.status).to eq(404)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq("Correct answer not found for QA record with ID #{@valid_qa.id}")
+    end
+
+    it 'returns an error when progress is not found for the current user and lesson' do
+      ProgressLesson.where(user: @user, lesson: @exam.lesson).destroy_all
+
+      get "/api/exam/#{@exam.id}/#{@exam.qas.count}"
+
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('Progress not found for the current user and lesson.')
+    end
+
+    it 'returns "You have completed all lessons!" if the user has completed all lessons' do
+      # Simulate completing the exam with the correct number of answers
+      allow(Qa).to receive(:where).with(exam_id: @exam1.id).and_return(double(pluck: [@qa1.id]))
+
+      # Set the correct number of answers to match the total questions
+      correct_answers = 3
+      next_level = Level.create(number: 2, lesson: @lesson)
+
+      # Simulate the next level being available
+      allow(Level).to receive(:find_by).with(number: 2, lesson: @lesson).and_return(next_level)
+
+      get "/api/exam/#{@exam1.id}/#{correct_answers}"
+
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['message']).to eq('You have completed all lessons!')
+    end
+
+    it 'returns "Error" if there is an issue processing the level update' do
+      # Simulate a scenario where the next level is not found
+      allow(Qa).to receive(:where).with(exam_id: @exam1.id).and_return(double(pluck: [@qa1.id]))
+      correct_answers = 3
+
+      # Simulate the next level not being available
+      allow(Level).to receive(:find_by).with(number: 2, lesson: @lesson).and_return(nil)
+
+      get "/api/exam/#{@exam1.id}/#{correct_answers}"
+
+      expect(last_response.status).to eq(200)
+      data = JSON.parse(last_response.body)
+      expect(data['message']).to eq('Error')
     end
   end
 
@@ -386,6 +494,23 @@ describe 'Sinatra Project' do
   end
 
   context 'POST /signup' do
+    before(:each) do
+      get '/logout'
+      @valid_username = 'newuser'
+      @valid_email = 'newuser@example.com'
+      @valid_password = 'password'
+      @valid_password_confirmation = 'password'
+    end
+
+  it 'creates a new user and redirects to the dashboard with valid inputs' do
+    post '/signup', username: @valid_username, email: @valid_email, password: @valid_password, 'password-confirmation': @valid_password_confirmation
+
+    expect(last_response).to be_redirect
+    follow_redirect!
+    expect(last_request.path).to eq('/dashboard')
+    expect(session[:user_id]).not_to be_nil
+  end
+
     it 'returns error if passwords do not match' do
       post '/signup', username: 'newuser', email: 'new@example.com', password: 'password1', 'password-confirmation': 'password2'
       expect(last_response).to be_ok
@@ -399,17 +524,103 @@ describe 'Sinatra Project' do
     end
 
     it 'returns error if username is already taken' do
-      User.create(username: 'existinguser', email: 'existing@example.com', password: 'password', password_confirmation: 'password')
       post '/signup', username: 'existinguser', email: 'new@example.com', password: 'password', 'password-confirmation': 'password'
       expect(last_response).to be_ok
-      expect(last_response.body).to include('Username has already been taken.')
+      expect(last_response.body).to include('Username already exists.')
     end
 
     it 'returns error if email is already taken' do
-      User.create(username: 'newuser', email: 'existing@example.com', password: 'password', password_confirmation: 'password')
-      post '/signup', username: 'anotheruser', email: 'existing@example.com', password: 'password', 'password-confirmation': 'password'
+      post '/signup', username: 'anotheruser', email: 'test@example.com', password: 'password', 'password-confirmation': 'password'
       expect(last_response).to be_ok
-      expect(last_response.body).to include('Email has already been taken.')
+      expect(last_response.body).to include('Another account with this email already exists')
+    end
+  end
+
+  context 'GET /lessons/levels/:lesson_id/:level' do
+    it 'renders the level page if the level is unlocked' do
+      get "/lessons/levels/#{@lesson.id}/#{@level1.number}"
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Algebra Basics')
+      expect(last_response.body).to include('Level 1')
+    end
+
+    it 'redirects if the level is not unlocked' do
+      get "/lessons/levels/#{@lesson.id}/#{@level2.number}"
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/lessons/levels')
+      expect(last_response.body).to include('You have not unlocked this level yet.')
+    end
+
+    it 'returns 404 if lesson_id is invalid' do
+      get "/lessons/levels/999/#{@level1.number}"
+
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Not Found')
+    end
+
+    it 'returns 404 if level is invalid' do
+      get "/lessons/levels/#{@lesson.id}/999"
+
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Not Found')
+    end
+
+    it 'returns 404 if level_id does not belong to the lesson' do
+      get "/lessons/levels/#{@lesson.id}/#{@level1.number + 100}"
+
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Not Found')
+    end
+  end
+
+  context 'GET /quiz/:exam_id' do
+    before(:each) do
+      @valid_exam_id = @exam1.id
+      @invalid_exam_id = 9999
+    end
+
+    it 'renders the quiz page for a valid exam ID' do
+      get "/quiz/#{@valid_exam_id}"
+      
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Quiz Page')
+      expect(last_response.body).to include('Exam 1')
+    end
+
+    it 'returns 404 if the exam ID is invalid' do
+      get "/quiz/#{@invalid_exam_id}"
+      
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include('Exam not found')
+    end
+  end
+
+  context 'GET /lessons' do
+    before(:each) do
+      @lesson1 = Lesson.create(title: 'Lesson 1', description: 'Description for Lesson 1', num_levels: 3)
+      @lesson2 = Lesson.create(title: 'Lesson 2', description: 'Description for Lesson 2', num_levels: 2)
+    end
+
+    it 'renders the lessons page with lessons' do
+      get '/lessons'
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include(@lesson1.title)
+      expect(last_response.body).to include(@lesson2.title)
+      expect(last_response.body).to include(@lesson1.description)
+      expect(last_response.body).to include(@lesson2.description)
+    end
+
+    it 'renders the lessons page with no lessons' do
+      Lesson.delete_all
+
+      get '/lessons'
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('No lessons available')
     end
   end
 
