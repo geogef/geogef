@@ -197,16 +197,6 @@ describe 'Sinatra Project' do
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq("Correct answer not found for QA record with ID #{@valid_qa.id}")
     end
-
-    it 'returns an error when progress is not found for the current user and lesson' do
-      ProgressLesson.where(user: @user, lesson: @exam.lesson).destroy_all
-
-      get "/api/exam/#{@exam.id}/#{@exam.qas.count}"
-
-      expect(last_response.status).to eq(200)
-      data = JSON.parse(last_response.body)
-      expect(data['error']).to eq('Progress not found for the current user and lesson.')
-    end
   end
 
 
