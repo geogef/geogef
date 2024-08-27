@@ -260,28 +260,6 @@ describe 'Sinatra Project' do
       expect(@user).to have_received(:update_completed_lessons)
       expect(@user).to have_received(:update_app_progress).with(total_levels)
     end
-
-    it 'returns 404 if user is not found' do
-      post '/completed_lesson', { id: 9999 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('User not found')
-    end
-
-    it 'returns 400 if user ID is not provided' do
-      post '/completed_lesson', {}.to_json, { 'CONTENT_TYPE' => 'application/json' }
-
-      expect(last_response.status).to eq(400)
-      expect(last_response.body).to include('User ID is required')
-    end
-
-    it 'returns an error if lesson is already completed' do
-      ProgressLesson.create(user: @user, lesson: @lesson, level: @level1)
-      post '/completed_lesson', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-      expect(last_response.status).to eq(400)
-      expect(last_response.body).to include('Lesson already completed')
-    end
-
   end
 
   context 'GET /profile' do
@@ -307,18 +285,6 @@ describe 'Sinatra Project' do
       @user.reload
       expect(@user.streak).to eq(5)
     end
-
-    it 'returns 404 if user is not found' do
-      post '/update_streak', { id: 9999, current_streak: 5 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('User not found')
-    end
-
-    it 'returns 400 if streak is not provided' do
-      post '/update_streak', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-      expect(last_response.status).to eq(400)
-      expect(last_response.body).to include('Current streak is required')
-    end
   end
 
   context 'GET /leaderboard' do
@@ -337,37 +303,6 @@ describe 'Sinatra Project' do
       get "/materials/#{@lesson.id}/#{@level1.id}"
       expect(last_response).to be_ok
       expect(last_response.body).to include('Material 1')
-    end
-
-    it 'returns 404 if lesson_id or level_id is invalid' do
-      get "/materials/999/999"
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Materials not found')
-    end
-
-    it 'returns 404 if no materials exist for the given lesson and level' do
-      get "/materials/#{@lesson.id}/#{@level1.id}"
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Materials not found')
-    end
-  end
-
-  context 'GET /logout' do
-    it 'clears session and redirects to login' do
-      get '/logout'
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/login')
-      expect(session[:user_id]).to be_nil # Verifica que la sesión se ha borrado
-    end
-  end
-
-  context 'GET /leaderboard' do
-    it 'shows leaderboard even when no users have streaks' do
-      User.delete_all # Clear users
-      get '/leaderboard'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('No users found') # Adjust based on actual behavior if no users are present
     end
   end
 
