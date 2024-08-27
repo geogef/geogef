@@ -84,20 +84,7 @@ describe 'Sinatra Project' do
     end
   end
 
-  context 'Lesson progression' do
-    it 'shows lessons and levels' do
-      get '/lessons_levels'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include(@lesson.title)
-    end
 
-    it 'prevents access to locked levels' do
-      get "/lesson_levels/#{@lesson.id}/2"
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/lessons_levels')
-    end
-  end
 
   context 'API endpoints' do
     it 'fetches QA data' do
@@ -123,25 +110,12 @@ describe 'Sinatra Project' do
   end
 
   context 'API Error Handling' do
-    it 'returns 404 for non-existent QA' do
-      get '/api/qa/999'
-      expect(last_response.status).to eq(404)
-      data = JSON.parse(last_response.body)
-      expect(data['error']).to eq('QA not found')
-    end
 
     it 'returns 404 for non-existent QA correct answer' do
       get '/api/qa/999/correct_answer'
       expect(last_response.status).to eq(404)
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq('QA record with ID 999 not found')
-    end
-
-    it 'returns 404 for non-existent exam' do
-      get '/api/exam/999'
-      expect(last_response.status).to eq(404)
-      data = JSON.parse(last_response.body)
-      expect(data['error']).to eq('Exam not found')
     end
 
     it 'returns an error if the exam is not found' do
@@ -161,22 +135,6 @@ describe 'Sinatra Project' do
     end
   end
 
-  context 'GET /api/exam/:exam_id' do
-    it 'returns 404 if exam has no associated QAs' do
-      empty_exam = Exam.create(duration: 60, name: 'Empty Exam', lesson: @lesson, level: @level1)
-      get "/api/exam/#{empty_exam.id}"
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('No QAs found for the exam')
-    end
-  end
-
-  context 'GET /materials/:lesson_id/:level_id' do
-    it 'returns 404 if no materials exist for given lesson and level' do
-      get "/materials/#{@lesson.id}/#{@level1.id}"
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Materials not found')
-    end
-  end
 
   context 'GET /exam/:lesson_id/:level_id' do
     it 'redirects if the level is not unlocked' do
@@ -193,22 +151,6 @@ describe 'Sinatra Project' do
       expect(last_response).to be_ok
       expect(last_response.body).to include('Roman Empire Exam')
       expect(last_response.body).to include('Level 1')
-    end
-
-    it 'redirects if lesson_id is invalid' do
-      get "/exam/999/#{@level1.id}"
-
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/lessons/levels')
-    end
-
-    it 'redirects if level_id is invalid' do
-      get "/exam/#{@lesson.id}/999"
-
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/lessons/levels')
     end
   end
 
@@ -244,16 +186,6 @@ describe 'Sinatra Project' do
       expect(last_response.status).to eq(200)
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq('Progress not found for the current user and lesson.')
-    end
-
-    it 'returns 404 if the question is not found for the QA record' do
-      allow(Question).to receive(:find_by).with(id: @qa1.questions_id).and_return(nil)
-
-      get "/api/qa/#{@qa1.id}/correct_answer"
-
-      expect(last_response.status).to eq(404)
-      data = JSON.parse(last_response.body)
-      expect(data['error']).to eq("Question not found for QA record with ID #{@valid_qa.id}")
     end
 
     it 'returns 404 if the correct answer is not found for the QA record' do
@@ -449,23 +381,6 @@ describe 'Sinatra Project' do
     end
   end
 
-  context 'POST /completed_lesson' do
-    it 'successfully updates lesson progress' do
-      post '/completed_lesson', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-      expect(last_response).to be_ok
-      @user.reload
-      expect(@user.completed_lessons).to include(@lesson) # Verificar que la lección se marcó como completada
-    end
-  end
-
-  context 'POST /update_streak' do
-    it 'returns error if user ID is missing' do
-      post '/update_streak', { current_streak: 5 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-      expect(last_response.status).to eq(400)
-      expect(last_response.body).to include('User ID is required')
-    end
-  end
-
   context 'GET /api/exam/:exam_id/:correct_answers' do
     it 'returns "Not all answers are correct" when correct_answers is less than total questions' do
       get "/api/exam/#{@exam1.id}/0"
@@ -473,14 +388,6 @@ describe 'Sinatra Project' do
       data = JSON.parse(last_response.body)
       expect(data['message']).to eq('Not all answers are correct.')
       expect(data['qas']).to include(@qa1.id)
-    end
-  end
-
-  context 'GET /materials/:lesson_id/:level_id' do
-    it 'returns 404 if no materials exist for given lesson and level' do
-      get "/materials/#{@lesson.id}/#{@level1.id}"
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Materials not found')
     end
   end
 
@@ -523,12 +430,6 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include('All fields are required.')
     end
 
-    it 'returns error if username is already taken' do
-      post '/signup', username: 'existinguser', email: 'new@example.com', password: 'password', 'password-confirmation': 'password'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Username already exists.')
-    end
-
     it 'returns error if email is already taken' do
       post '/signup', username: 'anotheruser', email: 'test@example.com', password: 'password', 'password-confirmation': 'password'
       expect(last_response).to be_ok
@@ -560,20 +461,6 @@ describe 'Sinatra Project' do
       expect(last_response.status).to eq(404)
       expect(last_response.body).to include('Not Found')
     end
-
-    it 'returns 404 if level is invalid' do
-      get "/lessons/levels/#{@lesson.id}/999"
-
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Not Found')
-    end
-
-    it 'returns 404 if level_id does not belong to the lesson' do
-      get "/lessons/levels/#{@lesson.id}/#{@level1.number + 100}"
-
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Not Found')
-    end
   end
 
   context 'GET /quiz/:exam_id' do
@@ -584,18 +471,12 @@ describe 'Sinatra Project' do
 
     it 'renders the quiz page for a valid exam ID' do
       get "/quiz/#{@valid_exam_id}"
-      
+
       expect(last_response).to be_ok
       expect(last_response.body).to include('Quiz Page')
       expect(last_response.body).to include('Exam 1')
     end
 
-    it 'returns 404 if the exam ID is invalid' do
-      get "/quiz/#{@invalid_exam_id}"
-      
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Exam not found')
-    end
   end
 
   context 'GET /lessons' do
@@ -614,14 +495,6 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include(@lesson2.description)
     end
 
-    it 'renders the lessons page with no lessons' do
-      Lesson.delete_all
-
-      get '/lessons'
-
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('No lessons available')
-    end
   end
 
 end

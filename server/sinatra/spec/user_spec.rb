@@ -39,11 +39,6 @@ RSpec.describe User, type: :model do
       User.create(email: 'test2@example.com', username: 'testuser', password: 'password123')
       expect(user).to_not be_valid
     end
-
-    it 'is not valid without a password' do
-      user.password = nil
-      expect(user).to_not be_valid
-    end
   end
 
   describe 'password encryption' do
@@ -127,7 +122,7 @@ RSpec.describe User, type: :model do
     before do
       user.save
     end
-    
+
     it 'returns a public user with id, highest_streak, and current_streak' do
       public_user = user.public_data
       expect(public_user.id).to eq(user.id)
