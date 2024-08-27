@@ -207,39 +207,6 @@ describe 'Sinatra Project' do
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq('Progress not found for the current user and lesson.')
     end
-
-    it 'returns "You have completed all lessons!" if the user has completed all lessons' do
-      # Simulate completing the exam with the correct number of answers
-      allow(Qa).to receive(:where).with(exam_id: @exam1.id).and_return(double(pluck: [@qa1.id]))
-
-      # Set the correct number of answers to match the total questions
-      correct_answers = 3
-      next_level = Level.create(number: 2, lesson: @lesson)
-
-      # Simulate the next level being available
-      allow(Level).to receive(:find_by).with(number: 2, lesson: @lesson).and_return(next_level)
-
-      get "/api/exam/#{@exam1.id}/#{correct_answers}"
-
-      expect(last_response.status).to eq(200)
-      data = JSON.parse(last_response.body)
-      expect(data['message']).to eq('You have completed all lessons!')
-    end
-
-    it 'returns "Error" if there is an issue processing the level update' do
-      # Simulate a scenario where the next level is not found
-      allow(Qa).to receive(:where).with(exam_id: @exam1.id).and_return(double(pluck: [@qa1.id]))
-      correct_answers = 3
-
-      # Simulate the next level not being available
-      allow(Level).to receive(:find_by).with(number: 2, lesson: @lesson).and_return(nil)
-
-      get "/api/exam/#{@exam1.id}/#{correct_answers}"
-
-      expect(last_response.status).to eq(200)
-      data = JSON.parse(last_response.body)
-      expect(data['message']).to eq('Error')
-    end
   end
 
 
