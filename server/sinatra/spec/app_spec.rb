@@ -176,7 +176,7 @@ describe 'Sinatra Project' do
       get "/api/exam/#{@exam2.id}/1"
       expect(last_response.status).to eq(200)
       data = JSON.parse(last_response.body)
-      expect(data['message']).to eq('No higher level found.')
+      expect(data['message']).to eq('You have completed all lessons!')
     end
 
     it 'returns an error if progress is not found for the user and lesson' do
@@ -190,25 +190,24 @@ describe 'Sinatra Project' do
 
     it 'returns 404 if the question is not found for the QA record' do
       allow(Question).to receive(:find_by).with(id: @qa1.questions_id).and_return(nil)
-
+    
       get "/api/qa/#{@qa1.id}/correct_answer"
-
+    
       expect(last_response.status).to eq(404)
       data = JSON.parse(last_response.body)
-      expect(data['error']).to eq("Question not found for QA record with ID #{@valid_qa.id}")
-    end
-
+      expect(data['error']).to eq("Question not found for QA record with ID #{@qa1.id}")
+    end    
 
     it 'returns 404 if the correct answer is not found for the QA record' do
       allow(Option).to receive(:find_by).with(id: @qa1.options_id).and_return(nil)
-
+    
       get "/api/qa/#{@qa1.id}/correct_answer"
-
+    
       expect(last_response.status).to eq(404)
       data = JSON.parse(last_response.body)
-      expect(data['error']).to eq("Correct answer not found for QA record with ID #{@valid_qa.id}")
+      expect(data['error']).to eq("Correct answer not found for QA record with ID #{@qa1.id}")
     end
-  end
+  end    
 
 
   context 'POST /completed_lesson' do
