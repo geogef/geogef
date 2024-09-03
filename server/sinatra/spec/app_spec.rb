@@ -149,8 +149,7 @@ describe 'Sinatra Project' do
       get "/exam/#{@lesson.id}/#{@level1.id}"
 
       expect(last_response).to be_ok
-      expect(last_response.body).to include('Roman Empire Exam')
-      expect(last_response.body).to include('Level 1')
+      expect(last_response.body).to include('questions correctly')
     end
   end
 
