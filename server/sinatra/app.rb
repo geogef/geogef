@@ -240,6 +240,26 @@ get '/api/qa/:id/correct_answer' do
   }.to_json
 end
 
+
+get '/api/reward/2/' do
+  content_type :json
+  authenticate_user
+
+  user = current_user
+  geogem_cost = 5
+  if user.geogems < geogem_cost
+    return { error: 'Not enough Geogems.' }.to_json
+  end
+
+  user.update(geogems: user.geogems - geogem_cost)
+
+  {
+    seconds_added: 30,
+    message: "Seconds have been added correctly.",
+  }.to_json
+end
+
+
 get '/api/exam/:exam_id' do |exam_id|
   exam = Exam.find_by(id: exam_id)
   return { error: 'Exam not found' }.to_json unless exam
