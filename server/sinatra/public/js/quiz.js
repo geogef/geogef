@@ -273,6 +273,25 @@ function updateTimerDisplay() {
     document.getElementById('time').textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
+function addTime() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/api/reward/2/');
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      if (data.error) {
+          console.error("Error: ", data.error)
+          return;
+      }
+      timeLeft += data.seconds_added; // Add the seconds to the remaining time
+    } else {
+      console.error('Failed to add time. Status:', xhr.status);
+    }
+  };
+  xhr.send();
+}
+
 // Function to end the exam
 function endQuiz() {
     document.getElementById('question').style.display = 'none';
