@@ -23,7 +23,16 @@ class User < ActiveRecord::Base
     self.password == input_password
   end
 
+  def modify_gems(amount)
+    aux = self.geogems + amount
+    self.update(geogems: aux)
+  end
+
   def update_streak(current_streak)
+    if current_streak != 0 && current_streak % 10 == 0
+      self.modify_gems(5)
+    end
+
     self.update(current_streak: current_streak)
     if self.highest_streak < current_streak
       self.update(highest_streak: current_streak)
@@ -32,6 +41,7 @@ class User < ActiveRecord::Base
 
   def update_completed_lessons
     aux = self.completed_lessons + 1
+    self.modify_gems(3)
     self.update(completed_lessons: aux)
   end
 
