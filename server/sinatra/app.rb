@@ -256,6 +256,10 @@ post '/api/reward/1/:qa_id' do
   data = JSON.parse(request.body.read)
   displayed_options = data['options']
 
+  if displayed_options.nil? || displayed_options.length != 4
+    return { error: 'Exactly 4 options must be provided.' }.to_json
+  end
+
   incorrect_options = displayed_options.reject { |opt| opt == correct_option.response }
   incorrect_option = incorrect_options.sample
 
