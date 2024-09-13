@@ -87,7 +87,12 @@
 
       document.getElementById('button2').addEventListener('click', function() {
       const qaId = qaIds[currentQaIndex - 1];
-      const displayedOptions = Array.from(document.querySelectorAll('.answer-button')).map(button => button.textContent);
+      const displayedOptions = Array.from(document.querySelectorAll('.answer-button'))
+        .filter(button => {
+          const style = window.getComputedStyle(button);
+          return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
+        })
+        .map(button => button.textContent);
       
       removeOptions(qaId, displayedOptions);
 });
