@@ -152,6 +152,35 @@ function checkAnswer(qaId, userAnswer) {
     xhr.send();
 }
 
+function removeOptions(qaId, displayedOptions) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/reward/1/' + qaId);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            var optionsToKeep = data.options_to_keep;
+
+            // Disable or hide options that are not in the optionsToKeep array
+            var buttons = document.querySelectorAll('.answer-button');
+            buttons.forEach(function(btn) {
+                if (!optionsToKeep.includes(btn.textContent)) {
+                    btn.disabled = true;
+                    btn.classList.add('hidden');  // Optionally hide the incorrect buttons
+                }
+            });
+        } else {
+            console.error('Request failed. Status:', xhr.status);
+        }
+    };
+
+    xhr.send(JSON.stringify({
+        options: displayedOptions
+    }));
+}
+
+
 // Function to check level progress after the exam
 function checkLevelUp() {
     var xhr = new XMLHttpRequest();

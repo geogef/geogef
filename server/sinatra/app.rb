@@ -239,7 +239,40 @@ get '/api/qa/:id/correct_answer' do
     correct_answer: correct_answer.response
   }.to_json
 end
+    
+post '/api/reward/1/:qa_id' do
+  content_type :json
+  authenticate_user
 
+  qa = Qa.find_by(id: params[:qa_id])
+  return { error: 'QA not found' }.to_json unless qa
+
+  correct_option = Option.find_by(id: qa.questions_id)
+  return { error: 'Correct option not found' }.to_json unless correct_option
+
+  question = Question.find_by(id: qa.questions_id)
+  topic = question.topic_id
+
+  data = JSON.parse(request.body.read)
+  displayed_options = data['options']
+
+  incorrect_options = displayed_options.reject { |opt| opt == correct_option.response }
+  incorrect_option = incorrect_options.sample
+
+  options_to_keep = [correct_option.response, incorrect_option].shuffle
+
+  user = current_user
+  geogem_cost = 10
+  if user.geogems < geogem_cost
+    return { error: 'Not enough Gems to remove options.' }.to_json
+  end
+
+  user.update(geogems: user.geogems - geogem_cost)
+
+  {
+    options_to_keep: options_to_keep
+  }.to_json
+end
 
 get '/api/reward/2/' do
   content_type :json
@@ -252,13 +285,12 @@ get '/api/reward/2/' do
   end
 
   user.update(geogems: user.geogems - geogem_cost)
-
+  
   {
     seconds_added: 30,
     message: "Seconds have been added correctly.",
   }.to_json
 end
-
 
 get '/api/exam/:exam_id' do |exam_id|
   exam = Exam.find_by(id: exam_id)

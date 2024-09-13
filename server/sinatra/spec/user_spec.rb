@@ -130,4 +130,18 @@ RSpec.describe User, type: :model do
       expect(public_user.current_streak).to eq(user.current_streak)
     end
   end
+
+  describe 'update geogems value' do
+    before do
+      user.save
+    end
+
+    it 'user win 3 gems after complete lesson' do
+      expect { user.update_completed_lessons }.to change { user.geogems }.by(3)
+    end
+
+    it 'user earn 5 gems for every streak of 10 ' do
+      expect { user.update_streak(10) }.to change {user.geogems }.by(5)
+    end
+
 end

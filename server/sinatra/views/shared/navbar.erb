@@ -1,9 +1,21 @@
 <nav class="bg-gray-800 bg-opacity-90 p-4 fixed top-0 left-0 w-full z-50 shadow-md">
-    <div class="flex items-baseline gap-4">
-        <a href="/dashboard" class="<% if request.path_info == "/dashboard" %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == "/dashboard" %>aria-current="page"<% end %>>Dashboard</a>
-        <a href="/lessons" class="<% if request.path_info == "/lessons_details" %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == "/lessons_details" %>aria-current="page"<% end %>>Lecciones</a>
-        <a href="/profile" class="<% if request.path_info == "/profile" %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == "/profile" %>aria-current="page"<% end %>>Tu Perfil</a>
-        <a href="/leaderboard" class="<% if request.path_info == "/leaderboard" %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == "/leaderboard" %>aria-current="page"<% end %>>Leaderboard</a>
-        <a href="/logout" class="text-gray-400 py-2 px-4 rounded-md text-sm font-medium transition duration-300 hover:bg-gray-600 hover:text-white">Salir</a>
+    <div class="flex justify-between items-center">
+        <!-- Imagen y enlaces -->
+        <div class="flex items-baseline gap-4">
+            <img src="/images/logo.png" alt="Logo" class="w-10 h-10">
+            <a href="/dashboard" class="<% if request.path_info == '/dashboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/dashboard' %>aria-current="page"<% end %>>Dashboard</a>
+            <a href="/lessons" class="<% if request.path_info == '/lessons_details' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/lessons_details' %>aria-current="page"<% end %>>Lecciones</a>
+            <a href="/profile" class="<% if request.path_info == '/profile' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/profile' %>aria-current="page"<% end %>>Tu Perfil</a>
+            <a href="/leaderboard" class="<% if request.path_info == '/leaderboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/leaderboard' %>aria-current="page"<% end %>>Leaderboard</a>
+            <a href="/logout" class="text-gray-400 py-2 px-4 rounded-md text-sm font-medium transition duration-300 hover:bg-gray-600 hover:text-white">Salir</a>
+        </div>
+
+        <div class="flex items-center gap-2 bg-gray-100 py-2 px-4 rounded-md ml-auto">
+        <span class="text-yellow-600 font-bold text-xl"><%= current_user.geogems %></span>
+        <!-- Contenedor para la imagen -->
+        <div class="relative w-8 h-8 overflow-hidden flex items-center justify-center">
+            <img src="/images/geogem.png" class="w-16 h-16 transform scale-150 object-cover rounded-full" alt="Geogema">
+        </div>
+    </div>    
     </div>
 </nav>
