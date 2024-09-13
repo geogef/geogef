@@ -5,62 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Botones con Videos</title>
     <style>
-        .flex {
-            display: flex;
-        }
-        .space-x-4 {
-            margin-right: -1rem; /* Ajusta el espaciado entre los elementos */
-        }
-        .space-x-4 > * + * {
-            margin-left: 1rem; /* Ajusta el espaciado entre los elementos */
-        }
-        .relative {
-            position: relative;
-        }
-        .ml-2 {
-            margin-left: 0.5rem;
-        }
-        .text-blue-500 {
-            color: #3b82f6;
-        }
-        .text-lg {
-            font-size: 1.125rem;
-        }
-        .font-bold {
-            font-weight: 700;
-        }
-        .bg-white {
-            background-color: #ffffff;
-        }
-        .hover\:bg-gray-100:hover {
-            background-color: #f3f4f6;
-        }
-        .text-black {
-            color: #000000;
-        }
-        .py-2 {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-        .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-        .rounded {
-            border-radius: 0.25rem;
-        }
-        .video-hover:hover video {
-            opacity: 0.7;
-        }
-        .object-cover {
-            object-fit: cover;
-        }
-        .w-12 {
-            width: 3rem;
-        }
-        .h-12 {
-            height: 3rem;
-        }
         .button {
             border: 2px solid transparent;
             transition: border-color 0.3s ease, transform 0.3s ease;
@@ -84,7 +28,6 @@
         }
     </style>
 </head>
-
 <div class="flex items-center justify-center">
   <div class="quiz-container max-w-full w-full sm:w-4/5 lg:w-2/5 bg-white rounded-lg shadow-lg overflow-hidden">
     <div class="p-6">
@@ -133,7 +76,6 @@
     </div>
   </div>
 </div>
-
 <%# Script to initialize the exam when the window loads %>
 <script>
   window.onload = function() {
@@ -141,7 +83,7 @@
     setCurrentUser(<%= @publicUser.to_json %>); // Set current user information
     fetchQaIds(examId); // Fetch question and answer IDs for the exam
   };
-</script>
+  </script>
 
 <%# Include the JavaScript file responsible for quiz functionality %>
 <script src="/js/quiz.js"></script>
