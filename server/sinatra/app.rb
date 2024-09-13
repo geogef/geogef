@@ -262,7 +262,7 @@ post '/api/reward/1/:qa_id' do
   options_to_keep = [correct_option.response, incorrect_option].shuffle
 
   user = current_user
-  geogem_cost = 10
+  geogem_cost = 5
   if user.geogems < geogem_cost
     return { error: 'Not enough Gems to remove options.' }.to_json
   end
@@ -279,7 +279,7 @@ get '/api/reward/2/' do
   authenticate_user
 
   user = current_user
-  geogem_cost = 5
+  geogem_cost = 3
   if user.geogems < geogem_cost
     return { error: 'Not enough Geogems.' }.to_json
   end
