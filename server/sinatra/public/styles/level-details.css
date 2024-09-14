@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.background-decorator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+    z-index: -1;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.level-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #2b6cb0;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4a90e2, #0066cc);
+    color: white;
+    font-weight: bold;
+    padding: 15px 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #005bb5, #003d7a);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #0056b3, #003d7a);
+}
+
+.back-link-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.back-link {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-link:hover {
+    color: #0056b3;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}

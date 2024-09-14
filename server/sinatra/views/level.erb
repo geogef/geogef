@@ -1,12 +1,29 @@
-<%# Set the title for the page %>
-<% @title = "Level Details" %>
-
-<div class="mx-auto mt-8 p-4 max-w-4xl bg-white bg-opacity-80 rounded-lg shadow-lg">
-    <h1 class="text-center text-3xl mt-0 mb-8 text-blue-900 text-shadow"> <%= @level.name %> </h1>
-    <div class="flex justify-center mt-5">
-        <a href="/materials/<%= @lesson.id %>/<%= @level.id %>" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">Ver materiales</a>
-        <a href="/exam/<%= @lesson.id %>/<%= @level.id %>" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 ml-5 rounded transition duration-300">Tomar examen</a>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= @title %></title>
+    <link rel="stylesheet" href="/styles/level-details.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background-decorator"></div>
+    <div class="container">
+        <h1 class="level-title"><%= @level.name %></h1>
+        <div class="button-container">
+            <a href="/materials/<%= @lesson.id %>/<%= @level.id %>" class="btn-primary">
+                <i class="fas fa-book"></i> Ver materiales
+            </a>
+            <a href="/exam/<%= @lesson.id %>/<%= @level.id %>" class="btn-primary btn-secondary">
+                <i class="fas fa-pencil-alt"></i> Tomar examen
+            </a>
+        </div>
+        <div class="back-link-container">
+            <a href="/lessons/levels" class="back-link">
+                <i class="fas fa-arrow-left"></i> Volver a niveles
+            </a>
+        </div>
     </div>
-
-    <a href="/lessons/levels" class="block text-center mt-10 text-blue-900 hover:underline">Volver a niveles</a>
-</div>
+</body>
+</html>
