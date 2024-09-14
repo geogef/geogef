@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.lesson-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.lesson-container:hover {
+    transform: translateY(-10px);
+}
+
+.lesson-title {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.level-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lesson-circle {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80px; 
+    height: 80px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.lesson-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lesson-circle.locked img {
+    opacity: 0.5;
+}
+
+.lesson-circle.unlocked:hover {
+    transform: scale(1.1);
+}
+
+.status-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #007f0e;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.icon-check {
+    width: 24px;
+    height: 24px;
+}
+
+.lesson-line {
+    background-color: white;
+    width: 4px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .lesson-container { 
+        width: 180px; 
+    }
+
+    .lesson-circle {
+        width: 65px; 
+        height: 65px;
+    }
+
+    .level-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 767px) {
+    .lesson-container {
+        width: 80%;
+        max-width: 60%;
+    }
+
+    .lesson-circle {
+        width: 50px; 
+        height: 50px;
+    }
+
+    .level-container {
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 10px;
+    }
+
+    .lesson-line {
+        display: none; 
+    }
+}
