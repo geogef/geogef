@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e8f0f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: slideUp 1s ease-out;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 20px;
+}
+
+.profile-picture {
+    background: #d1e0e0;
+    border-radius: 50%;
+    padding: 20px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.profile-picture img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #555;
+}
+
+.profile-details {
+    text-align: left;
+}
+
+.profile-item {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.profile-item i {
+    color: #007BFF;
+    margin-right: 10px;
+}
+
+.motivational-quote {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #333;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .profile-card {
+        padding: 20px;
+    }
+
+    .profile-name {
+        font-size: 1.5rem;
+    }
+
+    .profile-item {
+        font-size: 1rem;
+    }
+
+    .profile-picture img {
+        width: 100px;
+        height: 100px;
+    }
+}
