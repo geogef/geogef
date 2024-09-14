@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .bg-image {
+    background-image: url('/images/fondo3.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  /* Contenedor del formulario */
+  .form-container {
+    background-color: #f0f9ff; /* Color de fondo del formulario */
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px; /* Ajustado para pantallas móviles */
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Contenedor del logo */
+  .logo-container {
+    margin-bottom: 1.5rem;
+  }
+  
+  .logo {
+    width: 8rem; /* Ajustado para pantallas móviles */
+    height: 8rem;
+    border-radius: 50%;
+    border: 0.25rem solid #007bff; /* Color del borde del logo */
+  }
+  
+  /* Título de la página */
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 1rem;
+  }
+  
+  /* Estilos del formulario */
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: #333;
+  }
+  
+  .form-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+  }
+  
+  /* Botón de registro */
+  .submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Enlace a la página de inicio de sesión */
+  .login-link {
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .login-link-text {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .login-link-text:hover {
+    color: #0056b3;
+  }
+  
