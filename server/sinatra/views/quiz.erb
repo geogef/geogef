@@ -82,6 +82,21 @@
     const examId = <%= @exam_id %>; // Retrieve exam ID from server-side
     setCurrentUser(<%= @publicUser.to_json %>); // Set current user information
     fetchQaIds(examId); // Fetch question and answer IDs for the exam
+
+      document.getElementById('button1').addEventListener('click', addTime);
+
+      document.getElementById('button2').addEventListener('click', function() {
+      const qaId = qaIds[currentQaIndex - 1];
+      const displayedOptions = Array.from(document.querySelectorAll('.answer-button'))
+        .filter(button => {
+          const style = window.getComputedStyle(button);
+          return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
+        })
+        .map(button => button.textContent);
+      
+      removeOptions(qaId, displayedOptions);
+});
+
   };
   </script>
 

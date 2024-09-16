@@ -256,13 +256,17 @@ post '/api/reward/1/:qa_id' do
   data = JSON.parse(request.body.read)
   displayed_options = data['options']
 
+  if displayed_options.nil? || displayed_options.length != 4
+    return { error: 'Exactly 4 options must be provided.' }.to_json
+  end
+
   incorrect_options = displayed_options.reject { |opt| opt == correct_option.response }
   incorrect_option = incorrect_options.sample
 
   options_to_keep = [correct_option.response, incorrect_option].shuffle
 
   user = current_user
-  geogem_cost = 10
+  geogem_cost = 5
   if user.geogems < geogem_cost
     return { error: 'Not enough Gems to remove options.' }.to_json
   end
@@ -279,7 +283,7 @@ get '/api/reward/2/' do
   authenticate_user
 
   user = current_user
-  geogem_cost = 5
+  geogem_cost = 3
   if user.geogems < geogem_cost
     return { error: 'Not enough Geogems.' }.to_json
   end

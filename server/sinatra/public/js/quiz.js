@@ -170,6 +170,7 @@ function removeOptions(qaId, displayedOptions) {
                     btn.classList.add('hidden');  // Optionally hide the incorrect buttons
                 }
             });
+            updateGeogems(5);
         } else {
             console.error('Request failed. Status:', xhr.status);
         }
@@ -235,6 +236,16 @@ function checkLevelUp() {
         }
     };
     xhr.send();
+}
+
+function updateGeogems(amountToReduce) {
+    let currentGeogemCount = parseInt(document.getElementById('geogem-count').textContent);
+    let newGeogemCount = currentGeogemCount - amountToReduce;
+    if (newGeogemCount < 0) {
+        newGeogemCount = 0;
+    }
+
+    document.getElementById('geogem-count').textContent = newGeogemCount;
 }
 
 // Function to get and display the next question
@@ -314,6 +325,7 @@ function addTime() {
           return;
       }
       timeLeft += data.seconds_added; // Add the seconds to the remaining time
+      updateGeogems(3);
     } else {
       console.error('Failed to add time. Status:', xhr.status);
     }
