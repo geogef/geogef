@@ -1,6 +1,33 @@
 <%# Set the page title %>
 <% @title = "Exam" %>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botones con Videos</title>
+    <style>
+        .button {
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px; /* Ajusta el ancho del botón */
+            height: 80px; /* Ajusta la altura del botón */
+            padding: 2; /* Elimina el padding para que la imagen ocupe todo el botón */
+            overflow: hidden; /* Asegura que la imagen no se desborde del botón */
+        }
+        .button:hover {
+            border-color: #3b82f6; /* Color del borde al pasar el mouse */
+            transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
+        }
+        .button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Asegura que la imagen cubra el área del botón sin distorsionar */
+        }
+    </style>
+</head>
 <div class="flex items-center justify-center">
   <div class="quiz-container max-w-full w-full sm:w-4/5 lg:w-2/5 bg-white rounded-lg shadow-lg overflow-hidden">
     <div class="p-6">
@@ -9,24 +36,16 @@
       <div id="timer" class="text-right text-gray-700 font-semibold">
         Time left: <span id="time">00:00</span>
       </div>
-
-      <!-- Botones -->
       <div class="flex space-x-4">
-      <button id="button1" class="bg-white hover:bg-gray-100 text-black font-bold py-2 px-4 rounded flex items-center justify-center video-hover">
-        <video src="/videos/bomb.mp4" autoplay loop muted class="w-12 h-12 object-cover">
-          <!-- Asegúrate de proporcionar un texto alternativo o un mensaje en caso de que el video no se cargue -->
-          Tu navegador no soporta el elemento <code>video</code>.
-        </video>
+      <button id="button1" class="bg-white hover:bg-gray-100 text-black font-bold py-2 px-4 rounded flex items-center justify-center button">
+          <img src="/images/plazo.png" alt="Imagen de Plazo">
       </button>
 
-      <button id="button2" class="bg-white hover:bg-gray-100 text-black font-bold py-2 px-4 rounded flex items-center justify-center video-hover">
-        <video src="/videos/clock.mp4" autoplay loop muted class="w-12 h-12 object-cover">
-          <!-- Asegúrate de proporcionar un texto alternativo o un mensaje en caso de que el video no se cargue -->
-          Tu navegador no soporta el elemento <code>video</code>.
-        </video>
+      <button id="button2" class="bg-white hover:bg-gray-100 text-black font-bold py-2 px-4 rounded flex items-center justify-center button">
+          <img src="/images/bomba.png" alt="Imagen de Bomba">
       </button>
-      </div>
     </div>
+  </div>
       
       <%# Container for displaying the current question %>
       <div class="question p-4 rounded mb-4 bg-gradient-to-r from-fun-blue-500 to-fun-blue-600 text-white" id="question">
@@ -57,7 +76,6 @@
     </div>
   </div>
 </div>
-
 <%# Script to initialize the exam when the window loads %>
 <script>
   window.onload = function() {
@@ -65,7 +83,7 @@
     setCurrentUser(<%= @publicUser.to_json %>); // Set current user information
     fetchQaIds(examId); // Fetch question and answer IDs for the exam
   };
-</script>
+  </script>
 
 <%# Include the JavaScript file responsible for quiz functionality %>
 <script src="/js/quiz.js"></script>
