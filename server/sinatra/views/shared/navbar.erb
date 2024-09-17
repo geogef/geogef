@@ -1,21 +1,64 @@
 <nav class="bg-gray-800 bg-opacity-90 p-4 fixed top-0 left-0 w-full z-50 shadow-md">
     <div class="flex justify-between items-center">
-        <!-- Imagen y enlaces -->
-        <div class="flex items-baseline gap-4">
+        <!-- Logo and Hamburger -->
+        <div class="flex items-center">
             <img src="/images/logo.png" alt="Logo" class="w-10 h-10">
-            <a href="/dashboard" class="<% if request.path_info == '/dashboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/dashboard' %>aria-current="page"<% end %>>Dashboard</a>
-            <a href="/lessons" class="<% if request.path_info == '/lessons_details' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/lessons_details' %>aria-current="page"<% end %>>Lecciones</a>
-            <a href="/profile" class="<% if request.path_info == '/profile' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/profile' %>aria-current="page"<% end %>>Tu Perfil</a>
-            <a href="/leaderboard" class="<% if request.path_info == '/leaderboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium" <% if request.path_info == '/leaderboard' %>aria-current="page"<% end %>>Leaderboard</a>
+            <button id="menu-toggle" class="block md:hidden text-gray-400 focus:outline-none ml-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Links -->
+        <div id="menu" class="hidden md:flex items-baseline gap-4">
+            <a href="/dashboard" class="<% if request.path_info == '/dashboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Dashboard</a>
+            <a href="/lessons" class="<% if request.path_info == '/lessons_details' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Lecciones</a>
+            <a href="/profile" class="<% if request.path_info == '/profile' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Tu Perfil</a>
+            <a href="/leaderboard" class="<% if request.path_info == '/leaderboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Leaderboard</a>
             <a href="/logout" class="text-gray-400 py-2 px-4 rounded-md text-sm font-medium transition duration-300 hover:bg-gray-600 hover:text-white">Salir</a>
         </div>
 
+        <!-- Geogems -->
         <div class="flex items-center gap-2 bg-gray-100 py-2 px-4 rounded-md ml-auto">
-        <span id="geogem-count" class="text-yellow-600 font-bold text-xl"><%= current_user.geogems %></span>
-        <!-- Contenedor para la imagen -->
-        <div class="relative w-8 h-8 overflow-hidden flex items-center justify-center">
-            <img src="/images/geogem.png" class="w-16 h-16 transform scale-150 object-cover rounded-full" alt="Geogema">
-        </div>
-    </div>    
+            <span id="geogem-count" class="text-yellow-600 font-bold text-xl"><%= current_user.geogems %></span>
+            <div class="relative w-8 h-8 overflow-hidden flex items-center justify-center">
+                <img src="/images/geogem.png" class="w-16 h-16 transform scale-150 object-cover rounded-full" alt="Geogema">
+            </div>
+        </div>    
     </div>
 </nav>
+
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        var menu = document.getElementById('menu');
+        menu.classList.toggle('hidden');
+    });
+</script>
+
+<style>
+    @media (max-width: 768px) {
+        #menu {
+            flex-direction: column;
+            width: 100%;
+            background-color: rgba(31, 41, 55, 0.9);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 50;
+        }
+
+        #menu a {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #menu a:last-child {
+            border-bottom: none;
+        }
+    }
+</style>
+
