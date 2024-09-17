@@ -1,41 +1,48 @@
-<%# Set the title for the page %>
-<% @title =  "Lesson Levels" %>
-
-<main class="flex flex-wrap justify-center">
-  <%# Iterate over each lesson to display lesson levels %>
-  <% @lessons.each do |lesson| %>
-    <div class="lesson-container bg-gray-800 bg-opacity-80 rounded-lg shadow-md p-6 m-4 w-52 text-center transition-transform transform hover:translate-y-[-10px]">
-      <div class="lesson-title bg-white bg-opacity-90 p-4 rounded-lg shadow-md mb-4 text-gray-800 font-bold h-16 flex items-center justify-center">
-        <%= lesson.title %>
-      </div>
-      <%# Iterate over each level of the lesson %>
-      <% (1..lesson.num_levels).each do |level| %>
-        <div class="flex flex-col items-center">
-          <%# Check if the level is unlocked to display different styles %>
-          <% if level_completed?(lesson, level) %>
-            <div class="lesson-circle locked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform relative">
-            <img src="/images/mundonormal.png" alt="Earth Logo" class="w-20 h-20">
-            <div class="absolute top-0 right-0 bg-green-700 text-white rounded-full p-1">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Levels</title>
+    <link rel="stylesheet" href="/styles/lessons-levels.css">
+</head>
+<body>
+    <main class="container">
+        <!-- Iterar sobre cada lección para mostrar los niveles -->
+        <% @lessons.each do |lesson| %>
+            <div class="lesson-container">
+                <div class="lesson-title">
+                    <%= lesson.title %>
+                </div>
+                <!-- Iterar sobre cada nivel de la lección -->
+                <% (1..lesson.num_levels).each do |level| %>
+                    <div class="level-container">
+                        <% if level_completed?(lesson, level) %>
+                            <div class="lesson-circle locked">
+                                <img src="/images/mundonormal.png" alt="Earth Logo">
+                                <div class="status-icon">
+                                    <svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        <% elsif current_level?(lesson, level) %>
+                            <a href="/lessons/levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked">
+                                <img src="/images/mundonormal.png" alt="Earth Logo"> 
+                            </a>
+                        <% else %>
+                            <div class="lesson-circle locked">
+                                <img src="/images/mundorojo.png" alt="Earth Logo"> 
+                            </div>
+                        <% end %>
+                        <!-- Mostrar una línea entre niveles si no es el último nivel -->
+                        <% unless level == lesson.num_levels %>
+                            <div class="lesson-line"></div>
+                        <% end %>
+                    </div>
+                <% end %>
             </div>
-          </div>
-          <% elsif current_level?(lesson, level) %>
-            <a href="/lessons/levels/<%= lesson.id %>/<%= level %>" class="lesson-circle unlocked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform hover:scale-110">
-              <img src="/images/mundonormal.png" alt="Earth Logo" class="w-20 h-20"> 
-            </a>
-          <% else %>
-            <div class="lesson-circle locked bg-white bg-opacity-90 rounded-full shadow-md flex items-center justify-center w-20 h-20 mb-2 transition-transform transform">
-              <img src="/images/mundorojo.png" alt="Earth Logo" class="w-20 h-20"> 
-            </div>
-          <% end %>
-          <%# Display a line between levels if it's not the last level %>
-          <% unless level == lesson.num_levels %>
-            <div class="lesson-line bg-white w-1 h-8"></div>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-</main>
+        <% end %>
+    </main>
+</body>
+</html>
