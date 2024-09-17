@@ -1,17 +1,34 @@
-<%# Set the page title %>
-<% @title = "User Profile" %>
-
-<div class="container mx-auto px-4">
-  <%# Title of the user profile section %>
-  <h1 class="text-4xl font-bold text-black mb-6 animate-enter-title">Perfil de usuario</h1>
-
-  <%# Main container for user information %>
-  <div class="bg-white bg-opacity-80 rounded-lg p-8 shadow-lg animate-enter-info">
-    <p class="text-lg font-medium"><strong>Nombre de usuario:</strong> <%= @user.username %></p>
-    <p class="text-lg font-medium"><strong>Email:</strong> <%= @user.email %></p>
-    <p class="text-lg font-medium"><strong>Progreso:</strong> <%= @user.app_progress %>%</p>
-    <p class="text-lg font-medium"><strong>Racha mas alta:</strong> <%= @user.highest_streak %></p>
-    <p class="text-lg font-medium"><strong>Racha actual:</strong> <%= @user.current_streak %></p>
-    <p class="text-lg font-medium"><strong>Lecciones completadas:</strong> <%= @user.completed_lessons %></p>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= @title %></title>
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <h1 class="title">Perfil de Usuario</h1>
+            <div class="profile-header">
+                <div class="profile-picture">
+                    <img src="/images/logo.png" alt="Imagen de perfil">
+                </div>
+                <h2 class="profile-name">Hola <%= @user.username %>! Bienvenid@ a la central de estadisticas de</h2>
+            </div>
+            <div class="profile-details">
+                <div class="profile-item"><i class="fas fa-envelope"></i> <strong>Email:</strong> <%= @user.email %></div>
+                <div class="profile-item"><i class="fas fa-tachometer-alt"></i> <strong>Progreso:</strong> <%= @user.app_progress %>%</div>
+                <div class="profile-item"><i class="fas fa-calendar-check"></i> <strong>Racha más alta:</strong> <%= @user.highest_streak %></div>
+                <div class="profile-item"><i class="fas fa-calendar-day"></i> <strong>Racha actual:</strong> <%= @user.current_streak %></div>
+                <div class="profile-item"><i class="fas fa-check-circle"></i> <strong>Lecciones completadas:</strong> <%= @user.completed_lessons %></div>
+            </div>
+            <div class="motivational-quote">
+                <p href="/ranking">Continua mejorando tus estadisticas para ser el mejor en Geogef!</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
