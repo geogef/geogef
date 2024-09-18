@@ -5,33 +5,29 @@
   <h1 class="text-3xl font-bold text-center mb-8">Ranking de Jugadores</h1>
 
   <%# Table displaying user leaderboard %>
-  <table class="w-full rounded-lg border bg-white shadow-md">
-    <thead class="bg-gray-200">
-      <tr>
-        <%# Table headers: Position, Name, Score %>
-        <th class="text-left p-2 border">Posición</th>
-        <th class="text-left p-2 border">Nombre</th>
-        <th class="text-center p-2 border">Puntuación</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%# Loop through each user to display their information %>
-      <% @users.each_with_index do |user, index| %>
-      <tr class="<%= index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' %>">
-        <%# Display user's position %>
-        <td class="text-left p-2 border"><%= index + 1 %></td>
-        <%# Display user's username %>
-        <td class="text-left p-2 border"><%= user.username %></td>
-        <%# Display user's highest streak %>
-        <td class="text-center p-2 border"><%= user.highest_streak %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="overflow-x-auto">
+    <table class="min-w-full rounded-lg border bg-white shadow-md">
+      <thead class="bg-gray-200">
+        <tr>
+          <%# Table headers: Position, Name, Score %>
+          <th class="text-left p-2 border">Posición</th>
+          <th class="text-left p-2 border">Nombre</th>
+          <th class="text-center p-2 border">Puntuación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%# Loop through each user to display their information %>
+        <% @users.each_with_index do |user, index| %>
+        <tr class="<%= index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' %>">
+          <%# Display user's position %>
+          <td class="text-left p-2 border"><%= index + 1 %></td>
+          <%# Display user's username %>
+          <td class="text-left p-2 border"><%= user.username %></td>
+          <%# Display user's highest streak %>
+          <td class="text-center p-2 border"><%= user.highest_streak %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<%# Script to make table responsive on mobile devices %>
-<script>
-  const table = document.querySelector('table');
-  table.classList.add('sm:mx-auto', 'sm:w-full');
-</script>
