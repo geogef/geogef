@@ -6,242 +6,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Styling for background video */
-        #bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 20; /* Adjusted bottom spacing */
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            background-size: cover;
+        /* Estilos para mostrar el video en pantallas grandes y ocultarlo en móviles */
+        @media (min-width: 1024px) {
+            #bg-video {
+                display: block;
+            }
+            /*
+            .mobile-bg {
+                display: none;
+            }
+            */
         }
 
-        /* Styles for main content section */
-        .relative-content {
-            position: relative;
-            z-index: 10;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        /* Styles for elements at bottom left */
-        .bottom-left {
-            margin-bottom: 20px;
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        /* Button styling */
-        .menu-button {
-            padding: 1rem 2rem; /* Increased padding */
-            margin-bottom: 0.5rem;
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Styling for 'Get Started' button */
-        .get-started-button {
-            padding: 1rem 2rem; /* Increased padding */
-            margin-bottom: 0.5rem;
-            background-color: yellow; /* Changed background color to yellow */
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Logo styling */
-        .logo {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 300px;
-            height: auto;
-            z-index: 50;
-        }
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            color: #888;
+        @media (max-width: 1023px) {
+            #bg-video {
+                display: none;
+            }
+            .mobile-bg {
+                display: block;
+                background-image: url('images/fondoindexcelular.png');
+                background-size: cover;
+                background-position: center;
+            }
         }
     </style>
 </head>
 
-<body>
-    <%# Background video %>
-    <video autoplay muted loop id="bg-video">
+<body class="bg-blue-600 lg:bg-transparent mobile-bg">
+    <video autoplay muted loop id="bg-video" class="fixed top-0 left-0 min-w-full min-h-full w-auto h-auto z-[-1] object-cover">
         <source src="/videos/background_index.mp4" type="video/mp4">
-        <%# Your browser does not support the video tag. %>
+        Tu navegador no soporta el video de fondo.
     </video>
 
-    <%# Main content of the page %>
-    <div class="relative-content">
-        <%# Header section with navigation %>
-        <header class="absolute inset-x-0 top-0 z-50 text-container">
-            <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div class="flex lg:flex-1 items-center">
-                    <div class="flex-shrink-0">
-                        <a href="#" class="-m-1.5 p-1.5">
-                            <span class="sr-only">Geogef</span>
-                        </a>
-                    </div>
+    <div class="relative z-10 flex flex-col justify-end h-screen">
+        <header class="absolute inset-x-0 top-0 z-50 text-white">
+            <nav class="flex items-center justify-between p-6 lg:px-8">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-lg font-bold">Geogef</a>
                 </div>
-                <div class="flex lg:hidden">
-                    <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                        <span class="sr-only">Open menu</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <div class="lg:hidden">
+                    <button id="menu-toggle" class="p-2 text-white-700">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
                     </button>
                 </div>
-                <div class="hidden lg:flex lg:gap-x-12">
-                    <a href="https://forms.gle/sksYgutNhn4soYV89"
-                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Contacto
-                    </a>                                 
-                    <a href="#" id="donation-button" class="menu-button text-sm font-semibold leading-6 text-gray-900">Donaciones</a>
-                </div>
-                <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="/login"
-                        class="text-sm font-semibold leading-6 text-gray-900 bg-gray-200 py-2 px-4 rounded-md hover:bg-gray-300">Ingresar <span aria-hidden="true">&rarr;</span></a>
+                <div class="hidden lg:flex gap-x-6">
+                    <a href="https://forms.gle/sksYgutNhn4soYV89" class="text-white font-semibold hover:text-gray-200">Contacto</a>
+                    <a href="#" id="donation-button" class="text-white font-semibold hover:text-gray-200">Donaciones</a>
+                    <a href="/login" class="text-white font-semibold bg-gray-700 px-4 py-2 rounded-md hover:bg-gray-800">Ingresar</a>
                 </div>
             </nav>
-            <%# Mobile menu, show/hide based on menu open state. %>
-            <div class="lg:hidden" role="dialog" aria-modal="true">
-                <%# Background backdrop, show/hide based on slide-over state. %>
-                <div class="fixed inset-0 z-50"></div>
-                <div
-                    class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-                    <div class="flex items-center justify-between">
-                        <a href="#" class="-m-1.5 p-1.5">
-                            <span class="sr-only">Geogef</span>
-                        </a>
-                        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                            <span class="sr-only">Cerrar menu</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="mt-6 flow-root">
-                        <div class="-my-6 divide-y divide-gray-500/10">
-                            <div class="space-y-2 py-6">
-                                <a href="https://forms.gle/sksYgutNhn4soYV89"
-                                class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                                Contacto
-                                </a>                         
-                                <a href="#"
-                                    class="menu-button -mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Donaciones</a>
-                            </div>
-                            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                                <a href="/login"
-                                    class="text-lg xl:text-xl font-semibold leading-6 text-gray-900">Ingresar <span
-                                        aria-hidden="true">
-                                    </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
 
-            <%# Content section at bottom left %>
-            <div class="relative isolate px-6 pt-32 lg:px-8 flex flex-1 items-end justify-end">
-                <div class="bottom-left flex flex-col items-start">
-                    <%# 'Get Started' button %>
-                    <a href="/signup"
-                        class="get-started-button rounded-md px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-4">Comenzar</a>
-                    <%# GitHub link button %>
-                    <a href="https://github.com/eg-v/project-geography/blob/main/README.md"
-                        class="menu-button text-sm font-semibold leading-6 text-gray-900 bg-white px-3.5 py-2.5 rounded-md hover:bg-gray-100" target="_blank">GitHub <span aria-hidden="true">→</span></a>
-                </div>
+            <div id="mobile-menu" class="hidden lg:hidden bg-white p-6 space-y-4">
+                <a href="https://forms.gle/sksYgutNhn4soYV89" class="block text-gray-900 font-semibold">Contacto</a>
+                <a href="#" id="donation-button-mobile" class="block text-gray-900 font-semibold">Donaciones</a>
+                <a href="/login" class="block text-gray-900 font-semibold">Ingresar</a>
+            </div>
+        </header>
+        <div class="p-6 lg:p-8 flex justify-end items-end">
+            <div class="flex flex-col items-start space-y-4">
+                <!-- Botón de "Comenzar" -->
+                <a href="/signup" class="bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-md shadow hover:bg-yellow-500">Comenzar</a>
+                <!-- Botón de GitHub -->
+                <a href="https://github.com/eg-v/project-geography/blob/main/README.md" class="bg-white text-gray-900 font-semibold px-6 py-3 rounded-md shadow hover:bg-gray-100" target="_blank">GitHub</a>
             </div>
         </div>
-            <div id="donation-modal" class="modal">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <h2 class="text-xl font-semibold mb-4">¡Ayúdanos con tu donación!</h2>
-                    <p class="mb-4">Escanee el código QR con su aplicación de pago bitcoin para donar.</p>
-                    <img src="images/qrbitcoin.jpeg" alt="Código QR de donación" class="mx-auto mb-4">
-                    <p class="text-sm text-gray-500">Dirección: bc1qhwfvk3k8jpxjg8c0dt6md25y3qlkwmvgcmzw39</p>
-                    <p class="text-sm text-gray-500">Su apoyo es crucial para nuestro proyecto. ¡Gracias por donar!</p>
-                </div>
-            </div>
-        <%# Footer section %>
-        <footer class="footer">
-            <p>&copy; 2024 Geogef. Licensed under the GPL-3 License.</p>
-        </footer>
-        <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Selección de elementos del DOM
-        const donationButton = document.getElementById('donation-button');
-        const closeModal = document.querySelector('.close-modal');
-        const modal = document.getElementById('donation-modal');
+    </div>
 
-        // Función para mostrar el modal
-        function showModal() {
-            modal.style.display = 'flex';
-        }
+    <div id="donation-modal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg text-center">
+            <span id="close-modal" class="text-gray-500 cursor-pointer text-xl">&times;</span>
+            <h2 class="text-xl font-semibold mb-4">¡Ayúdanos con tu donación!</h2>
+            <p class="mb-4">Escanee el código QR con su aplicación de pago bitcoin para donar.</p>
+            <img src="images/qrbitcoin.jpeg" alt="Código QR de donación" class="mx-auto mb-4">
+            <p class="text-sm text-gray-500">Dirección: bc1qhwfvk3k8jpxjg8c0dt6md25y3qlkwmvgcmzw39</p>
+            <p class="text-sm text-gray-500">Su apoyo es crucial para nuestro proyecto. ¡Gracias por donar!</p>
+        </div>
+    </div>
 
-        // Función para ocultar el modal
-        function hideModal() {
-            modal.style.display = 'none';
-        }
+    <footer class="absolute bottom-0 w-full text-center text-white">
+        <p>&copy; 2024 Geogef. Licensed under the GPL-3 License.</p>
+    </footer>
 
-        // Evento al hacer clic en el botón de donaciones para mostrar el modal
-        donationButton.addEventListener('click', showModal);
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const donationButton = document.getElementById('donation-button');
+            const donationModal = document.getElementById('donation-modal');
+            const closeModal = document.getElementById('close-modal');
 
-        // Evento al hacer clic en la "x" para cerrar el modal
-        closeModal.addEventListener('click', hideModal);
+            // Menú desplegable para móviles
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
 
-        // Evento para cerrar el modal al hacer clic fuera del área del modal
-        window.addEventListener('click', function (event) {
-            if (event.target === modal) {
-                hideModal();
-            }
+            // Modal para donaciones
+            donationButton.addEventListener('click', () => {
+                donationModal.classList.remove('hidden');
+            });
+
+            closeModal.addEventListener('click', () => {
+                donationModal.classList.add('hidden');
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === donationModal) {
+                    donationModal.classList.add('hidden');
+                }
+            });
         });
-
-        // Evento para cerrar el modal al presionar la tecla ESC
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                hideModal();
-            }
-        });
-    });
-</script>
-    </body>
+    </script>
+</body>
 
 </html>
