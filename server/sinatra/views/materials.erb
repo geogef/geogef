@@ -25,14 +25,14 @@
             </div>
 
             <%# Buttons to navigate between materials %>
-            <div class="flex justify-between mt-6 p-4">
-                <button id="prev-button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 hidden">
+            <div class="flex justify-between mt-6 p-4 space-x-2">
+                <button id="prev-button" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 hidden w-full sm:w-auto">
                     Material previo
                 </button>
-                <button id="next-button" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                <button id="next-button" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 w-full sm:w-auto">
                     Siguiente material
                 </button>
-                <button id="finish-button" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 hidden">
+                <button id="finish-button" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 hidden w-full sm:w-auto">
                     Fin
                 </button>
             </div>
@@ -136,3 +136,19 @@
 
     showCurrentMaterial();
 </script>
+
+<style>
+  @media (max-width: 640px) {
+    h1 {
+        font-size: 1.75rem; /* Reduce the size of the title */
+    }
+    button {
+        font-size: 1rem; /* Adjust button text size */
+        padding: 0.75rem; /* Increase padding for better touch interaction */
+    }
+    .material-image svg {
+        width: 100%; /* Make sure the image fits smaller screens */
+        height: auto;
+    }
+  }
+</style>
