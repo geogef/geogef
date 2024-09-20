@@ -15,7 +15,7 @@
 		</nav>
 	</div>
 
-	<div id="side-buttons" class="fixed top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-0 flex flex-col gap-4 hidden md:flex">
+	<div id="side-buttons" class="sidebar fixed top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-0 flex flex-col gap-4 hidden ">
 		<a href="/profile" class="bg-blue-200 hover:bg-blue-400 text-black font-bold py-3 px-5 rounded-full shadow-md inline-flex items-center justify-center w-full">
         Perfil
     </a>
@@ -87,6 +87,20 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<style>
+@media (max-width: 1799px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media (min-width: 1800px) {
+  .sidebar {
+    display: flex;
+  }
+}
+</style>
 
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
