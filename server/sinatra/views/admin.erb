@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= @title %></title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 100vh;
+            margin-top: -150px;
+        }
+
+        .btn {
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            width: 250px;
+            height: 250px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #f0f0f0;
+            border-color: #999;
+        }
+
+        .btn a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn">
+            <a href="/add_question">Add questions</a>
+        </div>
+        <div class="btn">
+            <a href="/edit_question">Edit questions</a>
+        </div>
+        <div class="btn">
+            <a href="/view_users">List users</a>
+        </div>
+        <div class="btn">
+            <a href="/list_the_most_accurate_questions">List the most correct questions by users</a>
+        </div>
+        <div class="btn">
+            <a href="/list_the_least_accurate_questions">List the least correct questions by users</a>
+        </div>
+    </div>
+</body>
+</html>

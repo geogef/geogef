@@ -364,3 +364,13 @@ get '/leaderboard' do
   @users = User.all.sort_by { |user| -user.highest_streak }
   erb :ranking
 end
+
+before '/admin' do
+  redirect '/login' unless session[:user_id]
+  
+  user = User.find(session[:user_id])
+  
+  if user.user_type != 1
+    halt 403, "No tienes permiso para acceder a esta página."
+  end
+end
