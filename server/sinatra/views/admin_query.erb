@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Preguntas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      font-weight: bold;
+      margin: 10px 0;
+      padding: 10px; 
+      background-color: #e2e2e2;
+      border-radius: 4px;
+    }
+    p {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<% if @type == 'correctly' %>
+  <h1>Preguntas que se han respondido correctamente más veces</h1>
+  
+  <% if @questions.any? %>
+    <ul>
+      <% @questions.first(@count).each do |question| %>
+        <li><%= question.question %> se respondió bien <b><%= question.correct_answers_count %></b> veces</li> 
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay preguntas disponibles.</p>
+  <% end %>
+<% else %>
+  <h1>Preguntas que se han respondido mal más veces</h1>
+  
+  <% if @questions.any? %>
+    <ul>
+      <% @questions.first(@count).each do |question| %>
+        <li><%= question.question %> se respondió mal <b><%= question.incorrect_answers_count %></b> veces</li> 
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No hay preguntas disponibles.</p>
+  <% end %>
+<% end %> 
+</body>
+</html>

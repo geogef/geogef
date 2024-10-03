@@ -240,7 +240,7 @@ get '/api/qa/:id/correct_answer' do
     correct_answer: correct_answer.response
   }.to_json
 end
-    
+
 post '/api/reward/1/:qa_id' do
   content_type :json
   authenticate_user
@@ -290,7 +290,7 @@ get '/api/reward/2/' do
   end
 
   user.update(geogems: user.geogems - geogem_cost)
-  
+
   {
     seconds_added: 30,
     message: "Seconds have been added correctly.",
@@ -385,6 +385,24 @@ get '/view_users' do
   erb :view_users
 end
 
+get '/admin/query/:type/:n' do
+  @type = params[:type]
+
+  if @type == 'correctly'
+    @questions = Question.all.sort_by { |question| -question.correct_answers_count }
+  elsif @type == 'incorrectly'
+    @questions = Question.all.sort_by { |question| -question.incorrect_answers_count }
+  else
+    @questions = []
+  end
+
+  @count = params[:n].to_i
+
+  @questions = @questions.first(@count)
+
+  erb :admin_query
+end
+  
 get '/admin/questions/:id/edit' do
   authenticate_user
   question = Question.find_by(id: params[:id])
@@ -411,5 +429,43 @@ post '/admin/questions/:id' do
     end
   else
     halt 403, 'Access denied.'
+  end
+end
+
+before '/admin' do
+  redirect '/login' unless session[:user_id]
+  
+  user = User.find(session[:user_id])
+  
+  if user.user_type != 1
+    halt 403, "No tienes permiso para acceder a esta página."
+  end
+end
+
+get '/admin' do
+  erb :admin
+end
+
+post '/admin/promote' do
+  content_type :json
+  authenticate_user
+
+  halt 403, { error: 'Access denied.' }.to_json unless current_user.admin?
+
+  data = JSON.parse(request.body.read)
+  user_id = data['user_id']
+
+  user = User.find_by(id: user_id)
+
+  if user.nil?
+    return { error: 'User not found.' }.to_json
+  end
+
+  user.update(user_type: 1)
+
+  if user.save
+    { message: "User #{user.username} has been promoted to admin." }.to_json
+  else
+    { error: 'Failed to promote user.' }.to_json
   end
 end
