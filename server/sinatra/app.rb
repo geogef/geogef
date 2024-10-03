@@ -404,6 +404,10 @@ before '/admin' do
   end
 end
 
+get '/admin' do
+  erb :admin
+end
+
 post '/admin/promote' do
   content_type :json
   authenticate_user
@@ -427,4 +431,3 @@ post '/admin/promote' do
     { error: 'Failed to promote user.' }.to_json
   end
 end
-
