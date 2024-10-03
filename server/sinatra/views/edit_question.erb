@@ -1,0 +1,30 @@
+<% @title =  "Edit Question" %>
+
+<div class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-12">
+  <h2 class="text-2xl font-semibold mb-6">Edit Question</h2>
+  
+  <form action="/admin/questions/<%= question.id %>" method="POST" class="space-y-4">
+    <div>
+      <label for="question" class="block text-lg font-medium text-gray-700">Question:</label>
+      <input type="text" name="question" id="question" value="<%= question.question %>" required 
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div>
+      <label for="topic_id" class="block text-lg font-medium text-gray-700">Topic:</label>
+      <select name="topic_id" id="topic_id" 
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <% Topic.all.each do |topic| %>
+          <option value="<%= topic.id %>" <%= 'selected' if topic.id == question.topic_id %>><%= topic.topic %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div class="flex justify-end">
+      <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Update Question
+      </button>
+    </div>
+  </form>
+</div>
+
