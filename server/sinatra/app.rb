@@ -239,7 +239,7 @@ get '/api/qa/:id/correct_answer' do
     correct_answer: correct_answer.response
   }.to_json
 end
-    
+
 post '/api/reward/1/:qa_id' do
   content_type :json
   authenticate_user
@@ -289,7 +289,7 @@ get '/api/reward/2/' do
   end
 
   user.update(geogems: user.geogems - geogem_cost)
-  
+
   {
     seconds_added: 30,
     message: "Seconds have been added correctly.",
@@ -365,6 +365,24 @@ get '/leaderboard' do
   erb :ranking
 end
 
+get '/admin/query/:type/:n' do
+  @type = params[:type]
+
+  if @type == 'correctly'
+    @questions = Question.all.sort_by { |question| -question.correct_answers_count }
+  elsif @type == 'incorrectly'
+    @questions = Question.all.sort_by { |question| -question.incorrect_answers_count }
+  else
+    @questions = []
+  end
+
+  @count = params[:n].to_i
+
+  @questions = @questions.first(@count)
+
+  erb :admin_query
+end
+  
 get '/admin/questions/:id/edit' do
   authenticate_user
   question = Question.find_by(id: params[:id])
