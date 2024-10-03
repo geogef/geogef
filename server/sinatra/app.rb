@@ -382,3 +382,42 @@ get '/admin/query/:type/:n' do
 
   erb :admin_query
 end
+  
+get '/admin/questions/:id/edit' do
+  authenticate_user
+  question = Question.find_by(id: params[:id])
+
+  if current_user.admin? && question
+    erb :edit_question, locals: { question: question }
+  else
+    halt 403, 'Access denied.'
+  end
+end
+
+post '/admin/questions/:id' do
+  authenticate_user
+  question = Question.find_by(id: params[:id])
+
+  if current_user.admin? && question
+    question_text = params['question']
+    topic_id = params['topic_id']
+
+    if question.update(question: question_text, topic_id: topic_id)
+      redirect '/admin'
+    else
+      erb :edit_question, locals: { question: question, error: 'Failed to update question.' }
+    end
+  else
+    halt 403, 'Access denied.'
+  end
+end
+
+before '/admin' do
+  redirect '/login' unless session[:user_id]
+  
+  user = User.find(session[:user_id])
+  
+  if user.user_type != 1
+    halt 403, "No tienes permiso para acceder a esta página."
+  end
+end

@@ -17,6 +17,10 @@
             <a href="/profile" class="<% if request.path_info == '/profile' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Tu Perfil</a>
             <a href="/leaderboard" class="<% if request.path_info == '/leaderboard' %>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Leaderboard</a>
             <a href="/logout" class="text-gray-400 py-2 px-4 rounded-md text-sm font-medium transition duration-300 hover:bg-gray-600 hover:text-white">Salir</a>
+            <% if current_user.user_type == 1 %>
+                <a href="/admin" class="<% if request.path_info == '/admin' %>%>text-white bg-gray-900 <% else %>text-gray-400 transition duration-300 hover:bg-gray-600 hover:text-white <% end %>py-2 px-4 rounded-md text-sm font-medium">Admin</a>
+            <% end %>
+
         </div>
 
         <!-- Geogems -->
