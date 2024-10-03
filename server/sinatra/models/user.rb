@@ -50,6 +50,10 @@ class User < ActiveRecord::Base
     self.update(app_progress: progress.round)
   end
 
+  def admin?
+    user_type == 1
+  end
+
   def init
     self.app_progress ||= 0.0
     self.highest_streak ||= 0
