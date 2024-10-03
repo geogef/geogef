@@ -364,3 +364,33 @@ get '/leaderboard' do
   @users = User.all.sort_by { |user| -user.highest_streak }
   erb :ranking
 end
+
+get '/admin/questions/:id/edit' do
+  authenticate_user
+  question = Question.find_by(id: params[:id])
+
+  if current_user.admin? && question
+    erb :edit_question, locals: { question: question }
+  else
+    halt 403, 'Access denied.'
+  end
+end
+
+post '/admin/questions/:id' do
+  authenticate_user
+  question = Question.find_by(id: params[:id])
+
+  if current_user.admin? && question
+    question_text = params['question']
+    topic_id = params['topic_id']
+
+    if question.update(question: question_text, topic_id: topic_id)
+      redirect '/admin'
+    else
+      erb :edit_question, locals: { question: question, error: 'Failed to update question.' }
+    end
+  else
+    halt 403, 'Access denied.'
+  end
+end
+
