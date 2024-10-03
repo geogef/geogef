@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .overflow-x-auto {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    table {
+        width: 100%;
+    }
+    h1 {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        background-color: #4A90E2;
+        padding: 1rem;
+        margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game users</h1>
+  <div class="overflow-x-auto">
+    <table class="min-w-full rounded-lg border bg-white shadow-md">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="text-left p-2 border">Username</th>
+          <th class="text-left p-2 border">Email</th>
+          <th class="text-left p-2 border">Created at</th>
+          <th class="text-left p-2 border">App progress</th>
+          <th class="text-left p-2 border">Highest streak</th>
+          <th class="text-left p-2 border">Current streak</th>
+          <th class="text-center p-2 border">Completed lessons</th>
+          <th class="text-center p-2 border">Last connection</th>
+          <th class="text-center p-2 border">User type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each_with_index do |user, index| %>
+        <tr class="<%= index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' %>">
+          <td class="text-left p-2 border"><%= user.username %></td>
+          <td class="text-center p-2 border"><%= user.email %></td>
+          <td class="text-center p-2 border"><%= user.created_at %></td>
+          <td class="text-left p-2 border"><%= user.app_progress %></td>
+          <td class="text-center p-2 border"><%= user.highest_streak %></td>
+          <td class="text-left p-2 border"><%= user.current_streak %></td>
+          <td class="text-center p-2 border"><%= user.completed_lessons %></td>
+          <td class="text-left p-2 border"><%= user.last_connection %></td>
+          <td class="text-center p-2 border"><%= user.user_type %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
