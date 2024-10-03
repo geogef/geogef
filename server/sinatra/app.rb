@@ -403,3 +403,7 @@ before '/admin' do
     halt 403, "No tienes permiso para acceder a esta página."
   end
 end
+
+get '/admin' do
+  erb :admin
+end
