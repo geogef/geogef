@@ -364,3 +364,7 @@ get '/leaderboard' do
   @users = User.all.sort_by { |user| -user.highest_streak }
   erb :ranking
 end
+
+get '/admin' do
+  erb :admin
+end
