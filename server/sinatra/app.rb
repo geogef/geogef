@@ -403,3 +403,28 @@ before '/admin' do
     halt 403, "No tienes permiso para acceder a esta página."
   end
 end
+
+post '/admin/promote' do
+  content_type :json
+  authenticate_user
+
+  halt 403, { error: 'Access denied.' }.to_json unless current_user.admin?
+
+  data = JSON.parse(request.body.read)
+  user_id = data['user_id']
+
+  user = User.find_by(id: user_id)
+
+  if user.nil?
+    return { error: 'User not found.' }.to_json
+  end
+
+  user.update(user_type: 1)
+
+  if user.save
+    { message: "User #{user.username} has been promoted to admin." }.to_json
+  else
+    { error: 'Failed to promote user.' }.to_json
+  end
+end
+
