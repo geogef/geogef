@@ -50,6 +50,7 @@ post '/login' do
 
   if user && user.authenticate(password)
     session[:user_id] = user.id
+    user.update(last_connection: Time.now)
     redirect '/dashboard'
   else
     erb :login, layout: :login, locals: {
@@ -365,6 +366,25 @@ get '/leaderboard' do
   erb :ranking
 end
 
+before '/admin' do
+  redirect '/login' unless session[:user_id]
+  
+  user = User.find(session[:user_id])
+  
+  if user.user_type != 1
+    halt 403, "No tienes permiso para acceder a esta página."
+  end
+end
+
+get '/admin' do
+  erb :admin
+end
+
+get '/view_users' do
+  @users = User.all
+  erb :view_users
+end
+
 get '/admin/questions/:id/edit' do
   authenticate_user
   question = Question.find_by(id: params[:id])
@@ -391,15 +411,5 @@ post '/admin/questions/:id' do
     end
   else
     halt 403, 'Access denied.'
-  end
-end
-
-before '/admin' do
-  redirect '/login' unless session[:user_id]
-  
-  user = User.find(session[:user_id])
-  
-  if user.user_type != 1
-    halt 403, "No tienes permiso para acceder a esta página."
   end
 end
