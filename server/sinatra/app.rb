@@ -395,7 +395,6 @@ get '/admin/questions/:id/edit' do
 end
 
 post '/admin/questions/:id' do
-  authenticate_user
   question = Question.find_by(id: params[:id])
 
   if current_user.admin? && question
