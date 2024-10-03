@@ -365,7 +365,7 @@ get '/leaderboard' do
   erb :ranking
 end
 
-get '/admin/query/:type/:n' do
+get '/admin/query' do
   @type = params[:type]
 
   if @type == 'correctly'
@@ -382,7 +382,7 @@ get '/admin/query/:type/:n' do
 
   erb :admin_query
 end
-  
+
 get '/admin/questions/:id/edit' do
   authenticate_user
   question = Question.find_by(id: params[:id])
@@ -395,7 +395,6 @@ get '/admin/questions/:id/edit' do
 end
 
 post '/admin/questions/:id' do
-  authenticate_user
   question = Question.find_by(id: params[:id])
 
   if current_user.admin? && question
@@ -414,9 +413,9 @@ end
 
 before '/admin' do
   redirect '/login' unless session[:user_id]
-  
+
   user = User.find(session[:user_id])
-  
+
   if user.user_type != 1
     halt 403, "No tienes permiso para acceder a esta página."
   end

@@ -10,6 +10,7 @@
     <style>
         .container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 20px;
@@ -43,6 +44,43 @@
             color: #333;
             display: block;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100px;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 <body>
@@ -56,12 +94,19 @@
         <div class="btn">
             <a href="/view_users">List users</a>
         </div>
-        <div class="btn">
-            <a href="/list_the_most_accurate_questions">List the most correct questions by users</a>
-        </div>
-        <div class="btn">
-            <a href="/list_the_least_accurate_questions">List the least correct questions by users</a>
-        </div>
+
+        <form action="/admin/query" method="get">
+            <label for="type">Select query type:</label>
+            <select name="type" id="type" required>
+                <option value="correctly">Most correctly answered</option>
+                <option value="incorrectly">Most incorrectly answered</option>
+            </select>
+
+            <label for="n">Enter the number of questions (N):</label>
+            <input type="number" name="n" id="n" min="1" required>
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
 </body>
 </html>
