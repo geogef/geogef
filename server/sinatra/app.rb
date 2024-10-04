@@ -446,25 +446,25 @@ get '/admin' do
 end
 
 post '/admin/promote' do
-  content_type :json
   authenticate_user
 
-  halt 403, { error: 'Access denied.' }.to_json unless current_user.admin?
+  halt 403, { error: 'Access denied.' } unless current_user.admin?
 
-  data = JSON.parse(request.body.read)
-  user_id = data['user_id']
+  user_id = params[:user_id]
 
   user = User.find_by(id: user_id)
 
   if user.nil?
-    return { error: 'User not found.' }.to_json
-  end
-
-  user.update(user_type: 1)
-
-  if user.save
-    { message: "User #{user.username} has been promoted to admin." }.to_json
+    session[:message] = 'User not found.'
   else
-    { error: 'Failed to promote user.' }.to_json
+    user.update(user_type: 1)
+    if user.save
+      session[:message] = "El usuario #{user.username} ha sido promovido a admin."
+    else
+      session[:message] = 'Error al promover usuario a admmin.'
+    end
   end
+
+  redirect '/view_users'
 end
+
