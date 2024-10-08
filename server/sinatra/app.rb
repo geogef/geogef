@@ -247,7 +247,7 @@ post '/api/reward/1/:qa_id' do
   qa = Qa.find_by(id: params[:qa_id])
   return { error: 'QA not found' }.to_json unless qa
 
-  correct_option = Option.find_by(id: qa.questions_id)
+  correct_option = Option.find_by(id: qa.options_id)
   return { error: 'Correct option not found' }.to_json unless correct_option
 
   question = Question.find_by(id: qa.questions_id)
