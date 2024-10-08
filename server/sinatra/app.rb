@@ -3,6 +3,7 @@ require 'sinatra/activerecord'
 require 'bcrypt'
 require 'json'
 require 'dotenv/load'
+require 'fileutils'
 
 
 require './auth_middleware'
@@ -428,3 +429,70 @@ post '/admin/promote' do
   end
 end
 
+get '/admin/questions/new' do
+  halt 403, 'Access denied.' unless current_user.admin?
+
+  @topics = Topic.all
+  erb :new_question
+end
+
+post '/admin/questions' do
+  halt 403, 'Access denied.' unless current_user.admin?
+
+  question_text = params['question']
+  correct_answer_text = params['correct_answer']
+  question_level = params['question_level']
+  topic_id = params['topic_id']
+  
+  if topic_id.nil?
+      redirect '/admin/questions/new'
+  end
+
+  lesson = Lesson.find_by(topic_id: topic_id)
+  level = Level.find_by(lesson_id: lesson.id, number: question_level)
+  imagepath = nil
+
+  if level.nil?
+    @topics = Topic.all
+    return erb :new_question, locals: { error: 'Failed to create question.' }
+  end
+
+  exam = Exam.find_by(lesson_id: lesson.id, level: level.id)
+
+
+  question = Question.new(question: question_text, topic_id: topic_id)
+
+  puts params['image']
+
+  if Topic.find(topic_id).topic == 'Banderas' && params['image'][:filename].end_with?('.svg')
+    filename = params['image'][:filename]
+    file = params['image'][:tempfile]
+    
+    image_folder = "./public/images/flags"
+
+    filepath = "#{image_folder}/#{filename}"
+    File.open(filepath, 'wb') do |f|
+      f.write(file.read)
+    end
+
+    imagepath = "images/flags/#{filename}"
+  end
+
+
+  if question.save
+    correct_option = Option.create(response: correct_answer_text, topics_id: topic_id)
+
+    if correct_option.save
+      if imagepath.nil?
+        Qa.create(questions_id: question.id, options_id: correct_option.id, exam_id: exam.id)
+      else
+        Qa.create(questions_id: question.id, options_id: correct_option.id, exam_id: exam.id, imagepath: imagepath)
+      end
+
+      redirect '/admin'
+    end
+  else
+    @topics = Topic.all
+    return erb :new_question, locals: { error: 'Failed to create question.' }
+  end
+end
