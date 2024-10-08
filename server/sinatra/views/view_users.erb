@@ -7,54 +7,151 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .overflow-x-auto {
-        max-width: 800px;
-        margin: 0 auto;
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Corregido para que funcione como 100% de la altura de la ventana */
     }
 
-    table {
-        width: 100%;
-    }
     h1 {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: bold;
-        color: white;
-        background-color: #4A90E2;
-        padding: 1rem;
-        margin: 0;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      background-color: #4A90E2;
+      padding: 1rem;
+      margin: 0;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
+    .overflow-x-auto {
+      max-width: 1500px;
+      margin: 0 auto;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }  
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    thead {
+      background-color: #4A90E2;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: #f1f5f9;
+    }
+
+    tbody tr:hover {
+      background-color: #e2e8f0;
+      transition: background-color 0.3s ease;
+    }
+
+    td {
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    td.text-center {
+      text-align: center;
+    }
+    
+    td:last-child {
+      text-align: center;
+    }
+
+    .btn-submit {
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: #357ABD;
+    }
+
+    select {
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    
   </style>
 </head>
 <body>
-  <h1>Game users</h1>
   <div class="overflow-x-auto">
-    <table class="min-w-full rounded-lg border bg-white shadow-md">
-      <thead class="bg-gray-200">
+    <h1>Lista de usuarios</h1>
+    <div id="message" class="message"></div>
+    <table class="min-w-full">
+      <thead>
         <tr>
-          <th class="text-left p-2 border">Username</th>
-          <th class="text-left p-2 border">Email</th>
-          <th class="text-left p-2 border">Created at</th>
-          <th class="text-left p-2 border">App progress</th>
-          <th class="text-left p-2 border">Highest streak</th>
-          <th class="text-left p-2 border">Current streak</th>
-          <th class="text-center p-2 border">Completed lessons</th>
-          <th class="text-center p-2 border">Last connection</th>
-          <th class="text-center p-2 border">User type</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Fecha de Registro</th>
+          <th>Progreso en la app</th>
+          <th>Racha más alta</th>
+          <th>Racha actual</th>
+          <th>Lecciones completadas</th>
+          <th>Última conexión</th>
+          <th>Tipo de usuario</th>
+          <th class="text-center p-2 border">Cambiar tipo de usuario</th>
         </tr>
       </thead>
       <tbody>
         <% @users.each_with_index do |user, index| %>
-        <tr class="<%= index % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' %>">
-          <td class="text-left p-2 border"><%= user.username %></td>
-          <td class="text-center p-2 border"><%= user.email %></td>
-          <td class="text-center p-2 border"><%= user.created_at %></td>
-          <td class="text-left p-2 border"><%= user.app_progress %></td>
-          <td class="text-center p-2 border"><%= user.highest_streak %></td>
-          <td class="text-left p-2 border"><%= user.current_streak %></td>
-          <td class="text-center p-2 border"><%= user.completed_lessons %></td>
-          <td class="text-left p-2 border"><%= user.last_connection %></td>
-          <td class="text-center p-2 border"><%= user.user_type %></td>
+        <tr>
+          <td><%= user.username %></td>
+          <td class="text-center"><%= user.email %></td>
+          <td class="text-center"><%= user.created_at %></td>
+          <td><%= user.app_progress %></td>
+          <td class="text-center"><%= user.highest_streak %></td>
+          <td><%= user.current_streak %></td>
+          <td class="text-center"><%= user.completed_lessons %></td>
+          <td><%= user.last_connection %></td>
+          <td class="text-center"><%= user.user_type %></td>
+          <td class="text-center p-2 border">
+            <% if user.user_type == 0 %>
+              <form action="/admin/promote" method="POST">
+                <input type="hidden" name="user_id" value="<%= user.id %>">
+                <button type="submit" class="btn-submit">Promover a Admin</button>
+              </form>
+            <% else %>
+                  <option value="admin" <%= user.user_type == 1 ? 'selected' : '' %>>Administrador</option>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </tbody>

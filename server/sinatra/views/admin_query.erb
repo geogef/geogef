@@ -7,57 +7,99 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 20px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #e0f7fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
+
+    .container {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
     h1 {
-      color: #333;
+      font-size: 2rem;
+      color: #00796b;
+      text-align: center;
+      margin-bottom: 20px;
     }
+
     ul {
       list-style-type: none;
       padding: 0;
     }
+
     li {
       font-weight: bold;
       margin: 10px 0;
-      padding: 10px; 
+      padding: 15px; 
       background-color: #e2e2e2;
-      border-radius: 4px;
+      border-radius: 8px;
+      font-size: 1.1rem;
     }
+
     p {
       color: #666;
+      text-align: center;
     }
+
+    .back-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #00796b;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #004d40;
+    }
+    
   </style>
 </head>
 <body>
 
-<% if @type == 'correctly' %>
-  <h1>Preguntas que se han respondido correctamente más veces</h1>
-  
-  <% if @questions.any? %>
-    <ul>
-      <% @questions.first(@count).each do |question| %>
-        <li><%= question.question %> se respondió bien <b><%= question.correct_answers_count %></b> veces</li> 
-      <% end %>
-    </ul>
+<div class="container">
+  <% if @type == 'correctly' %>
+    <h1>Preguntas que se han respondido correctamente más veces</h1>
+    
+    <% if @questions.any? %>
+      <ul>
+        <% @questions.first(@count).each do |question| %>
+          <li><%= question.question %> se respondió bien <b><%= question.correct_answers_count %></b> veces</li> 
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No hay preguntas disponibles.</p>
+    <% end %>
   <% else %>
-    <p>No hay preguntas disponibles.</p>
-  <% end %>
-<% else %>
-  <h1>Preguntas que se han respondido mal más veces</h1>
-  
-  <% if @questions.any? %>
-    <ul>
-      <% @questions.first(@count).each do |question| %>
-        <li><%= question.question %> se respondió mal <b><%= question.incorrect_answers_count %></b> veces</li> 
-      <% end %>
-    </ul>
-  <% else %>
-    <p>No hay preguntas disponibles.</p>
-  <% end %>
-<% end %> 
+    <h1>Preguntas que se han respondido mal más veces</h1>
+    
+    <% if @questions.any? %>
+      <ul>
+        <% @questions.first(@count).each do |question| %>
+          <li><%= question.question %> se respondió mal <b><%= question.incorrect_answers_count %></b> veces</li> 
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No hay preguntas disponibles.</p>
+    <% end %>
+  <% end %> 
+  <button class="back-button" onclick="window.history.back()">Volver</button>
+</div>
+
 </body>
 </html>
