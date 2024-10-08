@@ -1,0 +1,66 @@
+<% if locals[:error] %>
+  <p class="text-red-600"><%= locals[:error] %></p>
+<% end %>
+
+<div class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-12">
+  <h2 class="text-2xl font-semibold mb-6">Create Question</h2>
+  
+  <form action="/admin/questions" method="post" enctype="multipart/form-data" class="space-y-4">
+    <div>
+      <label for="question" class="block text-lg font-medium text-gray-700">Question:</label>
+      <input type="text" name="question" id="question" required 
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+    
+    <div>
+      <label for="correct_answer" class="block text-lg font-medium text-gray-700">Correct Answer:</label>
+      <input type="text" name="correct_answer" id="correct_answer" required 
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div>
+      <label for="topic_id" class="block text-lg font-medium text-gray-700">Select Topic:</label>
+      <select name="topic_id" id="topic_id" required 
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      <option value="" disabled selected>Select a topic</option>
+        <% @topics.each do |topic| %>
+          <option value="<%= topic.id %>"><%= topic.topic %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <div id="image-upload" style="display: none;">
+      <label for="image" class="block text-lg font-medium text-gray-700">Upload SVG Image (Only for Flags Topic):</label>
+      <input type="file" name="image" id="image" accept=".svg" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded">
+    </div>
+
+    <div>
+      <label for="question_level" class="block text-lg font-medium text-gray-700">Enter Level:</label>
+      <input type="number" name="question_level" id="question_level" 
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div class="flex justify-end">
+      <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Create Question
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const topicSelect = document.getElementById('topic_id');
+    const imageUpload = document.getElementById('image-upload');
+    
+    topicSelect.addEventListener('change', function () {
+      const selectedOption = topicSelect.options[topicSelect.selectedIndex].text;
+      if (selectedOption === 'Banderas') {
+        imageUpload.style.display = 'block';
+      } else {
+        imageUpload.style.display = 'none';
+      }
+    });
+  });
+</script>
+
