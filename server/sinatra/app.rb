@@ -97,7 +97,7 @@ post '/signup' do
     }
   end
 
-  user = User.create(username: username, email: email, password: password)
+  user = User.create(username: username, email: email, password: password, last_connection: Time.now)
 
   if user.valid?
     session[:user_id] = user.id
