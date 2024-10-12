@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/output.css" rel="stylesheet"> <%# External CSS style %>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title><%= @title || "Geogef" %></title> <%# Page title using Ruby ERB to display @title variable or default to "Geogef" %>
+    <link href="/css/output.css" rel="stylesheet">
+    <title><%= @title || "Geogef" %></title>
 </head>
 
-<body class="bg-cover bg-center bg-no-repeat min-h-screen bg-[url('/images/fondo3.jpg')]"> <%# Body background style %>
-    <%= erb :'shared/navbar' %> <%# Render shared navbar using Ruby ERB %>
+<body class="bg-center bg-repeat min-h-screen bg-[url('/images/fondo3.jpg')]">
+    <%= erb :'shared/navbar' %>
     <div class="pt-24 mb-4">
-        <%= yield %> <%# Render dynamic page content %>
+        <%= yield %>
     </div>
 </body>
 
