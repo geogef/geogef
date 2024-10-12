@@ -1,0 +1,39 @@
+<div class="w-full max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-x-auto">
+  <h1 class="text-2xl font-bold text-white bg-blue-500 p-4 rounded-t-lg text-center">Lista de QAs</h1>
+
+  <div id="message" class="message"></div>
+
+  <table class="min-w-full table-auto border-collapse border border-white">
+    <thead class="bg-blue-500 text-white">
+      <tr>
+        <th class="px-4 py-2 border border-gray text-left uppercase">Pregunta</th>
+        <th class="px-4 py-2 border border-gray text-left uppercase">Opción</th>
+        <th class="px-4 py-2 border border-gray text-left uppercase">Fecha de Creación</th>
+        <th class="px-4 py-2 border border-gray text-left uppercase">ID del Examen</th>
+        <th class="px-4 py-2 border border-gray text-left uppercase">Imagen</th>
+        <th class="px-4 py-2 border border-gray text-center uppercase">Modificar Pregunta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @qas.each_with_index do |qa, index| %>
+      <tr class="<%= index.even? ? 'bg-gray-50' : 'bg-white' %> hover:bg-gray-100">
+        <td class="px-4 py-2 border border-gray"><%= qa.question ? qa.question.question : 'Pregunta no encontrada' %></td>
+        <td class="px-4 py-2 border border-gray"><%= qa.option ? qa.option.response : 'Respuesta no encontrada' %></td>
+        <td class="px-4 py-2 border border-gray text-center"><%= qa.created_at %></td>
+        <td class="px-4 py-2 border border-gray text-center"><%= qa.exam_id %></td>
+        <td class="px-4 py-2 border border-gray text-center">
+          <% if qa.imagepath.present? %>
+            <img src="/<%= qa.imagepath %>" alt="QA Image" class="h-16 mx-auto">
+          <% end %>
+        </td>
+        <td class="px-4 py-2 text-center">
+          <a href="/admin/questions/<%= qa.questions_id %>/edit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            Editar
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
