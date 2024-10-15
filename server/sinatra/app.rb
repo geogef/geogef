@@ -382,7 +382,7 @@ get '/admin' do
   erb :admin
 end
 
-get '/view_users' do
+get '/admin/users' do
   @users = User.all
   erb :view_users
 end
@@ -467,7 +467,7 @@ post '/admin/promote' do
     end
   end
 
-  redirect '/view_users'
+  redirect '/admin/users'
 end
 
 get '/admin/questions/new' do
