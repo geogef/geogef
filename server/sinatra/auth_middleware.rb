@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Ensures that all requests to /api/ routes are authenticated
 class AuthMiddleware
   def initialize(app)
     @app = app
