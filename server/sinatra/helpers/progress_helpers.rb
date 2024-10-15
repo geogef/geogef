@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper methods for tracking user progress in lessons and levels.
 module ProgressHelpers
   def level_completed?(lesson, level_number)
     Level.find_by(number: level_number, lesson: lesson)

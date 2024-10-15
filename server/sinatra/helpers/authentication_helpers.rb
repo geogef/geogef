@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper methods for handling user authentication and sessions.
 module AuthenticationHelpers
   def redirect_if_logged_in
     redirect '/dashboard' if session[:user_id]

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper methods for rendering questions, saving images, and creating options.
 module QuestionHelpers
   def render_new_question
     @topics = Topic.all
