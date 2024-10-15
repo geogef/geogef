@@ -6,7 +6,7 @@
   <form action="/admin/questions/<%= question.id %>" method="POST" class="space-y-4">
     <div>
       <label for="question" class="block text-lg font-medium text-gray-700">Question:</label>
-      <input type="text" name="question" id="question" value="<%= question.question %>" required 
+      <input type="text" name="question" id="question" value="<%= h(question.question) %>" required 
              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
     </div>
 
@@ -15,7 +15,7 @@
       <select name="topic_id" id="topic_id" 
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
         <% Topic.all.each do |topic| %>
-          <option value="<%= topic.id %>" <%= 'selected' if topic.id == question.topic_id %>><%= topic.topic %></option>
+          <option value="<%= topic.id %>" <%= 'selected' if topic.id == question.topic_id %>><%= h(topic.topic) %></option>
         <% end %>
       </select>
     </div>
