@@ -12,7 +12,7 @@
         <% @lessons.each do |lesson| %>
             <div class="lesson-container">
                 <div class="lesson-title">
-                    <%= lesson.title %>
+                    <%= h(lesson.title) %>
                 </div>
                 <!-- Iterar sobre cada nivel de la lección -->
                 <% (1..lesson.num_levels).each do |level| %>
