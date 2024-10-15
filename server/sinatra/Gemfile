@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem "sinatra"
-gem "sinatra-activerecord"
-gem 'sqlite3', '~> 1.4'
-gem "rake"
-gem "bcrypt"
-gem "rackup"
-gem "dotenv"
+gem 'bcrypt'
+gem 'dotenv'
+gem 'rackup'
+gem 'rake'
 gem 'simplecov', require: false
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'sqlite3', '~> 1.4'
 group :development, :test do
+  gem 'database_cleaner-active_record'
+  gem 'rack-test'
   gem 'rspec'
   gem 'rspec-sinatra'
-  gem 'rack-test'
-  gem 'database_cleaner-active_record'
 end
