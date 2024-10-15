@@ -6,7 +6,6 @@ require 'bcrypt'
 require 'json'
 require 'dotenv/load'
 require 'fileutils'
-include ERB::Util
 
 require './auth_middleware'
 require './helpers'
