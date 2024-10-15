@@ -423,7 +423,7 @@ post '/admin/questions/:id' do
     topic_id = params['topic_id']
 
     if question.update(question: question_text, topic_id: topic_id)
-      redirect '/admin'
+      redirect '/admin/qas'
     else
       erb :edit_question, locals: { question: question, error: 'Failed to update question.' }
     end
@@ -535,4 +535,9 @@ post '/admin/questions' do
     @topics = Topic.all
     return erb :new_question, locals: { error: 'Failed to create question.' }
   end
+end
+
+get '/admin/qas' do
+  @qas = Qa.includes(:question, :option).all
+  erb :qas
 end
