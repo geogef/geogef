@@ -16,10 +16,10 @@
                 <div class="profile-picture">
                     <img src="/images/logo.png" alt="Imagen de perfil">
                 </div>
-                <h2 class="profile-name">Hola <%= @user.username %>! Bienvenid@ a la central de estadisticas de</h2>
+                <h2 class="profile-name">Hola <%= h(@user.username) %>! Bienvenid@ a la central de estadisticas de</h2>
             </div>
             <div class="profile-details">
-                <div class="profile-item"><i class="fas fa-envelope"></i> <strong>Email:</strong> <%= @user.email %></div>
+                <div class="profile-item"><i class="fas fa-envelope"></i> <strong>Email:</strong> <%= h(@user.email) %></div>
                 <div class="profile-item"><i class="fas fa-tachometer-alt"></i> <strong>Progreso:</strong> <%= @user.app_progress %>%</div>
                 <div class="profile-item"><i class="fas fa-calendar-check"></i> <strong>Racha más alta:</strong> <%= @user.highest_streak %></div>
                 <div class="profile-item"><i class="fas fa-calendar-day"></i> <strong>Racha actual:</strong> <%= @user.current_streak %></div>
