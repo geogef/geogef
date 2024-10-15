@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'Sinatra Project' do
@@ -19,7 +21,8 @@ describe 'Sinatra Project' do
     @qa2 = Qa.create(questions_id: @question2.id, options_id: @option2.id, exam: @exam2)
     ProgressLesson.create(user: @user, lesson: @lesson, level: @level1)
 
-    post '/signup', username: @user.username, email: @user.email, password: 'password', 'password-confirmation': 'password'
+    post '/signup', username: @user.username, email: @user.email, password: 'password',
+                    'password-confirmation': 'password'
     post '/login', email: @user.email, password: 'password'
   end
 
@@ -41,19 +44,19 @@ describe 'Sinatra Project' do
       expect(last_request.path).to eq('/dashboard')
     end
 
-  it 'renders the login page with an error message for invalid credentials' do
-    post '/login', email: 'wrong@example.com', password: 'wrongpassword'
+    it 'renders the login page with an error message for invalid credentials' do
+      post '/login', email: 'wrong@example.com', password: 'wrongpassword'
 
-    expect(last_response).to be_ok
-    expect(last_response.body).to include('Invalid username or password.')
-  end
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Invalid username or password.')
+    end
 
-  it 'renders the login page with an error message when no credentials are provided' do
-    post '/login', email: '', password: ''
+    it 'renders the login page with an error message when no credentials are provided' do
+      post '/login', email: '', password: ''
 
-    expect(last_response).to be_ok
-    expect(last_response.body).to include('Invalid username or password.')
-  end
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Invalid username or password.')
+    end
 
     it 'prevents access to protected routes without login' do
       get '/logout'
@@ -84,8 +87,6 @@ describe 'Sinatra Project' do
     end
   end
 
-
-
   context 'API endpoints' do
     it 'fetches QA data' do
       get "/api/qa/#{@qa1.id}"
@@ -110,7 +111,6 @@ describe 'Sinatra Project' do
   end
 
   context 'API Error Handling' do
-
     it 'returns 404 for non-existent QA correct answer' do
       get '/api/qa/999/correct_answer'
       expect(last_response.status).to eq(404)
@@ -119,7 +119,7 @@ describe 'Sinatra Project' do
     end
 
     it 'returns an error if the exam is not found' do
-      get "/api/exam/999/1"
+      get '/api/exam/999/1'
       expect(last_response.status).to eq(200)
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq('Exam not found')
@@ -134,7 +134,6 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include('Unauthorized')
     end
   end
-
 
   context 'GET /exam/:lesson_id/:level_id' do
     it 'redirects if the level is not unlocked' do
@@ -207,7 +206,6 @@ describe 'Sinatra Project' do
       expect(data['error']).to eq("Correct answer not found for QA record with ID #{@qa1.id}")
     end
   end
-
 
   context 'POST /completed_lesson' do
     before(:each) do
@@ -308,16 +306,18 @@ describe 'Sinatra Project' do
       @valid_password_confirmation = 'password'
     end
 
-  it 'creates a new user and redirects to the dashboard with valid inputs' do
-    post '/signup', username: @valid_username, email: @valid_email, password: @valid_password, 'password-confirmation': @valid_password
+    it 'creates a new user and redirects to the dashboard with valid inputs' do
+      post '/signup', username: @valid_username, email: @valid_email, password: @valid_password,
+                      'password-confirmation': @valid_password
 
-    expect(last_response).to be_redirect
-    follow_redirect!
-    expect(last_request.path).to eq('/dashboard')
-  end
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/dashboard')
+    end
 
     it 'returns error if passwords do not match' do
-      post '/signup', username: 'newuser', email: 'new@example.com', password: 'password1', 'password-confirmation': 'password2'
+      post '/signup', username: 'newuser', email: 'new@example.com', password: 'password1',
+                      'password-confirmation': 'password2'
       expect(last_response).to be_ok
       expect(last_response.body).to include('Passwords do not match.')
     end
@@ -329,7 +329,8 @@ describe 'Sinatra Project' do
     end
 
     it 'returns error if email is already taken' do
-      post '/signup', username: 'anotheruser', email: 'test@example.com', password: 'password', 'password-confirmation': 'password'
+      post '/signup', username: 'anotheruser', email: 'test@example.com', password: 'password',
+                      'password-confirmation': 'password'
       expect(last_response).to be_ok
       expect(last_response.body).to include('Another account with this email already exists')
     end
@@ -380,7 +381,6 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include('Quiz Page')
       expect(last_response.body).to include('Exam 1')
     end
-
   end
 
   context 'GET /lessons' do
@@ -398,7 +398,5 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include(@lesson1.description)
       expect(last_response.body).to include(@lesson2.description)
     end
-
   end
-
 end
