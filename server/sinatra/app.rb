@@ -66,10 +66,8 @@ get '/signup' do
 end
 
 post '/signup' do
-  username = params['username']
-  email = params['email']
-  password = params['password']
-  password_confirmation = params['password-confirmation']
+  username, email, password, password_confirmation = params.values_at('username', 'email', 'password',
+                                                                      'password-confirmation')
 
   if username.empty? ||
      email.empty? ||
@@ -80,23 +78,13 @@ post '/signup' do
     }
   end
 
-  if User.find_by(username: username)
-    return erb :signup, layout: :signup, locals: {
-      error: 'Username already exists.'
-    }
-  end
+  return erb :signup, layout: :signup, locals: { error: 'Username already exists.' } if User.find_by(username: username)
 
   if User.find_by(email: email)
-    return erb :signup, layout: :signup, locals: {
-      error: 'Another account with this email already exists'
-    }
+    return erb :signup, layout: :signup,
+                        locals: { error: 'Another account with this email already exists' }
   end
-
-  if password != password_confirmation
-    return erb :signup, layout: :signup, locals: {
-      error: 'Passwords do not match.'
-    }
-  end
+  return erb :signup, layout: :signup, locals: { error: 'Passwords do not match.' } if password != password_confirmation
 
   user = User.create(username: username, email: email, password: password, last_connection: Time.now)
 
@@ -154,7 +142,7 @@ get '/materials/:lesson_id/:level_id' do |lesson_id, level_id|
 end
 
 get '/exam/:lesson_id/:level_id' do |lesson_id, level_id|
-  @publicUser = current_user.public_data
+  @public_user = current_user.public_data
   @lesson = Lesson.find(lesson_id)
   @level = Level.find(level_id)
   @lesson_id = params[:lesson_id]
@@ -463,54 +451,21 @@ end
 post '/admin/questions' do
   halt 403, 'Access denied.' unless current_user.admin?
 
-  question_text = params['question']
-  correct_answer_text = params['correct_answer']
-  question_level = params['question_level']
-  topic_id = params['topic_id']
+  question_text, correct_answer_text, question_level, topic_id = params.values_at('question', 'correct_answer',
+                                                                                  'question_level', 'topic_id')
 
   redirect '/admin/questions/new' if topic_id.nil?
 
   lesson = Lesson.find_by(topic_id: topic_id)
   level = Level.find_by(lesson_id: lesson.id, number: question_level)
-  imagepath = nil
-
-  if level.nil?
-    @topics = Topic.all
-    return erb :new_question, locals: { error: 'Failed to create question.' }
-  end
+  return render_new_question if level.nil?
 
   exam = Exam.find_by(lesson_id: lesson.id, level: level.id)
 
-  question = Question.new(question: question_text, topic_id: topic_id)
+  imagepath = save_image(params, topic_id)
 
-  puts params['image']
-
-  if Topic.find(topic_id).topic == 'Banderas' && params['image'][:filename].end_with?('.svg')
-    filename = params['image'][:filename]
-    file = params['image'][:tempfile]
-
-    image_folder = './public/images/flags'
-
-    filepath = "#{image_folder}/#{filename}"
-    File.open(filepath, 'wb') do |f|
-      f.write(file.read)
-    end
-
-    imagepath = "images/flags/#{filename}"
-  end
-
-  if question.save
-    correct_option = Option.create(response: correct_answer_text, topics_id: topic_id)
-
-    if correct_option.save
-      if imagepath.nil?
-        Qa.create(questions_id: question.id, options_id: correct_option.id, exam_id: exam.id)
-      else
-        Qa.create(questions_id: question.id, options_id: correct_option.id, exam_id: exam.id, imagepath: imagepath)
-      end
-
-      redirect '/admin'
-    end
+  if create_question_and_option(question_text, topic_id, correct_answer_text, exam.id, imagepath)
+    redirect '/admin'
   else
     @topics = Topic.all
     return erb :new_question, locals: { error: 'Failed to create question.' }
