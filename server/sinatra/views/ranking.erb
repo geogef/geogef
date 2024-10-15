@@ -22,7 +22,7 @@
           <%# Display user's position %>
           <td class="text-left p-2 border"><%= index + 1 %></td>
           <%# Display user's username %>
-          <td class="text-left p-2 border"><%= user.username %></td>
+          <td class="text-left p-2 border"><%= h(user.username) %></td>
           <%# Display user's highest streak %>
           <td class="text-center p-2 border"><%= user.highest_streak %></td>
         </tr>
