@@ -79,7 +79,7 @@
     <% if @questions.any? %>
       <ul>
         <% @questions.first(@count).each do |question| %>
-          <li><%= question.question %> se respondió bien <b><%= question.correct_answers_count %></b> veces</li> 
+          <li><%= h(question.question) %> se respondió bien <b><%= h(question.correct_answers_count) %></b> veces</li> 
         <% end %>
       </ul>
     <% else %>
@@ -91,7 +91,7 @@
     <% if @questions.any? %>
       <ul>
         <% @questions.first(@count).each do |question| %>
-          <li><%= question.question %> se respondió mal <b><%= question.incorrect_answers_count %></b> veces</li> 
+          <li><%= h(question.question) %> se respondió mal <b><%= h(question.incorrect_answers_count) %></b> veces</li> 
         <% end %>
       </ul>
     <% else %>

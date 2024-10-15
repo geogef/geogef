@@ -10,8 +10,8 @@
     <%# Iterar sobre cada lección para mostrar las tarjetas de lecciones %>
     <% @lessons.each do |lesson| %>
       <div class="lesson-card bg-white rounded-lg shadow-md p-6 transition-transform transform hover:translate-y-[-10px] border-2 border-gray-800 animate-enter-info">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-2"><%= lesson[:title] %></h2>
-        <p class="text-gray-600 mb-4"><%= lesson[:description] %></p>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-2"><%= h(lesson[:title]) %></h2>
+        <p class="text-gray-600 mb-4"><%= h(lesson[:description]) %></p>
       </div>
     <% end %>
   </div>

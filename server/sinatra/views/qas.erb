@@ -17,8 +17,8 @@
     <tbody>
       <% @qas.each_with_index do |qa, index| %>
       <tr class="<%= index.even? ? 'bg-gray-50' : 'bg-white' %> hover:bg-gray-100">
-        <td class="px-4 py-2 border border-gray"><%= qa.question ? qa.question.question : 'Pregunta no encontrada' %></td>
-        <td class="px-4 py-2 border border-gray"><%= qa.option ? qa.option.response : 'Respuesta no encontrada' %></td>
+        <td class="px-4 py-2 border border-gray"><%= qa.question ? h(qa.question.question) : 'Pregunta no encontrada' %></td>
+        <td class="px-4 py-2 border border-gray"><%= qa.option ? h(qa.option.response) : 'Respuesta no encontrada' %></td>
         <td class="px-4 py-2 border border-gray text-center"><%= qa.created_at %></td>
         <td class="px-4 py-2 border border-gray text-center"><%= qa.exam_id %></td>
         <td class="px-4 py-2 border border-gray text-center">
