@@ -4,7 +4,7 @@
     <div class="container mx-auto p-4 max-w-4xl">
         <%# Header with the lesson materials title %>
         <h1 class="text-3xl font-bold text-blue-900 bg-white bg-opacity-80 p-4 rounded-lg text-center shadow-md mb-8 w-full">
-            Materiales de <%= @lesson.title %>
+            Materiales de <%= h(@lesson.title) %>
         </h1>
 
         <%# Main container for the current material %>
@@ -12,7 +12,7 @@
             <div id="current-material" class="flex flex-col items-center p-6">
                 <%# Displaying the content of the current material %>
                 <div class="text-xl text-gray-800 mb-4">
-                    <%= @materials[0].content %>
+                    <%= h(@materials[0].content) %>
                 </div>
                 <%# Display the image of the current material if present %>
                 <% if @materials[0].imagepath.present? %>
