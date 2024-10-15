@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'bcrypt'
 
 class User < ActiveRecord::Base
@@ -13,7 +11,7 @@ class User < ActiveRecord::Base
   after_initialize :init
 
   def password
-    @password ||= Password.new(self[:password])
+      @password ||= Password.new(self[:password])
   end
 
   def password=(new_password)
@@ -22,32 +20,34 @@ class User < ActiveRecord::Base
   end
 
   def authenticate(input_password)
-    password == input_password
+    self.password == input_password
   end
 
   def modify_gems(amount)
-    aux = geogems + amount
-    update(geogems: aux)
+    aux = self.geogems + amount
+    self.update(geogems: aux)
   end
 
   def update_streak(current_streak)
-    modify_gems(5) if current_streak != 0 && (current_streak % 10).zero?
+    if current_streak != 0 && current_streak % 10 == 0
+      self.modify_gems(5)
+    end
 
-    update(current_streak: current_streak)
-    return unless highest_streak < current_streak
-
-    update(highest_streak: current_streak)
+    self.update(current_streak: current_streak)
+    if self.highest_streak < current_streak
+      self.update(highest_streak: current_streak)
+    end
   end
 
   def update_completed_lessons
-    aux = completed_lessons + 1
-    modify_gems(3)
-    update(completed_lessons: aux)
+    aux = self.completed_lessons + 1
+    self.modify_gems(3)
+    self.update(completed_lessons: aux)
   end
 
   def update_app_progress(total_lessons)
-    progress = (completed_lessons.to_f / total_lessons) * 100
-    update(app_progress: progress.round)
+    progress = (self.completed_lessons.to_f / total_lessons.to_f) * 100
+    self.update(app_progress: progress.round)
   end
 
   def admin?
@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
 
   def public_data
     public_user = PublicUser.new
-    public_user.id = id
+    public_user.id = self.id
     public_user.highest_streak = self.highest_streak
     public_user.current_streak = self.current_streak
 
@@ -74,4 +74,5 @@ class User < ActiveRecord::Base
   class PublicUser
     attr_accessor :id, :highest_streak, :current_streak
   end
+
 end

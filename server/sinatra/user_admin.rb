@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'bundler/setup'
 require 'active_record'
 
@@ -23,8 +21,8 @@ def update_user_type(user_name)
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  print 'Introduce el nombre del nuevo administrador de Geogef: '
+if __FILE__ == $0
+  print "Introduce el nombre del nuevo administrador de Geogef: "
   name_to_search = gets.chomp
   update_user_type(name_to_search)
 end

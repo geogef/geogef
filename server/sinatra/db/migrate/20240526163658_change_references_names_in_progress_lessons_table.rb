@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ChangeReferencesNamesInProgressLessonsTable < ActiveRecord::Migration[7.1]
   def change
     rename_column :progress_lessons, :users_id, :user_id

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateTopicsTable < ActiveRecord::Migration[7.1]
   def change
     create_table :topics do |t|

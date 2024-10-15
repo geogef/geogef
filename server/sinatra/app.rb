@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'bcrypt'
@@ -7,6 +5,7 @@ require 'json'
 require 'dotenv/load'
 require 'fileutils'
 include ERB::Util
+
 
 require './auth_middleware'
 require './helpers'
@@ -27,11 +26,13 @@ set :database_file, './config/database.yml'
 
 use AuthMiddleware
 
-ENV['SESSION_SECRET'] || 'default_secret'
+session_secret = ENV['SESSION_SECRET'] || 'default_secret'
 
 # Callback before for protected endpoints
 before do
-  authenticate_user unless request.path_info =~ %r{^/(login|signup|api|assets|)$}
+  unless request.path_info =~ /^\/(login|signup|api|assets|)$/
+    authenticate_user
+  end
 end
 
 get '/' do
@@ -49,7 +50,7 @@ post '/login' do
 
   user = User.find_by(email: email)
 
-  if user&.authenticate(password)
+  if user && user.authenticate(password)
     session[:user_id] = user.id
     user.update(last_connection: Time.now)
     redirect '/dashboard'
@@ -110,6 +111,7 @@ post '/signup' do
   end
 end
 
+
 get '/dashboard' do
   @countries_data = Country.all
   erb :dashboard
@@ -122,16 +124,16 @@ end
 
 get '/lessons/levels' do
   authenticate_user
-  if session[:user_id]
-    @lessons = Lesson.all
-    unless current_user.progress_lessons.exists?
-      Lesson.all.each do |lesson|
-        level = Level.find_by(number: 1, lesson: lesson)
-        ProgressLesson.create(user: current_user, lesson: lesson, level: level)
+    if session[:user_id]
+      @lessons = Lesson.all
+      unless current_user.progress_lessons.exists?
+        Lesson.all.each do |lesson|
+          level = Level.find_by(number: 1, lesson: lesson)
+          ProgressLesson.create(user: current_user, lesson: lesson, level: level)
+        end
       end
+      erb :lessons_levels
     end
-    erb :lessons_levels
-  end
 end
 
 get '/lessons/levels/:lesson_id/:level' do
@@ -140,7 +142,7 @@ get '/lessons/levels/:lesson_id/:level' do
   @exam = Exam.find_by(lesson_id: @lesson.id, level: @level)
 
   if !level_unlocked?(@lesson, @level.number)
-    redirect '/lessons/levels', error: 'You have not unlocked this level yet.'
+    redirect '/lessons/levels', error: "You have not unlocked this level yet."
   else
     erb :level
   end
@@ -159,11 +161,14 @@ get '/exam/:lesson_id/:level_id' do |lesson_id, level_id|
   @level = Level.find(level_id)
   @lesson_id = params[:lesson_id]
   @level_id = params[:level_id]
-  redirect '/lessons/levels' unless level_unlocked?(@lesson, @level.number)
+  if not level_unlocked?(@lesson, @level.number)
+    redirect '/lessons/levels'
+  end
   @exam_id = Exam.find_by(lesson: @lesson, level: @level).id
 
-  erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam }
+  erb :quiz, locals: { lesson: @lesson, level: @level, exam: @exam}
 end
+
 
 get '/profile' do
   @user = current_user
@@ -189,13 +194,13 @@ get '/api/qa/:qa_id' do |qa_id|
   correct_option = Option.find_by(id: qa.options_id)
   topic = question.topic_id
 
-  incorrect_options = Option.where.not(id: correct_option.id)
-                            .where(topics_id: topic).order('RANDOM()').limit(3)
+  incorrect_options = Option.where.not(id: correct_option.id).
+                     where(topics_id: topic).order('RANDOM()').limit(3)
 
   question_data = {
     question: question.question,
     options: (incorrect_options.map(&:response) << correct_option.response)
-                  .shuffle,
+              .shuffle,
     img: qa.imagepath
   }
 
@@ -249,7 +254,7 @@ post '/api/reward/1/:qa_id' do
   return { error: 'Correct option not found' }.to_json unless correct_option
 
   question = Question.find_by(id: qa.questions_id)
-  question.topic_id
+  topic = question.topic_id
 
   data = JSON.parse(request.body.read)
   displayed_options = data['options']
@@ -265,7 +270,9 @@ post '/api/reward/1/:qa_id' do
 
   user = current_user
   geogem_cost = 5
-  return { error: 'Not enough Gems to remove options.' }.to_json if user.geogems < geogem_cost
+  if user.geogems < geogem_cost
+    return { error: 'Not enough Gems to remove options.' }.to_json
+  end
 
   user.update(geogems: user.geogems - geogem_cost)
 
@@ -280,13 +287,15 @@ get '/api/reward/2/' do
 
   user = current_user
   geogem_cost = 3
-  return { error: 'Not enough Geogems.' }.to_json if user.geogems < geogem_cost
+  if user.geogems < geogem_cost
+    return { error: 'Not enough Geogems.' }.to_json
+  end
 
   user.update(geogems: user.geogems - geogem_cost)
 
   {
     seconds_added: 30,
-    message: 'Seconds have been added correctly.'
+    message: "Seconds have been added correctly.",
   }.to_json
 end
 
@@ -305,24 +314,28 @@ get '/api/exam/:exam_id/:correct_answers' do |exam_id, correct_answers|
   qas = Qa.where(exam_id: exam_id).pluck(:id)
   total_questions = qas.length
 
-  return { message: 'Not all answers are correct.', qas: qas }.to_json unless correct_answers.to_i == total_questions
+  if correct_answers.to_i == total_questions
+    lesson = exam.lesson
+    progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
 
-  lesson = exam.lesson
-  progress = ProgressLesson.find_by(user: current_user, lesson: lesson)
+    if progress
+      current_level_number = progress.level.number
+      if exam.level.number == current_level_number
+        next_level = Level.find_by(number: current_level_number + 1, lesson: lesson)
 
-  return { error: 'Progress not found for the current user and lesson.' }.to_json unless progress
-
-  current_level_number = progress.level.number
-  if exam.level.number == current_level_number
-    next_level = Level.find_by(number: current_level_number + 1, lesson: lesson)
-
-    if next_level
-      progress.update(level: next_level)
-      return { message: 'Level up!', new_level: next_level.name }.to_json
+        if next_level
+          progress.update(level: next_level)
+          return { message: 'Level up!', new_level: next_level.name }.to_json
+        else
+          progress.update(is_completed: true)
+          return { message: 'You have completed all lessons!' }.to_json
+        end
+      end
     else
-      progress.update(is_completed: true)
-      return { message: 'You have completed all lessons!' }.to_json
+      return { error: 'Progress not found for the current user and lesson.' }.to_json
     end
+  else
+    return { message: 'Not all answers are correct.', qas: qas }.to_json
   end
 end
 
@@ -357,10 +370,12 @@ end
 
 before '/admin' do
   redirect '/login' unless session[:user_id]
-
+  
   user = User.find(session[:user_id])
-
-  halt 403, 'No tienes permiso para acceder a esta página.' if user.user_type != 1
+  
+  if user.user_type != 1
+    halt 403, "No tienes permiso para acceder a esta página."
+  end
 end
 
 get '/admin' do
@@ -375,13 +390,13 @@ end
 get '/admin/query' do
   @type = params[:type]
 
-  @questions = if @type == 'correctly'
-                 Question.all.sort_by { |question| -question.correct_answers_count }
-               elsif @type == 'incorrectly'
-                 Question.all.sort_by { |question| -question.incorrect_answers_count }
-               else
-                 []
-               end
+  if @type == 'correctly'
+    @questions = Question.all.sort_by { |question| -question.correct_answers_count }
+  elsif @type == 'incorrectly'
+    @questions = Question.all.sort_by { |question| -question.incorrect_answers_count }
+  else
+    @questions = []
+  end
 
   @count = params[:n].to_i
 
@@ -423,7 +438,9 @@ before '/admin' do
 
   user = User.find(session[:user_id])
 
-  halt 403, 'No tienes permiso para acceder a esta página.' if user.user_type != 1
+  if user.user_type != 1
+    halt 403, "No tienes permiso para acceder a esta página."
+  end
 end
 
 get '/admin' do
@@ -443,11 +460,11 @@ post '/admin/promote' do
     session[:message] = 'User not found.'
   else
     user.update(user_type: 1)
-    session[:message] = if user.save
-                          "El usuario #{user.username} ha sido promovido a admin."
-                        else
-                          'Error al promover usuario a admmin.'
-                        end
+    if user.save
+      session[:message] = "El usuario #{user.username} ha sido promovido a admin."
+    else
+      session[:message] = 'Error al promover usuario a admmin.'
+    end
   end
 
   redirect '/view_users'
@@ -467,8 +484,10 @@ post '/admin/questions' do
   correct_answer_text = params['correct_answer']
   question_level = params['question_level']
   topic_id = params['topic_id']
-
-  redirect '/admin/questions/new' if topic_id.nil?
+  
+  if topic_id.nil?
+      redirect '/admin/questions/new'
+  end
 
   lesson = Lesson.find_by(topic_id: topic_id)
   level = Level.find_by(lesson_id: lesson.id, number: question_level)
@@ -481,6 +500,7 @@ post '/admin/questions' do
 
   exam = Exam.find_by(lesson_id: lesson.id, level: level.id)
 
+
   question = Question.new(question: question_text, topic_id: topic_id)
 
   puts params['image']
@@ -488,8 +508,8 @@ post '/admin/questions' do
   if Topic.find(topic_id).topic == 'Banderas' && params['image'][:filename].end_with?('.svg')
     filename = params['image'][:filename]
     file = params['image'][:tempfile]
-
-    image_folder = './public/images/flags'
+    
+    image_folder = "./public/images/flags"
 
     filepath = "#{image_folder}/#{filename}"
     File.open(filepath, 'wb') do |f|
@@ -498,6 +518,7 @@ post '/admin/questions' do
 
     imagepath = "images/flags/#{filename}"
   end
+
 
   if question.save
     correct_option = Option.create(response: correct_answer_text, topics_id: topic_id)

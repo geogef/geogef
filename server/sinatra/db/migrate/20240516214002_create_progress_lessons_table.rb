@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateProgressLessonsTable < ActiveRecord::Migration[7.1]
   def change
     create_table :progress_lessons do |t|
