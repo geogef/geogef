@@ -10,7 +10,7 @@
 <body>
     <div class="background-decorator"></div>
     <div class="container">
-        <h1 class="level-title"><%= @level.name %></h1>
+        <h1 class="level-title"><%= h(@level.name) %></h1>
         <div class="button-container">
             <a href="/materials/<%= @lesson.id %>/<%= @level.id %>" class="btn-primary">
                 <i class="fas fa-book"></i> Ver materiales
