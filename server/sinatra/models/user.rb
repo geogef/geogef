@@ -2,6 +2,7 @@
 
 require 'bcrypt'
 
+# User model
 class User < ActiveRecord::Base
   include BCrypt
 
@@ -71,6 +72,7 @@ class User < ActiveRecord::Base
     public_user
   end
 
+  # public data of user model
   class PublicUser
     attr_accessor :id, :highest_streak, :current_streak
   end
