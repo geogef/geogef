@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 ENV['APP_ENV'] = 'test'
 
-require_relative '../config/environment.rb'
-require_relative '../models/user.rb'
+require_relative '../config/environment'
+require_relative '../models/user'
 require 'rspec'
 require 'rack/test'
 
-User.destroy_all
-
+# Email Validations
 RSpec.describe User, type: :model do
   let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
-  describe 'validations' do
+  describe 'email validations' do
     it 'is valid with valid attributes' do
       expect(user).to be_valid
     end
@@ -29,6 +30,17 @@ RSpec.describe User, type: :model do
       user.email = 'invalid_email'
       expect(user).to_not be_valid
     end
+  end
+end
+
+# Username Validations
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
+
+  describe 'username validations' do
+    it 'is valid with valid attributes' do
+      expect(user).to be_valid
+    end
 
     it 'is not valid without a username' do
       user.username = nil
@@ -40,11 +52,16 @@ RSpec.describe User, type: :model do
       expect(user).to_not be_valid
     end
   end
+end
+
+# Password Encryption
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe 'password encryption' do
     it 'encrypts the password' do
-        user.save
-        expect(user.authenticate('password123')).to be_truthy
+      user.save
+      expect(user.authenticate('password123')).to be_truthy
     end
   end
 
@@ -61,6 +78,11 @@ RSpec.describe User, type: :model do
       expect(user.authenticate('wrongpassword')).to be_falsey
     end
   end
+end
+
+# Streaks
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe 'streak updates' do
     before do
@@ -84,6 +106,11 @@ RSpec.describe User, type: :model do
       expect(user.highest_streak).to eq(5)
     end
   end
+end
+
+# Completed Lessons
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe '#update_completed_lessons' do
     before do
@@ -94,6 +121,11 @@ RSpec.describe User, type: :model do
       expect { user.update_completed_lessons }.to change { user.completed_lessons }.by(1)
     end
   end
+end
+
+# App Progress
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe '#update_app_progress' do
     before do
@@ -106,6 +138,11 @@ RSpec.describe User, type: :model do
       expect(user.app_progress).to eq(50)
     end
   end
+end
+
+# Initialization
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe 'initialization' do
     it 'initializes with default values' do
@@ -117,6 +154,11 @@ RSpec.describe User, type: :model do
       expect(user.geogems).to eq(0)
     end
   end
+end
+
+# Public Data
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe '#public_data' do
     before do
@@ -130,18 +172,23 @@ RSpec.describe User, type: :model do
       expect(public_user.current_streak).to eq(user.current_streak)
     end
   end
+end
+
+# Geogems
+RSpec.describe User, type: :model do
+  let(:user) { User.new(email: 'test@example.com', username: 'testuser', password: 'password123') }
 
   describe 'update geogems value' do
     before do
       user.save
     end
 
-    it 'user win 3 gems after complete lesson' do
+    it 'user wins 3 gems after completing a lesson' do
       expect { user.update_completed_lessons }.to change { user.geogems }.by(3)
     end
 
-    it 'user earn 5 gems for every streak of 10 ' do
-      expect { user.update_streak(10) }.to change {user.geogems }.by(5)
+    it 'user earns 5 gems for every streak of 10' do
+      expect { user.update_streak(10) }.to change { user.geogems }.by(5)
     end
-
+  end
 end
