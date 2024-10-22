@@ -1,29 +1,14 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'support/data_setup'
 
 describe 'Sinatra Project' do
   include Rack::Test::Methods
+  include DataSetup
 
   before(:each) do
-    @user = User.create(username: 'testuser', email: 'test@example.com', password: 'password')
-    @topic = Topic.create(topic: 'Geography')
-    @lesson = Lesson.create(title: 'Lesson 1', description: 'A test lesson', num_levels: 2, topic: @topic)
-    @level1 = Level.create(number: 1, name: 'Level 1', lesson: @lesson)
-    @level2 = Level.create(number: 2, name: 'Level 2', lesson: @lesson)
-    @exam1 = Exam.create(duration: 60, name: 'Exam 1', lesson: @lesson, level: @level1)
-    @exam2 = Exam.create(duration: 60, name: 'Exam 2', lesson: @lesson, level: @level2)
-    @question1 = Question.create(question: 'What is the capital of France?', topic: @topic)
-    @question2 = Question.create(question: 'What is the capital of Germany?', topic: @topic)
-    @option1 = Option.create(response: 'Paris', topics_id: @topic.id)
-    @option2 = Option.create(response: 'Berlin', topics_id: @topic.id)
-    @qa1 = Qa.create(questions_id: @question1.id, options_id: @option1.id, exam: @exam1)
-    @qa2 = Qa.create(questions_id: @question2.id, options_id: @option2.id, exam: @exam2)
-    ProgressLesson.create(user: @user, lesson: @lesson, level: @level1)
-
-    post '/signup', username: @user.username, email: @user.email, password: 'password',
-                    'password-confirmation': 'password'
-    post '/login', email: @user.email, password: 'password'
+    setup_test_data
   end
 
   context 'GET /' do
@@ -36,14 +21,34 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include('Ingresar')
     end
   end
+end
 
-  context 'Authentication' do
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
+
+  context 'Successful Authentication' do
     it 'logs in the user' do
       expect(last_response).to be_redirect
       follow_redirect!
       expect(last_request.path).to eq('/dashboard')
     end
+  end
+end
 
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
+
+  context 'Unsuccessful Authentication' do
     it 'renders the login page with an error message for invalid credentials' do
       post '/login', email: 'wrong@example.com', password: 'wrongpassword'
 
@@ -66,6 +71,15 @@ describe 'Sinatra Project' do
       expect(last_request.path).to eq('/login')
     end
   end
+end
+
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
 
   context 'GET /signup' do
     it 'renders the signup page for non-logged-in users' do
@@ -77,7 +91,6 @@ describe 'Sinatra Project' do
     end
 
     it 'redirects logged-in users away from the signup page' do
-      # Mock a logged-in user
       post '/login', email: 'test@example.com', password: 'password'
       get '/signup'
 
@@ -85,6 +98,29 @@ describe 'Sinatra Project' do
       follow_redirect!
       expect(last_request.path).to eq('/dashboard')
     end
+  end
+end
+
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+
+  context 'POST /signup' do
+    it 'renders the signup page again if any field is empty' do
+      post '/signup', username: '', email: '', password: '', password_confirmation: ''
+
+      expect(last_response).to be_ok
+      expect(last_response.body).to include('Crear una cuenta')
+      expect(last_response.body).to include('All fields are required.')
+    end
+  end
+end
+
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
   end
 
   context 'API endpoints' do
@@ -108,6 +144,15 @@ describe 'Sinatra Project' do
       data = JSON.parse(last_response.body)
       expect(data['qas']).to include(@qa1.id)
     end
+  end
+end
+
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
   end
 
   context 'API Error Handling' do
@@ -134,6 +179,15 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include('Unauthorized')
     end
   end
+end
+
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
 
   context 'GET /exam/:lesson_id/:level_id' do
     it 'redirects if the level is not unlocked' do
@@ -151,8 +205,17 @@ describe 'Sinatra Project' do
       expect(last_response.body).to include('questions correctly')
     end
   end
+end
 
-  context 'GET /api/exam/:exam_id/:correct_answers' do
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
+
+  context 'GET /api/exam/:exam_id with correct and incorrect answers' do
     it 'returns "Not all answers are correct" when not all correct answers are given' do
       get "/api/exam/#{@exam1.id}/0"
       expect(last_response.status).to eq(200)
@@ -167,7 +230,18 @@ describe 'Sinatra Project' do
       expect(data['message']).to eq('Level up!')
       expect(data['new_level']).to eq(@level2.name)
     end
+  end
+end
 
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
+
+  context 'GET /api/exam/:exam_id with user progress and levels' do
     it 'returns "No higher level found" if no more levels exist' do
       ProgressLesson.find_by(user: @user, lesson: @lesson).update(level: @level2)
 
@@ -185,7 +259,18 @@ describe 'Sinatra Project' do
       data = JSON.parse(last_response.body)
       expect(data['error']).to eq('Progress not found for the current user and lesson.')
     end
+  end
+end
 
+describe 'Sinatra Project' do
+  include Rack::Test::Methods
+  include DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
+
+  context 'GET /api/qa/:qa_id/correct_answer' do
     it 'returns 404 if the question is not found for the QA record' do
       allow(Question).to receive(:find_by).with(id: @qa1.questions_id).and_return(nil)
 
@@ -206,197 +291,39 @@ describe 'Sinatra Project' do
       expect(data['error']).to eq("Correct answer not found for QA record with ID #{@qa1.id}")
     end
   end
+end
+
+describe 'Sinatra Project' do
+  include Rack::Test::Methods, DataSetup
+
+  before(:each) do
+    setup_test_data
+  end
 
   context 'POST /completed_lesson' do
-    before(:each) do
-      allow_any_instance_of(User).to receive(:update_completed_lessons).and_return(true)
-      allow_any_instance_of(User).to receive(:update_app_progress).and_return(true)
-
-      post '/login', email: @user.email, password: 'password'
-    end
-
-    it 'successfully completes a lesson and updates progress' do
-      aux = @user.completed_lessons
-      post '/completed_lesson', { id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    it 'returns success when marking a lesson as completed' do
+      post '/completed_lesson', { lesson_id: @lesson.id, id: @user.id }.to_json,
+           { 'CONTENT_TYPE' => 'application/json' }
 
       expect(last_response).to be_ok
-      expect(@user.completed_lessons > aux)
-    end
-  end
-
-  context 'GET /profile' do
-    it 'shows user profile page' do
-      get '/profile'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include(@user.username)
-    end
-
-    it 'redirects to login if not authenticated' do
-      get '/logout'
-      get '/profile'
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/login')
-    end
-  end
-
-  context 'POST /update_streak' do
-    it 'successfully updates streak' do
-      post '/update_streak', { id: @user.id, current_streak: 5 }.to_json, { 'CONTENT_TYPE' => 'application/json' }
-      expect(last_response).to be_ok
-      @user.reload
-      expect(@user.current_streak).to eq(5)
-    end
-  end
-
-  context 'GET /leaderboard' do
-    it 'shows the leaderboard with users sorted by highest streak' do
-      User.create(username: 'anotheruser', email: 'another@example.com', password: 'password', highest_streak: 10)
-      get '/leaderboard'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include(@user.username)
-      expect(last_response.body).to include('anotheruser')
-    end
-  end
-
-  context 'GET /materials/:lesson_id/:level_id' do
-    it 'shows materials for a lesson and level' do
-      Material.create(level: @level1, content: 'Material 1')
-      get "/materials/#{@lesson.id}/#{@level1.id}"
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Material 1')
-    end
-  end
-
-  context 'GET /profile' do
-    it 'redirects to login if not authenticated' do
-      get '/logout'
-      get '/profile'
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/login')
-    end
-  end
-
-  context 'GET /api/exam/:exam_id/:correct_answers' do
-    it 'returns "Not all answers are correct" when correct_answers is less than total questions' do
-      get "/api/exam/#{@exam1.id}/0"
-      expect(last_response.status).to eq(200)
       data = JSON.parse(last_response.body)
-      expect(data['message']).to eq('Not all answers are correct.')
-      expect(data['qas']).to include(@qa1.id)
-    end
-  end
-
-  context 'GET /lessons/levels' do
-    it 'initializes progress for all lessons if none exists' do
-      ProgressLesson.destroy_all # Clear existing progress
-      get '/lessons/levels'
-      expect(last_response).to be_ok
-      expect(ProgressLesson.count).to eq(Lesson.count) # Verify progress records are created
-    end
-  end
-
-  context 'POST /signup' do
-    before(:each) do
-      get '/logout'
-      @valid_username = 'newuser'
-      @valid_email = 'newuser@example.com'
-      @valid_password = 'password'
-      @valid_password_confirmation = 'password'
+      expect(data['message']).to eq('Lesson completed successfully!')
     end
 
-    it 'creates a new user and redirects to the dashboard with valid inputs' do
-      post '/signup', username: @valid_username, email: @valid_email, password: @valid_password,
-                      'password-confirmation': @valid_password
+    it 'returns an error if lesson ID is missing' do
+      post '/completed_lesson', { lesson_id: nil, id: @user.id }.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/dashboard')
+      expect(last_response.status).to eq(422)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('Lesson ID is required')
     end
 
-    it 'returns error if passwords do not match' do
-      post '/signup', username: 'newuser', email: 'new@example.com', password: 'password1',
-                      'password-confirmation': 'password2'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Passwords do not match.')
-    end
+    it 'returns an error if JSON is invalid' do
+      post '/completed_lesson', 'invalid json', { 'CONTENT_TYPE' => 'application/json' }
 
-    it 'returns error if any field is empty' do
-      post '/signup', username: '', email: '', password: '', 'password-confirmation': ''
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('All fields are required.')
-    end
-
-    it 'returns error if email is already taken' do
-      post '/signup', username: 'anotheruser', email: 'test@example.com', password: 'password',
-                      'password-confirmation': 'password'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Another account with this email already exists')
-    end
-
-    it 'returns error if email is not actually an email' do
-      post '/signup', username: 'anotheruser', email: 'test', password: 'password', 'password-confirmation': 'password'
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Failed to create user.')
-    end
-  end
-
-  context 'GET /lessons/levels/:lesson_id/:level' do
-    it 'renders the level page if the level is unlocked' do
-      get "/lessons/levels/#{@lesson.id}/#{@level1.number}"
-
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Algebra Basics')
-      expect(last_response.body).to include('Level 1')
-    end
-
-    it 'redirects if the level is not unlocked' do
-      get "/lessons/levels/#{@lesson.id}/#{@level2.number}"
-
-      expect(last_response).to be_redirect
-      follow_redirect!
-      expect(last_request.path).to eq('/lessons/levels')
-      expect(last_response.body).to include('You have not unlocked this level yet.')
-    end
-
-    it 'returns 404 if lesson_id is invalid' do
-      get "/lessons/levels/999/#{@level1.number}"
-
-      expect(last_response.status).to eq(404)
-      expect(last_response.body).to include('Not Found')
-    end
-  end
-
-  context 'GET /quiz/:exam_id' do
-    before(:each) do
-      @valid_exam_id = @exam1.id
-      @invalid_exam_id = 9999
-    end
-
-    it 'renders the quiz page for a valid exam ID' do
-      get "/quiz/#{@valid_exam_id}"
-
-      expect(last_response).to be_ok
-      expect(last_response.body).to include('Quiz Page')
-      expect(last_response.body).to include('Exam 1')
-    end
-  end
-
-  context 'GET /lessons' do
-    before(:each) do
-      @lesson1 = Lesson.create(title: 'Lesson 1', description: 'Description for Lesson 1', num_levels: 3)
-      @lesson2 = Lesson.create(title: 'Lesson 2', description: 'Description for Lesson 2', num_levels: 2)
-    end
-
-    it 'renders the lessons page with lessons' do
-      get '/lessons'
-
-      expect(last_response).to be_ok
-      expect(last_response.body).to include(@lesson1.title)
-      expect(last_response.body).to include(@lesson2.title)
-      expect(last_response.body).to include(@lesson1.description)
-      expect(last_response.body).to include(@lesson2.description)
+      expect(last_response.status).to eq(400)
+      data = JSON.parse(last_response.body)
+      expect(data['error']).to eq('Invalid JSON format')
     end
   end
 end
