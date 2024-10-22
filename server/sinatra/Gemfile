@@ -6,11 +6,12 @@ gem 'bcrypt'
 gem 'dotenv'
 gem 'rackup'
 gem 'rake'
+gem 'rubocop', require: false
 gem 'simplecov', require: false
 gem 'sinatra'
 gem 'sinatra-activerecord'
 gem 'sqlite3', '~> 1.4'
-gem 'rubocop', require: false
+
 group :development, :test do
   gem 'database_cleaner-active_record'
   gem 'rack-test'
