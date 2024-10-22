@@ -68,21 +68,16 @@ post '/signup' do
   username, email, password, password_confirmation = params.values_at('username', 'email', 'password',
                                                                       'password-confirmation')
 
-  if username.empty? ||
-     email.empty? ||
-     password.empty? ||
-     password_confirmation.empty?
-    return erb :signup, layout: :signup, locals: {
-      error: 'All fields are required.'
-    }
+  if username.empty? || email.empty? || password.empty? || password_confirmation.empty?
+    return erb :signup, layout: :signup, locals: { error: 'All fields are required.' }
   end
 
   return erb :signup, layout: :signup, locals: { error: 'Username already exists.' } if User.find_by(username: username)
 
   if User.find_by(email: email)
-    return erb :signup, layout: :signup,
-                        locals: { error: 'Another account with this email already exists' }
+    return erb :signup, layout: :signup, locals: { error: 'Another account with this email already exists' }
   end
+
   return erb :signup, layout: :signup, locals: { error: 'Passwords do not match.' } if password != password_confirmation
 
   user = User.create(username: username, email: email, password: password, last_connection: Time.now)
@@ -91,9 +86,7 @@ post '/signup' do
     session[:user_id] = user.id
     redirect '/dashboard'
   else
-    erb :signup, layout: :signup, locals: {
-      error: 'Failed to create user.'
-    }
+    erb :signup, layout: :signup, locals: { error: 'Failed to create user.' }
   end
 end
 
@@ -327,14 +320,28 @@ end
 post '/completed_lesson' do
   content_type :json
 
-  data = JSON.parse(request.body.read)
-  user_id = data ['id']
+  begin
+    data = JSON.parse(request.body.read)
+    lesson_id = data['lesson_id']
 
-  user = User.find(user_id)
-  user.update_completed_lessons
+    if lesson_id.nil?
+      status 422
+      return { error: 'Lesson ID is required' }.to_json
+    end
 
-  total_levels = Level.count
-  user.update_app_progress(total_levels)
+    user_id = data['id']
+    user = User.find(user_id)
+    user.update_completed_lessons
+
+    total_levels = Level.count
+    user.update_app_progress(total_levels)
+
+    status 200
+    { message: 'Lesson completed successfully!' }.to_json
+  rescue JSON::ParserError
+    status 400
+    { error: 'Invalid JSON format' }.to_json
+  end
 end
 
 get '/leaderboard' do
