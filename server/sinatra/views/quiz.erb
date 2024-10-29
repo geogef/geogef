@@ -80,7 +80,7 @@
 <script>
   window.onload = function() {
     const examId = <%= @exam_id %>; // Retrieve exam ID from server-side
-    setCurrentUser(<%= @publicUser.to_json %>); // Set current user information
+    setCurrentUser(<%= @public_user.to_json %>); // Set current user information
     fetchQaIds(examId); // Fetch question and answer IDs for the exam
 
       document.getElementById('button1').addEventListener('click', addTime);

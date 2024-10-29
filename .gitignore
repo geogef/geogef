@@ -1,0 +1,4 @@
+*.sqlite3
+*.lock
+*.nb
+"/node_modules"
